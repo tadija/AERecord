@@ -7,6 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		8B8FD1D31A0BCC3C009FAE44 /* CustomCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B8FD1D21A0BCC3C009FAE44 /* CustomCollectionViewCell.swift */; };
+		8B8FD1D61A0BE171009FAE44 /* LICENSE in Resources */ = {isa = PBXBuildFile; fileRef = 8B8FD1D41A0BE171009FAE44 /* LICENSE */; };
+		8B975B2B1A098A4800AA3499 /* AERecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B975B2A1A098A4800AA3499 /* AERecord.swift */; };
+		8B975B2D1A098FAF00AA3499 /* Event.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B975B2C1A098FAF00AA3499 /* Event.swift */; };
 		8BC895511A07930500778DB0 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BC895501A07930500778DB0 /* AppDelegate.swift */; };
 		8BC895541A07930500778DB0 /* AERecordExample.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 8BC895521A07930500778DB0 /* AERecordExample.xcdatamodeld */; };
 		8BC895561A07930500778DB0 /* MasterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BC895551A07930500778DB0 /* MasterViewController.swift */; };
@@ -28,6 +32,11 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		8B8FD1D21A0BCC3C009FAE44 /* CustomCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomCollectionViewCell.swift; sourceTree = "<group>"; };
+		8B8FD1D41A0BE171009FAE44 /* LICENSE */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = LICENSE; path = ../LICENSE; sourceTree = "<group>"; };
+		8B8FD1D51A0BE171009FAE44 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; name = README.md; path = ../README.md; sourceTree = "<group>"; };
+		8B975B2A1A098A4800AA3499 /* AERecord.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AERecord.swift; sourceTree = "<group>"; };
+		8B975B2C1A098FAF00AA3499 /* Event.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Event.swift; sourceTree = "<group>"; };
 		8BC8954B1A07930500778DB0 /* AERecordExample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AERecordExample.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		8BC8954F1A07930500778DB0 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		8BC895501A07930500778DB0 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -63,6 +72,7 @@
 		8BC895421A07930500778DB0 = {
 			isa = PBXGroup;
 			children = (
+				8B975B2A1A098A4800AA3499 /* AERecord.swift */,
 				8BC8954D1A07930500778DB0 /* AERecordExample */,
 				8BC895681A07930500778DB0 /* AERecordExampleTests */,
 				8BC8954C1A07930500778DB0 /* Products */,
@@ -84,10 +94,12 @@
 				8BC895501A07930500778DB0 /* AppDelegate.swift */,
 				8BC895551A07930500778DB0 /* MasterViewController.swift */,
 				8BC895571A07930500778DB0 /* DetailViewController.swift */,
+				8B8FD1D21A0BCC3C009FAE44 /* CustomCollectionViewCell.swift */,
 				8BC895591A07930500778DB0 /* Main.storyboard */,
 				8BC8955C1A07930500778DB0 /* Images.xcassets */,
 				8BC8955E1A07930500778DB0 /* LaunchScreen.xib */,
 				8BC895521A07930500778DB0 /* AERecordExample.xcdatamodeld */,
+				8B975B2C1A098FAF00AA3499 /* Event.swift */,
 				8BC8954E1A07930500778DB0 /* Supporting Files */,
 			);
 			path = AERecordExample;
@@ -96,6 +108,8 @@
 		8BC8954E1A07930500778DB0 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				8B8FD1D41A0BE171009FAE44 /* LICENSE */,
+				8B8FD1D51A0BE171009FAE44 /* README.md */,
 				8BC8954F1A07930500778DB0 /* Info.plist */,
 			);
 			name = "Supporting Files";
@@ -200,6 +214,7 @@
 			files = (
 				8BC8955B1A07930500778DB0 /* Main.storyboard in Resources */,
 				8BC895601A07930500778DB0 /* LaunchScreen.xib in Resources */,
+				8B8FD1D61A0BE171009FAE44 /* LICENSE in Resources */,
 				8BC8955D1A07930500778DB0 /* Images.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -218,9 +233,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8B975B2B1A098A4800AA3499 /* AERecord.swift in Sources */,
+				8B8FD1D31A0BCC3C009FAE44 /* CustomCollectionViewCell.swift in Sources */,
 				8BC895511A07930500778DB0 /* AppDelegate.swift in Sources */,
 				8BC895541A07930500778DB0 /* AERecordExample.xcdatamodeld in Sources */,
 				8BC895561A07930500778DB0 /* MasterViewController.swift in Sources */,
+				8B975B2D1A098FAF00AA3499 /* Event.swift in Sources */,
 				8BC895581A07930500778DB0 /* DetailViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -297,7 +315,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
@@ -334,7 +352,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -346,7 +364,9 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				INFOPLIST_FILE = AERecordExample/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
@@ -356,7 +376,9 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				INFOPLIST_FILE = AERecordExample/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
@@ -415,6 +437,7 @@
 				8BC895711A07930500778DB0 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		8BC895721A07930500778DB0 /* Build configuration list for PBXNativeTarget "AERecordExampleTests" */ = {
 			isa = XCConfigurationList;
@@ -423,6 +446,7 @@
 				8BC895741A07930500778DB0 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 
