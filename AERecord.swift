@@ -184,14 +184,14 @@ extension NSManagedObject {
     
     // MARK: Creating
     
-    class func entityName() -> String {
+    class var entityName: String {
         var name = NSStringFromClass(self)
         name = name.componentsSeparatedByString(".").last
         return name
     }
     
     class func create(context: NSManagedObjectContext = AERecord.defaultContext) -> Self {
-        let entityDescription = NSEntityDescription.entityForName(entityName(), inManagedObjectContext: context)
+        let entityDescription = NSEntityDescription.entityForName(entityName, inManagedObjectContext: context)
         let object = self(entity: entityDescription!, insertIntoManagedObjectContext: context)
         return object
     }
@@ -206,7 +206,7 @@ extension NSManagedObject {
     
     class func firstOrCreateWithAttribute(attribute: String, value: AnyObject, context: NSManagedObjectContext = AERecord.defaultContext) -> NSManagedObject {
         let predicate = NSPredicate(format: "%K = %@", attribute, value as NSObject)
-        let request = createFetchRequest(predicate: predicate, context: context)
+        let request = createFetchRequest(predicate: predicate)
         request.fetchLimit = 1
         let objects = executeFetchRequest(request, context: context)
         return objects.first ?? createWithAttributes([attribute : value], context: context)
@@ -245,14 +245,14 @@ extension NSManagedObject {
     // MARK: Finding First
     
     class func first(sortDescriptors: [NSSortDescriptor]? = nil, context: NSManagedObjectContext = AERecord.defaultContext) -> NSManagedObject? {
-        let request = createFetchRequest(sortDescriptors: sortDescriptors, context: context)
+        let request = createFetchRequest(sortDescriptors: sortDescriptors)
         request.fetchLimit = 1
         let objects = executeFetchRequest(request, context: context)
         return objects.first ?? nil
     }
     
     class func firstWithPredicate(predicate: NSPredicate, sortDescriptors: [NSSortDescriptor]? = nil, context: NSManagedObjectContext = AERecord.defaultContext) -> NSManagedObject? {
-        let request = createFetchRequest(predicate: predicate, sortDescriptors: sortDescriptors, context: context)
+        let request = createFetchRequest(predicate: predicate, sortDescriptors: sortDescriptors)
         request.fetchLimit = 1
         let objects = executeFetchRequest(request, context: context)
         return objects.first ?? nil
@@ -271,13 +271,13 @@ extension NSManagedObject {
     // MARK: Finding All
     
     class func all(sortDescriptors: [NSSortDescriptor]? = nil, context: NSManagedObjectContext = AERecord.defaultContext) -> [NSManagedObject]? {
-        let request = createFetchRequest(sortDescriptors: sortDescriptors, context: context)
+        let request = createFetchRequest(sortDescriptors: sortDescriptors)
         let objects = executeFetchRequest(request, context: context)
         return objects.count > 0 ? objects : nil
     }
     
     class func allWithPredicate(predicate: NSPredicate, sortDescriptors: [NSSortDescriptor]? = nil, context: NSManagedObjectContext = AERecord.defaultContext) -> [NSManagedObject]? {
-        let request = createFetchRequest(predicate: predicate, sortDescriptors: sortDescriptors, context: context)
+        let request = createFetchRequest(predicate: predicate, sortDescriptors: sortDescriptors)
         let objects = executeFetchRequest(request, context: context)
         return objects.count > 0 ? objects : nil
     }
@@ -289,10 +289,9 @@ extension NSManagedObject {
     
     // MARK: Query Executor
     
-    class func createFetchRequest(predicate: NSPredicate? = nil, sortDescriptors: [NSSortDescriptor]? = nil, context: NSManagedObjectContext = AERecord.defaultContext) -> NSFetchRequest {
+    class func createFetchRequest(predicate: NSPredicate? = nil, sortDescriptors: [NSSortDescriptor]? = nil) -> NSFetchRequest {
         // create request
-        let name = entityName()
-        let request = NSFetchRequest(entityName: name)
+        let request = NSFetchRequest(entityName: entityName)
         // set request parameters
         request.predicate = predicate
         request.sortDescriptors = sortDescriptors
