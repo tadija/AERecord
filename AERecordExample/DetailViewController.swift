@@ -9,14 +9,21 @@
 import UIKit
 import CoreData
 
+let yellow = UIColor(red: 0.969, green: 0.984, blue: 0.745, alpha: 1)
+let blue = UIColor(red: 0.918, green: 0.969, blue: 0.984, alpha: 1)
+
 class DetailViewController: CoreDataCollectionViewController {
     
     // MARK: - Lifecycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
+
+        // setup UISplitViewController displayMode button
+        navigationItem.leftBarButtonItem = splitViewController?.displayModeButtonItem()
+        navigationItem.leftItemsSupplementBackButton = true
         
-        // setup buttons
+        // setup options button
         let optionsButton = UIBarButtonItem(title: "Options", style: .Plain, target: self, action: "showOptions:")
         self.navigationItem.rightBarButtonItem = optionsButton
 
@@ -83,9 +90,9 @@ class DetailViewController: CoreDataCollectionViewController {
     
     func configureCell(cell: CustomCollectionViewCell, atIndexPath indexPath: NSIndexPath) {
         if let frc = fetchedResultsController {
-            if let object = frc.objectAtIndexPath(indexPath) as? Event {
-                cell.backgroundColor = UIColor(red: 0.918, green: 0.969, blue: 0.984, alpha: 1)
-                cell.textLabel.text = object.timeStamp.description
+            if let event = frc.objectAtIndexPath(indexPath) as? Event {
+                cell.backgroundColor = event.selected ? yellow : blue
+                cell.textLabel.text = event.timeStamp.description
             }
         }
     }
@@ -94,9 +101,14 @@ class DetailViewController: CoreDataCollectionViewController {
         if let cell = collectionView.cellForItemAtIndexPath(indexPath) as? CustomCollectionViewCell {
             // update value
             if let frc = fetchedResultsController {
-                if let object = frc.objectAtIndexPath(indexPath) as? Event {
-                    cell.backgroundColor = UIColor(red: 0.969, green: 0.984, blue: 0.745, alpha: 1)
-                    object.timeStamp = NSDate()
+                if let event = frc.objectAtIndexPath(indexPath) as? Event {
+                    cell.backgroundColor = yellow
+                    // deselect previous / select current
+                    let previous = Event.firstWithAttribute("selected", value: true) as Event
+                    previous.selected = false
+                    event.selected = true
+                    // refresh timestamp
+                    event.timeStamp = NSDate()
                     AERecord.saveContextAndWait()
                 }
             }

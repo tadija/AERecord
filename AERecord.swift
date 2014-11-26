@@ -37,8 +37,20 @@ public class AERecord {
     
     class var persistentStoreCoordinator: NSPersistentStoreCoordinator? { return AEStack.sharedInstance.persistentStoreCoordinator }
     
-    class func setupCoreDataStack(managedObjectModel: NSManagedObjectModel = AEStack.defaultModel, storeType: String = NSSQLiteStoreType, configuration: String? = nil, storeURL: NSURL = AEStack.defaultURL, options: [NSObject : AnyObject]? = nil) -> NSError? {
-        return AEStack.sharedInstance.setupCoreDataStack(managedObjectModel: managedObjectModel, storeType: storeType, configuration: configuration, storeURL: storeURL, options: options)
+    class func storeURLForName(name: String) -> NSURL {
+        return AEStack.storeURLForName(name)
+    }
+    
+    class func loadCoreDataStack(managedObjectModel: NSManagedObjectModel = AEStack.defaultModel, storeType: String = NSSQLiteStoreType, configuration: String? = nil, storeURL: NSURL = AEStack.defaultURL, options: [NSObject : AnyObject]? = nil) -> NSError? {
+        return AEStack.sharedInstance.loadCoreDataStack(managedObjectModel: managedObjectModel, storeType: storeType, configuration: configuration, storeURL: storeURL, options: options)
+    }
+    
+    class func destroyCoreDataStack(storeURL: NSURL = AEStack.defaultURL) {
+        AEStack.sharedInstance.destroyCoreDataStack(storeURL: storeURL)
+    }
+    
+    class func truncateAllData(context: NSManagedObjectContext? = nil) {
+        AEStack.sharedInstance.truncateAllData(context: context)
     }
     
     class func saveContext(context: NSManagedObjectContext? = nil) {
@@ -69,9 +81,7 @@ private class AEStack {
         return NSBundle.mainBundle().bundleIdentifier!
     }
     class var defaultURL: NSURL {
-        let applicationDocumentsDirectory = NSFileManager.defaultManager().URLsForDirectory(.DocumentDirectory, inDomains: .UserDomainMask).last as NSURL
-        let defaultStoreName = bundleIdentifier + ".sqlite"
-        return applicationDocumentsDirectory.URLByAppendingPathComponent(defaultStoreName)
+        return storeURLForName(bundleIdentifier)
     }
     class var defaultModel: NSManagedObjectModel {
         return NSManagedObjectModel.mergedModelFromBundles(nil)!
@@ -81,8 +91,8 @@ private class AEStack {
     
     var managedObjectModel: NSManagedObjectModel?
     var persistentStoreCoordinator: NSPersistentStoreCoordinator?
-    lazy var mainContext: NSManagedObjectContext = NSManagedObjectContext(concurrencyType: .MainQueueConcurrencyType)
-    lazy var backgroundContext: NSManagedObjectContext = NSManagedObjectContext(concurrencyType: .PrivateQueueConcurrencyType)
+    var mainContext: NSManagedObjectContext!
+    var backgroundContext: NSManagedObjectContext!
     var defaultContext: NSManagedObjectContext {
         if NSThread.isMainThread() {
             return mainContext
@@ -93,13 +103,23 @@ private class AEStack {
     
     // MARK: Setup Stack
     
-    func setupCoreDataStack(managedObjectModel: NSManagedObjectModel = defaultModel,
-                            storeType: String = NSSQLiteStoreType,
-                            configuration: String? = nil,
-                            storeURL: NSURL = defaultURL,
-                            options: [NSObject : AnyObject]? = nil) -> NSError?
+    class func storeURLForName(name: String) -> NSURL {
+        let applicationDocumentsDirectory = NSFileManager.defaultManager().URLsForDirectory(.DocumentDirectory, inDomains: .UserDomainMask).last as NSURL
+        let storeName = "\(name).sqlite"
+        return applicationDocumentsDirectory.URLByAppendingPathComponent(storeName)
+    }
+    
+    func loadCoreDataStack(managedObjectModel: NSManagedObjectModel = defaultModel,
+        storeType: String = NSSQLiteStoreType,
+        configuration: String? = nil,
+        storeURL: NSURL = defaultURL,
+        options: [NSObject : AnyObject]? = nil) -> NSError?
     {
         self.managedObjectModel = managedObjectModel
+        
+        // setup main and background contexts
+        mainContext = NSManagedObjectContext(concurrencyType: .MainQueueConcurrencyType)
+        backgroundContext = NSManagedObjectContext(concurrencyType: .PrivateQueueConcurrencyType)
         
         // create the coordinator and store
         persistentStoreCoordinator = NSPersistentStoreCoordinator(managedObjectModel: managedObjectModel)
@@ -121,6 +141,40 @@ private class AEStack {
             }
         } else {
             return NSError(domain: AEStack.bundleIdentifier, code: 2, userInfo: [NSLocalizedDescriptionKey : "Could not create NSPersistentStoreCoordinator from given NSManagedObjectModel."])
+        }
+    }
+    
+    func destroyCoreDataStack(storeURL: NSURL = defaultURL) -> NSError? {
+        // must load this core data stack first
+        loadCoreDataStack(storeURL: storeURL) // because there is no persistentStoreCoordinator if destroyCoreDataStack is called before loadCoreDataStack
+        // also if we're in other stack currently that persistentStoreCoordinator doesn't know about this storeURL
+        stopReceivingContextNotifications() // stop receiving notifications for these contexts
+        // reset contexts
+        mainContext.reset()
+        backgroundContext.reset()
+        // finally, remove persistent store
+        var error: NSError? = nil
+        if let coordinator = persistentStoreCoordinator {
+            if let store = coordinator.persistentStoreForURL(storeURL) {
+                if coordinator.removePersistentStore(store, error: &error) {
+                    NSFileManager.defaultManager().removeItemAtURL(storeURL, error: &error)
+                }
+            }
+        }
+        if error != nil && kAERecordPrintLog {
+            println("Error occured in \(NSStringFromClass(self.dynamicType)) - function: \(__FUNCTION__) | line: \(__LINE__)\n\(error)")
+        }
+        return error ?? nil
+    }
+    
+    func truncateAllData(context: NSManagedObjectContext? = nil) {
+        let moc = context ?? defaultContext
+        if let mom = managedObjectModel {
+            for entity in mom.entities as [NSEntityDescription] {
+                if let entityType = NSClassFromString(entity.managedObjectClassName) as? NSManagedObject.Type {
+                    entityType.deleteAll(context: moc)
+                }
+            }
         }
     }
     
@@ -210,6 +264,19 @@ extension NSManagedObject {
         request.fetchLimit = 1
         let objects = executeFetchRequest(request, context: context)
         return objects.first ?? createWithAttributes([attribute : value], context: context)
+    }
+    
+    class func autoIncrementedIntegerAttribute(attribute: String, context: NSManagedObjectContext = AERecord.defaultContext) -> Int {
+        let sortDescriptor = NSSortDescriptor(key: attribute, ascending: false)
+        if let object = self.first(sortDescriptors: [sortDescriptor], context: context) {
+            if let max = object.valueForKey(attribute) as? Int {
+                return max + 1
+            } else {
+                return 0
+            }
+        } else {
+            return 0
+        }
     }
     
     // MARK: Deleting

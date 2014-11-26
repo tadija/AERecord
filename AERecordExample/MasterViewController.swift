@@ -9,12 +9,20 @@
 import UIKit
 import CoreData
 
-class MasterViewController: CoreDataTableViewController {
+class MasterViewController: CoreDataTableViewController, UISplitViewControllerDelegate {
+    
+    private var collapseDetailViewController = true
 
     // MARK: - Lifecycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        splitViewController?.delegate = self
+        
+        // setup row height
+        tableView.estimatedRowHeight = 44
+        tableView.rowHeight = UITableViewAutomaticDimension
 
         // setup buttons
         self.navigationItem.leftBarButtonItem = self.editButtonItem()
@@ -49,8 +57,16 @@ class MasterViewController: CoreDataTableViewController {
 
     func configureCell(cell: UITableViewCell, atIndexPath indexPath: NSIndexPath) {
         if let frc = fetchedResultsController {
-            if let object = frc.objectAtIndexPath(indexPath) as? Event {
-                cell.textLabel.text = object.timeStamp.description
+            if let event = frc.objectAtIndexPath(indexPath) as? Event {
+                // set data
+                cell.textLabel.text = event.timeStamp.description
+                cell.accessoryType = event.selected ? .Checkmark : .None
+                
+                // set highlight color
+                let highlightColorView = UIView()
+                highlightColorView.backgroundColor = yellow
+                cell.selectedBackgroundView = highlightColorView
+                cell.textLabel.highlightedTextColor = UIColor.darkGrayColor()
             }
         }
     }
@@ -63,11 +79,30 @@ class MasterViewController: CoreDataTableViewController {
     override func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
         if editingStyle == .Delete {
             // delete object
-            if let object = fetchedResultsController?.objectAtIndexPath(indexPath) as? NSManagedObject {
-                object.delete()
+            if let event = fetchedResultsController?.objectAtIndexPath(indexPath) as? NSManagedObject {
+                event.delete()
                 AERecord.saveContext()
             }
         }
+    }
+    
+    override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        // update value
+        if let frc = fetchedResultsController {
+            if let event = frc.objectAtIndexPath(indexPath) as? Event {
+                // deselect previous / select current
+                let previous = Event.firstWithAttribute("selected", value: true) as Event
+                previous.selected = false
+                event.selected = true
+                AERecord.saveContextAndWait()
+            }
+        }
+    }
+    
+    // MARK: - UISplitViewControllerDelegate
+    
+    func splitViewController(splitViewController: UISplitViewController, collapseSecondaryViewController secondaryViewController: UIViewController!, ontoPrimaryViewController primaryViewController: UIViewController!) -> Bool {
+        return collapseDetailViewController
     }
 
 }
