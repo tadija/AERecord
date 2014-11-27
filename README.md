@@ -134,8 +134,10 @@ NSManagedObject.createWithAttributes(attributes) // create new object and sets i
 
 NSManagedObject.firstOrCreateWithAttribute("city", value: "Belgrade") // get existing object or create new (if there's not existing object) with given attribute name and value
 
-NSManagedObject.autoIncrementedIntegerAttribute("autoIncrementedID") // returns next ID for given attribute of Integer type
+NSManagedObject.autoIncrementedIntegerAttribute("myCustomAutoID") // returns next ID for given attribute of Integer type
 ```
+
+HINT: If you need to have auto incremented attribute, just create one with Int type and get next ID with `autoIncrementedIntegerAttribute`.
 
 #### Deleting
 ```swift
