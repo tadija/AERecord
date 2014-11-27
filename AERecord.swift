@@ -161,6 +161,10 @@ private class AEStack {
                 }
             }
         }
+        // reset coordinator and model
+        persistentStoreCoordinator = nil
+        managedObjectModel = nil
+
         if error != nil && kAERecordPrintLog {
             println("Error occured in \(NSStringFromClass(self.dynamicType)) - function: \(__FUNCTION__) | line: \(__LINE__)\n\(error)")
         }
@@ -352,6 +356,68 @@ extension NSManagedObject {
     class func allWithAttribute(attribute: String, value: AnyObject, sortDescriptors: [NSSortDescriptor]? = nil, context: NSManagedObjectContext = AERecord.defaultContext) -> [NSManagedObject]? {
         let predicate = NSPredicate(format: "%K = %@", attribute, value as NSObject)
         return allWithPredicate(predicate!, sortDescriptors: sortDescriptors, context: context)
+    }
+    
+    // MARK: Batch Updating
+    
+    class func batchUpdate(predicate: NSPredicate? = nil, properties: [NSObject : AnyObject]? = nil, resultType: NSBatchUpdateRequestResultType = .StatusOnlyResultType, context: NSManagedObjectContext = AERecord.defaultContext) -> NSBatchUpdateResult? {
+        // create request
+        let request = NSBatchUpdateRequest(entityName: entityName)
+        // set request parameters
+        request.predicate = predicate
+        request.propertiesToUpdate = properties
+        request.resultType = resultType
+        // execute request
+        var batchResult: NSBatchUpdateResult? = nil
+        context.performBlockAndWait { () -> Void in
+            var error: NSError?
+            if let result = context.executeRequest(request, error: &error) as? NSBatchUpdateResult {
+                batchResult = result
+            } else {
+                if kAERecordPrintLog && error != nil {
+                    println("Error occured in \(NSStringFromClass(self.dynamicType)) - function: \(__FUNCTION__) | line: \(__LINE__)\n\(error)")
+                }
+            }
+        }
+        return batchResult
+    }
+    
+    class func objectsCountForBatchUpdate(predicate: NSPredicate? = nil, properties: [NSObject : AnyObject]? = nil, context: NSManagedObjectContext = AERecord.defaultContext) -> Int {
+        if let result = batchUpdate(predicate: predicate, properties: properties, resultType: .UpdatedObjectsCountResultType, context: context) {
+            if let count = result.result as? Int {
+                return count
+            } else {
+                return 0
+            }
+        } else {
+            return 0
+        }
+    }
+    
+    class func batchUpdateAndRefreshObjects(predicate: NSPredicate? = nil, properties: [NSObject : AnyObject]? = nil, context: NSManagedObjectContext = AERecord.defaultContext) {
+        if let result = batchUpdate(predicate: predicate, properties: properties, resultType: .UpdatedObjectIDsResultType, context: context) {
+            if let objectIDS = result.result as? [NSManagedObjectID] {
+                refreshObjects(objectIDS, mergeChanges: true, context: context)
+            }
+        }
+    }
+    
+    class func refreshObjects(objectIDS: [NSManagedObjectID], mergeChanges: Bool, context: NSManagedObjectContext = AERecord.defaultContext) {
+        for objectID in objectIDS {
+            var error: NSError?
+            context.performBlockAndWait({ () -> Void in
+                if let object = context.existingObjectWithID(objectID, error: &error) {
+                    // turn managed objects into faults
+                    if !object.fault {
+                        context.refreshObject(object, mergeChanges: mergeChanges)
+                    }
+                }
+                // log error if any
+                if kAERecordPrintLog && error != nil {
+                    println("Error occured in \(NSStringFromClass(self.dynamicType)) - function: \(__FUNCTION__) | line: \(__LINE__)\n\(error)")
+                }
+            })
+        }
     }
     
     // MARK: Query Executor

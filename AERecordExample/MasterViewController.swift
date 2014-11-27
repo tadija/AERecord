@@ -91,8 +91,9 @@ class MasterViewController: CoreDataTableViewController, UISplitViewControllerDe
         if let frc = fetchedResultsController {
             if let event = frc.objectAtIndexPath(indexPath) as? Event {
                 // deselect previous / select current
-                let previous = Event.firstWithAttribute("selected", value: true) as Event
-                previous.selected = false
+                if let previous = Event.firstWithAttribute("selected", value: true) as? Event {
+                    previous.selected = false
+                }
                 event.selected = true
                 AERecord.saveContextAndWait()
             }

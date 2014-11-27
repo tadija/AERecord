@@ -53,12 +53,22 @@ class DetailViewController: CoreDataCollectionViewController {
         }
         
         let updateAllAction = UIAlertAction(title: "Update All", style: .Default) { (action) -> Void in
-            // update all objects
-            if let events = Event.all() as? [Event] {
-                for e in events {
-                    e.timeStamp = NSDate()
+            if NSProcessInfo.instancesRespondToSelector("isOperatingSystemAtLeastVersion:") {
+                // >= iOS 8
+                // batch update all objects (directly in persistent store) then refresh objects in context
+                Event.batchUpdateAndRefreshObjects(properties: ["timeStamp" : NSDate()])
+                // note that if using NSFetchedResultsController you have to call performFetch after batch updating
+                self.performFetch()
+            } else {
+                // < iOS 8
+                println("Batch updating is new in iOS 8.")
+                // update all objects through context
+                if let events = Event.all() as? [Event] {
+                    for e in events {
+                        e.timeStamp = NSDate()
+                    }
+                    AERecord.saveContextAndWait()
                 }
-                AERecord.saveContextAndWait()
             }
         }
         
@@ -103,11 +113,13 @@ class DetailViewController: CoreDataCollectionViewController {
             if let frc = fetchedResultsController {
                 if let event = frc.objectAtIndexPath(indexPath) as? Event {
                     cell.backgroundColor = yellow
-                    // deselect previous / select current
-                    let previous = Event.firstWithAttribute("selected", value: true) as Event
-                    previous.selected = false
+                    // deselect previous
+                    if let previous = Event.firstWithAttribute("selected", value: true) as? Event {
+                        previous.selected = false
+                        AERecord.saveContextAndWait()
+                    }
+                    // select current and refresh timestamp
                     event.selected = true
-                    // refresh timestamp
                     event.timeStamp = NSDate()
                     AERecord.saveContextAndWait()
                 }
