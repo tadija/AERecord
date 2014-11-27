@@ -1,8 +1,8 @@
 # AERecord
-**Super awesome CoreData wrapper written in Swift**
+**Super awesome Core Data wrapper for iOS written in Swift**
 
 
-Why do we need yet another one CoreData wrapper? You tell me!
+Why do we need yet another one Core Data wrapper? You tell me!
 
 >Inspired by many different (spoiler alert) magical solutions,
 I needed something which combines complexity and functionality just the way I want.
@@ -10,13 +10,12 @@ All of that boilerplate for setting up of CoreData stack can be packed in
 one reusable and customizible line of code, and it should be.
 Passing the right `NSManagedObjectContext` all accross the project, 
 worrying about threads and stuff, shouldn't really be my concern in every single project.
-And what about that similar `NSFetchRequest` boilerplates for querying or creating of data? Boring!
-Finally when it comes to connecting your data with the tableView, 
-we know that the best approach is to use `NSFetchedResultsController`,
-but `CoreDataTableViewController` wrapper from [Stanford's CS193p](http://www.stanford.edu/class/cs193p/cgi-bin/drupal/downloads-2013-winter) is the best thing ever,
+And what about that similar `NSFetchRequest` boilerplates for querying or creating of data? So boring.
+Finally when it comes to connecting your data with the tableView, the best approach is to use `NSFetchedResultsController`,
+and `CoreDataTableViewController` wrapper from [Stanford's CS193p](http://www.stanford.edu/class/cs193p/cgi-bin/drupal/downloads-2013-winter) is the best thing ever,
 I don't know why everybody doesn't use that everywhere.
 I liked it so much that I made `CoreDataCollectionViewController` in the same fashion.  
-So, `AERecord` should solve all of these for me, I hope you will like it too.
+So, `AERecord` should solve all of these problems for me, I hope you will like it too.
 
 
 **AERecord** is a [minion](http://tadija.net/public/minion.png) which consists of these classes / extensions:  
@@ -26,22 +25,22 @@ Class | Description
 `AERecord` | main public class
 `AEStack` | private class which takes care of stack
 `NSManagedObject extension` | super easy data querying
-`CoreDataTableViewController` | CoreData driven UITableViewController
-`CoreDataCollectionViewController` | CoreData driven UICollectionViewController
+`CoreDataTableViewController` | Core Data driven UITableViewController
+`CoreDataCollectionViewController` | Core Data driven UICollectionViewController
 
 
 ## Features
-- Create default or custom CoreData stack easily accessible from everywhere
+- Create default or custom Core Data stack (or more stacks) easily accessible from everywhere
 - Have main and background contexts, always in sync, but don't worry about it
-- Create, delete or fetch data in many ways with one liners
-- Connect UI (tableView or collectionView) with CoreData, and just manage the data
+- Create, delete or find data in many ways with one liners
+- Connect UI (tableView or collectionView) with Core Data, and just manage the data
 - That's all folks (for now)
 
 
 ## Index
 - [Examples](#examples)
   - [About AERecordExample project](#about-aerecordexample-project)
-  - [Create CoreData stack](#create-coredata-stack)
+  - [Create Core Data stack](#create-core-data-stack)
   - [Manage contexts](#manage-contexts)
   - [Easy querying](#easy-querying)
   	- [Creating](#creating)
@@ -49,8 +48,8 @@ Class | Description
   	- [Finding first](#finding-first)
   	- [Finding all](#finding-all)
   	- [Custom fetch requests](#custom-fetch-requests)
-  - [Use CoreData with tableView](#use-coredata-with-tableview)
-  - [Use CoreData with collectionView](#use-coredata-with-collectionview)
+  - [Use Core Data with tableView](#use-core-data-with-tableview)
+  - [Use Core Data with collectionView](#use-core-data-with-collectionview)
 - [API](#api)
   - [AERecord](#aerecord-class)
   - [NSManagedObject extension](#nsmanagedobject-extension)
@@ -64,18 +63,17 @@ Class | Description
 ## Examples
 
 ### About AERecordExample project
-This project is made of default Master-Detail Application template with CoreData enabled,
-but modified to show off some of the `AERecord` features such as creating of CoreData stack,
+This project is made of default Master-Detail Application template with Core Data enabled,
+but modified to show off some of the `AERecord` features such as creating of Core Data stack,
 using data driven tableView and collectionView, along with few simple querying.  
 I mean, just compare it with the default template and think about that.
 
-### Create CoreData stack
-Almost everything in `AERecord` is made with optional parameters (not like Swift optionals, 
-but like parameters which have defaults if you don't specify anything).
-So you can create CoreData stack like this:
+### Create Core Data stack
+Almost everything in `AERecord` is made with optional parameters (which have defaults if you don't specify anything).
+So you can load (create if doesn't already exists) CoreData stack like this:
 
 ```swift
-AERecord.setupCoreDataStack()
+AERecord.loadCoreDataStack()
 ```
 
 or like this:
@@ -84,12 +82,27 @@ or like this:
 let myModel: NSManagedObjectModel = ...
 let myStoreType = NSInMemoryStoreType
 let myConfiguration = ...
-let myStoreURL = ...
+let myStoreURL = AERecord.storeURLForName("MyName")
 let myOptions = [NSMigratePersistentStoresAutomaticallyOption : true]
-AERecord.setupCoreDataStack(managedObjectModel: myModel, storeType: myStoreType, configuration: myConfiguration, storeURL: myStoreURL, options: myOptions)
+AERecord.loadCoreDataStack(managedObjectModel: myModel, storeType: myStoreType, configuration: myConfiguration, storeURL: myStoreURL, options: myOptions)
 ```
 
 or any combination of these.
+
+If for any reason you want to completely remove your stack and start over (separate demo data stack for example) you can do it as simple as this:
+
+```swift
+AERecord.destroyCoreDataStack() // destroy deafult stack
+
+let demoStoreURL = AERecord.storeURLForName("Demo")
+AERecord.destroyCoreDataStack(storeURL: demoStoreURL) // destroy custom stack
+```
+
+Similarly you can delete all data from all entities (without messing with the stack) like this:
+
+```swift
+AERecord.truncateAllData()
+```
 
 ### Manage contexts
 
@@ -118,6 +131,8 @@ let attributes = ...
 NSManagedObject.createWithAttributes(attributes) // create new object and sets it's attributes
 
 NSManagedObject.firstOrCreateWithAttribute("city", value: "Belgrade") // get existing object or create new (if there's not existing object) with given attribute name and value
+
+NSManagedObject.autoIncrementedIntegerAttribute("autoIncrementedID") // returns next ID for given attribute of Integer type
 ```
 
 #### Deleting
@@ -168,7 +183,7 @@ let request = ...
 NSManagedObject.executeFetchRequest(request) // execute any request and get array of objects
 ```
 
-### Use CoreData with tableView
+### Use Core Data with tableView
 `CoreDataTableViewController` mostly just copies the code from `NSFetchedResultsController`
 documentation page into a subclass of UITableViewController.
 
@@ -210,7 +225,7 @@ class MyTableViewController: CoreDataTableViewController {
 }
 ```
 
-### Use CoreData with collectionView
+### Use Core Data with collectionView
 Same as with the tableView.
 
 
@@ -228,7 +243,10 @@ Property | Description
 
 Setup Stack | Description
 ------------ | -------------
-`class func setupCoreDataStack(managedObjectModel: NSManagedObjectModel = AEStack.defaultModel, storeType: String = NSSQLiteStoreType, configuration: String? = nil, storeURL: NSURL = AEStack.defaultURL, options: [NSObject : AnyObject]? = nil) -> NSError?` | You need to do this only once. `AEStack.defaultModel` is `NSManagedObjectModel.mergedModelFromBundles(nil)!` and `AEStack.defaultURL` is `bundleIdentifier + ".sqlite"` in `applicationDocumentsDirectory`.
+`class func storeURLForName(name: String) -> NSURL` | get complete URL for store with given name (in Application Documents Directory)
+`class func loadCoreDataStack(managedObjectModel: NSManagedObjectModel = AEStack.defaultModel, storeType: String = NSSQLiteStoreType, configuration: String? = nil, storeURL: NSURL = AEStack.defaultURL, options: [NSObject : AnyObject]? = nil) -> NSError?` | You need to do this only once. `AEStack.defaultModel` is `NSManagedObjectModel.mergedModelFromBundles(nil)!` and `AEStack.defaultURL` is `bundleIdentifier + ".sqlite"` in `applicationDocumentsDirectory`.
+`class func destroyCoreDataStack(storeURL: NSURL = AEStack.defaultURL)` | stop notifications, reset contexts, remove persistent store and delete .sqlite file.
+`class func truncateAllData(context: NSManagedObjectContext? = nil)` | delete all data from all entities contained in the model
 
 Save Context | Description
 ------------ | -------------
@@ -248,6 +266,7 @@ Creating | Description
 `class func create(context: NSManagedObjectContext = AERecord.defaultContext) -> Self` | create new object
 `class func createWithAttributes(attributes: [NSObject : AnyObject], context: NSManagedObjectContext = AERecord.defaultContext) -> Self` | create new object and sets it's attributes
 `class func firstOrCreateWithAttribute(attribute: String, value: AnyObject, context: NSManagedObjectContext = AERecord.defaultContext) -> NSManagedObject` | get existing object or create new (if there's not existing object) with given attribute name and value
+`class func autoIncrementedIntegerAttribute(attribute: String, context: NSManagedObjectContext = AERecord.defaultContext) -> Int` | get next ID for given attribute of Integer type
 
 Deleting | Description
 ------------ | -------------
