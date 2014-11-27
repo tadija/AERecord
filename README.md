@@ -32,7 +32,8 @@ Class | Description
 ## Features
 - Create default or custom Core Data stack (or more stacks) easily accessible from everywhere
 - Have main and background contexts, always in sync, but don't worry about it
-- Create, delete or find data in many ways with one liners
+- Create, find or delete data in many ways with one liners
+- Batch updating directly in persistent store by using `NSBatchUpdateRequest` (new from iOS 8)
 - Connect UI (tableView or collectionView) with Core Data, and just manage the data
 - That's all folks (for now)
 
@@ -47,6 +48,7 @@ Class | Description
   	- [Deleting](#deleting)
   	- [Finding first](#finding-first)
   	- [Finding all](#finding-all)
+  	- [Batch updating](#batch-updating)
   	- [Custom fetch requests](#custom-fetch-requests)
   - [Use Core Data with tableView](#use-core-data-with-tableview)
   - [Use Core Data with collectionView](#use-core-data-with-collectionview)
@@ -170,6 +172,21 @@ NSManagedObject.allWithPredicate(predicate) // get all objects with predicate
 NSManagedObject.allWithAttribute("year", value: 1984) // get all objects with given attribute name and value
 ```
 
+#### Batch updating
+
+Batch updating is the new option in iOS 8. It's doing stuff directly in persistent store, so be carefull with this and read the docs first.
+
+```swift
+NSManagedObject.batchUpdate(properties: ["timeStamp" : NSDate()]) // returns NSBatchUpdateResult?
+
+NSManagedObject.objectsCountForBatchUpdate(properties: ["timeStamp" : NSDate()]) // returns count of updated objects
+
+NSManagedObject.batchUpdateAndRefreshObjects(properties: ["timeStamp" : NSDate()]) // turns updated objects into faults after updating them in persistent store
+
+let objectIDS = ...
+NSManagedObject.refreshObjects(objectIDS, mergeChanges: true) // turns given objects into faults (this is used in batchUpdateAndRefreshObjects)
+```
+
 #### Custom fetch requests
 If you need to execute custom `NSFetchRequest` you can use this to create some request, 
 tweak it as you wish and finally execute.
@@ -287,6 +304,13 @@ Finding all | Description
 `class func all(sortDescriptors: [NSSortDescriptor]? = nil, context: NSManagedObjectContext = AERecord.defaultContext) -> [NSManagedObject]?` | get all objects
 `class func allWithPredicate(predicate: NSPredicate, sortDescriptors: [NSSortDescriptor]? = nil, context: NSManagedObjectContext = AERecord.defaultContext) -> [NSManagedObject]?` | get all objects with predicate
 `class func allWithAttribute(attribute: String, value: AnyObject, sortDescriptors: [NSSortDescriptor]? = nil, context: NSManagedObjectContext = AERecord.defaultContext) -> [NSManagedObject]?` | get all objects with given attribute name and value
+
+Batch updating | Description
+------------ | -------------
+`class func batchUpdate(predicate: NSPredicate? = nil, properties: [NSObject : AnyObject]? = nil, resultType: NSBatchUpdateRequestResultType = .StatusOnlyResultType, context: NSManagedObjectContext = AERecord.defaultContext) -> NSBatchUpdateResult?` | update data directly in persistent store with `NSBatchUpdateRequest` and return `NSBatchUpdateResult`
+`class func objectsCountForBatchUpdate(predicate: NSPredicate? = nil, properties: [NSObject : AnyObject]? = nil, context: NSManagedObjectContext = AERecord.defaultContext) -> Int` | update data directly in persistent store with `NSBatchUpdateRequest` and return count of updated objects
+`class func batchUpdateAndRefreshObjects(predicate: NSPredicate? = nil, properties: [NSObject : AnyObject]? = nil, context: NSManagedObjectContext = AERecord.defaultContext)` | update data directly in persistent store with `NSBatchUpdateRequest` and turn updated objects into faults (by using `refreshObjects`) after that
+`class func refreshObjects(objectIDS: [NSManagedObjectID], mergeChanges: Bool, context: NSManagedObjectContext = AERecord.defaultContext)` | turn objects into faults (refresh in context) for given array of `NSManagedObjectID`
 
 Custom fetch requests | Description
 ------------ | -------------
