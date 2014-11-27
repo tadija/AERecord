@@ -124,13 +124,18 @@ private class AEStack {
         // create the coordinator and store
         persistentStoreCoordinator = NSPersistentStoreCoordinator(managedObjectModel: managedObjectModel)
         if let coordinator = persistentStoreCoordinator {
-            var error: NSError? = nil
+            var error: NSError?
             if coordinator.addPersistentStoreWithType(storeType, configuration: configuration, URL: storeURL, options: options, error: &error) == nil {
                 let dict = NSMutableDictionary()
                 dict[NSLocalizedDescriptionKey] = "Failed to initialize the application's saved data"
                 dict[NSLocalizedFailureReasonErrorKey] = "There was an error creating or loading the application's saved data."
                 dict[NSUnderlyingErrorKey] = error
                 error = NSError(domain: AEStack.bundleIdentifier, code: 1, userInfo: dict)
+                if let err = error {
+                    if kAERecordPrintLog {
+                        println("Error occured in \(NSStringFromClass(self.dynamicType)) - function: \(__FUNCTION__) | line: \(__LINE__)\n\(err)")
+                    }
+                }
                 return error
             } else {
                 // everything went ok
@@ -153,7 +158,7 @@ private class AEStack {
         mainContext.reset()
         backgroundContext.reset()
         // finally, remove persistent store
-        var error: NSError? = nil
+        var error: NSError?
         if let coordinator = persistentStoreCoordinator {
             if let store = coordinator.persistentStoreForURL(storeURL) {
                 if coordinator.removePersistentStore(store, error: &error) {
@@ -165,8 +170,10 @@ private class AEStack {
         persistentStoreCoordinator = nil
         managedObjectModel = nil
 
-        if error != nil && kAERecordPrintLog {
-            println("Error occured in \(NSStringFromClass(self.dynamicType)) - function: \(__FUNCTION__) | line: \(__LINE__)\n\(error)")
+        if let err = error {
+            if kAERecordPrintLog {
+                println("Error occured in \(NSStringFromClass(self.dynamicType)) - function: \(__FUNCTION__) | line: \(__LINE__)\n\(err)")
+            }
         }
         return error ?? nil
     }
@@ -194,10 +201,12 @@ private class AEStack {
     func saveContext(context: NSManagedObjectContext? = nil) {
         let moc = context ?? defaultContext
         moc.performBlock { () -> Void in
-            var error: NSError? = nil
+            var error: NSError?
             if moc.hasChanges && !moc.save(&error) {
-                if kAERecordPrintLog {
-                    println("Error occured in \(NSStringFromClass(self.dynamicType)) - function: \(__FUNCTION__) | line: \(__LINE__)\n\(error)")
+                if let err = error {
+                    if kAERecordPrintLog {
+                        println("Error occured in \(NSStringFromClass(self.dynamicType)) - function: \(__FUNCTION__) | line: \(__LINE__)\n\(err)")
+                    }
                 }
             }
         }
@@ -206,10 +215,12 @@ private class AEStack {
     func saveContextAndWait(context: NSManagedObjectContext? = nil) {
         let moc = context ?? defaultContext
         moc.performBlockAndWait { () -> Void in
-            var error: NSError? = nil
+            var error: NSError?
             if moc.hasChanges && !moc.save(&error) {
-                if kAERecordPrintLog {
-                    println("Error occured in \(NSStringFromClass(self.dynamicType)) - function: \(__FUNCTION__) | line: \(__LINE__)\n\(error)")
+                if let err = error {
+                    if kAERecordPrintLog {
+                        println("Error occured in \(NSStringFromClass(self.dynamicType)) - function: \(__FUNCTION__) | line: \(__LINE__)\n\(err)")
+                    }
                 }
             }
         }
@@ -373,9 +384,10 @@ extension NSManagedObject {
             var error: NSError?
             if let result = context.executeRequest(request, error: &error) as? NSBatchUpdateResult {
                 batchResult = result
-            } else {
-                if kAERecordPrintLog && error != nil {
-                    println("Error occured in \(NSStringFromClass(self.dynamicType)) - function: \(__FUNCTION__) | line: \(__LINE__)\n\(error)")
+            }
+            if let err = error {
+                if kAERecordPrintLog {
+                    println("Error occured in \(NSStringFromClass(self.dynamicType)) - function: \(__FUNCTION__) | line: \(__LINE__)\n\(err)")
                 }
             }
         }
@@ -412,9 +424,10 @@ extension NSManagedObject {
                         context.refreshObject(object, mergeChanges: mergeChanges)
                     }
                 }
-                // log error if any
-                if kAERecordPrintLog && error != nil {
-                    println("Error occured in \(NSStringFromClass(self.dynamicType)) - function: \(__FUNCTION__) | line: \(__LINE__)\n\(error)")
+                if let err = error {
+                    if kAERecordPrintLog {
+                        println("Error occured in \(NSStringFromClass(self.dynamicType)) - function: \(__FUNCTION__) | line: \(__LINE__)\n\(err)")
+                    }
                 }
             })
         }
@@ -437,9 +450,10 @@ extension NSManagedObject {
             var error: NSError?
             if let result = context.executeFetchRequest(request, error: &error) {
                 fetchedObjects = result as [NSManagedObject]
-            } else {
+            }
+            if let err = error {
                 if kAERecordPrintLog {
-                    println("Error occured in \(NSStringFromClass(self.dynamicType)) - function: \(__FUNCTION__) | line: \(__LINE__)\n\(error)")
+                    println("Error occured in \(NSStringFromClass(self.dynamicType)) - function: \(__FUNCTION__) | line: \(__LINE__)\n\(err)")
                 }
             }
         }
@@ -490,8 +504,10 @@ class CoreDataTableViewController: UITableViewController, NSFetchedResultsContro
         if let frc = fetchedResultsController {
             var error: NSError?
             if !frc.performFetch(&error) {
-                if kAERecordPrintLog {
-                    println("Error occured in \(NSStringFromClass(self.dynamicType)) - function: \(__FUNCTION__) | line: \(__LINE__)\n\(error)")
+                if let err = error {
+                    if kAERecordPrintLog {
+                        println("Error occured in \(NSStringFromClass(self.dynamicType)) - function: \(__FUNCTION__) | line: \(__LINE__)\n\(err)")
+                    }
                 }
             }
             tableView.reloadData()
@@ -640,8 +656,10 @@ class CoreDataCollectionViewController: UICollectionViewController, NSFetchedRes
         if let frc = fetchedResultsController {
             var error: NSError?
             if !frc.performFetch(&error) {
-                if kAERecordPrintLog {
-                    println("Error occured in \(NSStringFromClass(self.dynamicType)) - function: \(__FUNCTION__) | line: \(__LINE__)\n\(error)")
+                if let err = error {
+                    if kAERecordPrintLog {
+                        println("Error occured in \(NSStringFromClass(self.dynamicType)) - function: \(__FUNCTION__) | line: \(__LINE__)\n\(err)")
+                    }
                 }
             }
             collectionView.reloadData()
