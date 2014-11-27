@@ -10,7 +10,7 @@ All of that boilerplate for setting up of CoreData stack can be packed in
 one reusable and customizible line of code, and it should be.
 Passing the right `NSManagedObjectContext` all accross the project, 
 worrying about threads and stuff, shouldn't really be my concern in every single project.
-And what about that similar `NSFetchRequest` boilerplates for querying or creating of data? So boring.
+And what about that similar `NSFetchRequest` boilerplates for querying or creating of data? So boring.  
 Finally when it comes to connecting your data with the tableView, the best approach is to use `NSFetchedResultsController`,
 and `CoreDataTableViewController` wrapper from [Stanford's CS193p](http://www.stanford.edu/class/cs193p/cgi-bin/drupal/downloads-2013-winter) is the best thing ever,
 I don't know why everybody doesn't use that everywhere.
