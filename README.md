@@ -33,7 +33,7 @@ Class | Description
 - Create default or custom Core Data stack (or more stacks) easily accessible from everywhere
 - Have main and background contexts, always in sync, but don't worry about it
 - Create, find or delete data in many ways with one liners
-- Batch updating directly in persistent store by using `NSBatchUpdateRequest` (new from iOS 8)
+- Batch updating directly in persistent store by using `NSBatchUpdateRequest` (new in iOS 8)
 - Connect UI (tableView or collectionView) with Core Data, and just manage the data
 - That's all folks (for now)
 
@@ -174,7 +174,7 @@ NSManagedObject.allWithAttribute("year", value: 1984) // get all objects with gi
 
 #### Batch updating
 
-Batch updating is the new option in iOS 8. It's doing stuff directly in persistent store, so be carefull with this and read the docs first.
+Batch updating is the new feature in iOS 8. It's doing stuff directly in persistent store, so be carefull with this and read the docs first. Btw, `NSPredicate` is also optional parameter here.
 
 ```swift
 NSManagedObject.batchUpdate(properties: ["timeStamp" : NSDate()]) // returns NSBatchUpdateResult?
