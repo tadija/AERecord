@@ -131,8 +131,7 @@ All queries are called on NSManagedObject (or it's subclass), and defaultContext
 All finders have optional parameter for `NSSortDescriptor` which is not used in these examples.
 
 #### General
-`class var entityName: String` is used across all other functions to reference custom `NSManagedObject` subclass. It must return correct class name. You may override this property in your custom `NSManagedObject` subclass if needed (but it should work out of the box generally).  
-With that in order, if you need custom `NSFetchRequest`, you can use `createFetchRequest`, tweak it as you wish and execute with `AERecord`.
+If you need custom `NSFetchRequest`, you can use `createFetchRequest`, tweak it as you wish and execute with `AERecord`.
 
 ```swift
 // create request for any entity type
@@ -147,7 +146,7 @@ request.something = something
 let managedObjects = AERecord.executeFetchRequest(request)
 ```
 
-Of course, all of the often needed requests for creating, finding or deleting entities are already ready to be used, so just keep reading.
+Of course, all of the often needed requests for creating, finding or deleting entities are already there, so just keep reading.
 
 #### Creating
 ```swift
@@ -280,7 +279,11 @@ Setup Stack | Description
 `class func destroyCoreDataStack(storeURL: NSURL = AEStack.defaultURL)` | stop notifications, reset contexts, remove persistent store and delete .sqlite file.
 `class func truncateAllData(context: NSManagedObjectContext? = nil)` | delete all data from all entities contained in the model
 
-Save Context | Description
+Context Execute | Description
+------------ | -------------
+`class func executeFetchRequest(request: NSFetchRequest, context: NSManagedObjectContext? = nil) -> [NSManagedObject]` | execute given fetch request (if not specified `defaultContext` is used)
+
+Context Save | Description
 ------------ | -------------
 `class func saveContext(context: NSManagedObjectContext? = nil)` | save context (if not specified `defaultContext` is used)
 `class func saveContextAndWait(context: NSManagedObjectContext? = nil)` | save context and wait for save to finish (if not specified `defaultContext` is used)
@@ -289,16 +292,16 @@ Save Context | Description
 ### NSManagedObject extension
 `extension NSManagedObject`
 
-Property | Description
+General | Description
 ------------ | -------------
-`class var entityName: String` | entity name
+`class var entityName: String` | used all across these helpers to reference custom `NSManagedObject` subclass. It must return correct entity name. You may override this property in your custom `NSManagedObject` subclass if needed (but it should work out of the box generally).
+`class func createFetchRequest(predicate: NSPredicate? = nil, sortDescriptors: [NSSortDescriptor]? = nil) -> NSFetchRequest` | create fetch request for any entity type
 
 Creating | Description
 ------------ | -------------
 `class func create(context: NSManagedObjectContext = AERecord.defaultContext) -> Self` | create new object
 `class func createWithAttributes(attributes: [NSObject : AnyObject], context: NSManagedObjectContext = AERecord.defaultContext) -> Self` | create new object and sets it's attributes
 `class func firstOrCreateWithAttribute(attribute: String, value: AnyObject, context: NSManagedObjectContext = AERecord.defaultContext) -> NSManagedObject` | get existing object or create new (if there's not existing object) with given attribute name and value
-`class func autoIncrementedIntegerAttribute(attribute: String, context: NSManagedObjectContext = AERecord.defaultContext) -> Int` | get next ID for given attribute of Integer type
 
 Deleting | Description
 ------------ | -------------
@@ -320,17 +323,16 @@ Finding all | Description
 `class func allWithPredicate(predicate: NSPredicate, sortDescriptors: [NSSortDescriptor]? = nil, context: NSManagedObjectContext = AERecord.defaultContext) -> [NSManagedObject]?` | get all objects with predicate
 `class func allWithAttribute(attribute: String, value: AnyObject, sortDescriptors: [NSSortDescriptor]? = nil, context: NSManagedObjectContext = AERecord.defaultContext) -> [NSManagedObject]?` | get all objects with given attribute name and value
 
+Auto increment | Description
+------------ | -------------
+`class func autoIncrementedIntegerAttribute(attribute: String, context: NSManagedObjectContext = AERecord.defaultContext) -> Int` | get next ID for given attribute of Integer type
+
 Batch updating | Description
 ------------ | -------------
 `class func batchUpdate(predicate: NSPredicate? = nil, properties: [NSObject : AnyObject]? = nil, resultType: NSBatchUpdateRequestResultType = .StatusOnlyResultType, context: NSManagedObjectContext = AERecord.defaultContext) -> NSBatchUpdateResult?` | update data directly in persistent store with `NSBatchUpdateRequest` and return `NSBatchUpdateResult`
 `class func objectsCountForBatchUpdate(predicate: NSPredicate? = nil, properties: [NSObject : AnyObject]? = nil, context: NSManagedObjectContext = AERecord.defaultContext) -> Int` | update data directly in persistent store with `NSBatchUpdateRequest` and return count of updated objects
 `class func batchUpdateAndRefreshObjects(predicate: NSPredicate? = nil, properties: [NSObject : AnyObject]? = nil, context: NSManagedObjectContext = AERecord.defaultContext)` | update data directly in persistent store with `NSBatchUpdateRequest` and turn updated objects into faults (by using `refreshObjects`) after that
 `class func refreshObjects(objectIDS: [NSManagedObjectID], mergeChanges: Bool, context: NSManagedObjectContext = AERecord.defaultContext)` | turn objects into faults (refresh in context) for given array of `NSManagedObjectID`
-
-Custom fetch requests | Description
------------- | -------------
-`class func createFetchRequest(predicate: NSPredicate? = nil, sortDescriptors: [NSSortDescriptor]? = nil) -> NSFetchRequest` | get request for entity
-`class func executeFetchRequest(request: NSFetchRequest, context: NSManagedObjectContext = AERecord.defaultContext) -> [NSManagedObject]` | execute any request and get array of objects
 
 
 ### CoreDataTableViewController
