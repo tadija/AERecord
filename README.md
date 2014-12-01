@@ -42,14 +42,15 @@ Class | Description
 - [Examples](#examples)
   - [About AERecordExample project](#about-aerecordexample-project)
   - [Create Core Data stack](#create-core-data-stack)
-  - [Manage contexts](#manage-contexts)
+  - [Context operations](#context-operations)
   - [Easy querying](#easy-querying)
+  	- [General](#general)
   	- [Creating](#creating)
   	- [Deleting](#deleting)
   	- [Finding first](#finding-first)
   	- [Finding all](#finding-all)
+  	- [Auto increment](#auto-increment)
   	- [Batch updating](#batch-updating)
-  	- [Custom fetch requests](#custom-fetch-requests)
   - [Use Core Data with tableView](#use-core-data-with-tableview)
   - [Use Core Data with collectionView](#use-core-data-with-collectionview)
 - [API](#api)
@@ -72,7 +73,7 @@ I mean, just compare it with the default template and think about that.
 
 ### Create Core Data stack
 Almost everything in `AERecord` is made with optional parameters (which have defaults if you don't specify anything).
-So you can load (create if doesn't already exists) CoreData stack like this:
+So you can load (create if doesn't already exist) CoreData stack like this:
 
 ```swift
 AERecord.loadCoreDataStack()
@@ -106,24 +107,47 @@ Similarly you can delete all data from all entities (without messing with the st
 AERecord.truncateAllData()
 ```
 
-### Manage contexts
+### Context operations
+Context for current thread (defaultContext) is used if you don't specify any (all examples below are using defaultContext).
 
 ```swift
+// get context
 AERecord.mainContext // get NSManagedObjectContext for main thread
 AERecord.backgroundContext // get NSManagedObjectContext for background thread
 AERecord.defaultContext // get NSManagedObjectContext for current thread
 
-AERecord.saveContext() // save default context
-AERecord.saveContext(context: myContext) // save specific context
+// execute NSFetchRequest
+let request = ...
+let managedObjects = AERecord.executeFetchRequest(request) // returns array of objects
 
+// save context
+AERecord.saveContext() // save default context
 AERecord.saveContextAndWait() // save default context and wait for save to finish
-AERecord.saveContextAndWait(context: myContext) // save specific context and wait for save to finish
 ```
 
 ### Easy querying
-All queries are called on NSManagedObject (or it's subclass), 
-and defaultContext is used if you don't specify any (all examples below are using defaultContext).
+Easy querying helpers are created as NSManagedObject extension.  
+All queries are called on NSManagedObject (or it's subclass), and defaultContext is used if you don't specify any (all examples below are using defaultContext).  
 All finders have optional parameter for `NSSortDescriptor` which is not used in these examples.
+
+#### General
+`class var entityName: String` is used across all other functions to reference custom `NSManagedObject` subclass. It must return correct class name. You may override this property in your custom `NSManagedObject` subclass if needed (but it should work out of the box generally).  
+With that in order, if you need custom `NSFetchRequest`, you can use `createFetchRequest`, tweak it as you wish and execute with `AERecord`.
+
+```swift
+// create request for any entity type
+let predicate = ...
+let sortDescriptors = ...
+let request = NSManagedObject.createFetchRequest(predicate: predicate, sortDescriptors: sortDescriptors)
+
+// set some custom request properties
+request.something = something
+
+// execute request and get array of entity objects
+let managedObjects = AERecord.executeFetchRequest(request)
+```
+
+Of course, all of the often needed requests for creating, finding or deleting entities are already ready to be used, so just keep reading.
 
 #### Creating
 ```swift
@@ -133,11 +157,7 @@ let attributes = ...
 NSManagedObject.createWithAttributes(attributes) // create new object and sets it's attributes
 
 NSManagedObject.firstOrCreateWithAttribute("city", value: "Belgrade") // get existing object or create new (if there's not existing object) with given attribute name and value
-
-NSManagedObject.autoIncrementedIntegerAttribute("myCustomAutoID") // returns next ID for given attribute of Integer type
 ```
-
-HINT: If you need to have auto incremented attribute, just create one with Int type and get next ID with `autoIncrementedIntegerAttribute`.
 
 #### Deleting
 ```swift
@@ -174,8 +194,14 @@ NSManagedObject.allWithPredicate(predicate) // get all objects with predicate
 NSManagedObject.allWithAttribute("year", value: 1984) // get all objects with given attribute name and value
 ```
 
-#### Batch updating
+#### Auto Increment
+If you need to have auto incremented attribute, just create one with Int type and get next ID like this:
 
+```swift
+NSManagedObject.autoIncrementedIntegerAttribute("myCustomAutoID") // returns next ID for given attribute of Integer type
+```
+
+#### Batch updating
 Batch updating is the new feature in iOS 8. It's doing stuff directly in persistent store, so be carefull with this and read the docs first. Btw, `NSPredicate` is also optional parameter here.
 
 ```swift
@@ -187,19 +213,6 @@ NSManagedObject.batchUpdateAndRefreshObjects(properties: ["timeStamp" : NSDate()
 
 let objectIDS = ...
 NSManagedObject.refreshObjects(objectIDS, mergeChanges: true) // turns given objects into faults (this is used in batchUpdateAndRefreshObjects)
-```
-
-#### Custom fetch requests
-If you need to execute custom `NSFetchRequest` you can use this to create some request, 
-tweak it as you wish and finally execute.
-
-```swift
-let predicate = ...
-let sortDescriptors = ...
-NSManagedObject.createFetchRequest(predicate: predicate, sortDescriptors: sortDescriptors) // get request for entity
-
-let request = ...
-NSManagedObject.executeFetchRequest(request) // execute any request and get array of objects
 ```
 
 ### Use Core Data with tableView
