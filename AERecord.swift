@@ -660,7 +660,7 @@ class CoreDataCollectionViewController: UICollectionViewController, NSFetchedRes
                     performFetch()
                 }
             } else {
-                collectionView.reloadData()
+                collectionView?.reloadData()
             }
         }
     }
@@ -681,7 +681,7 @@ class CoreDataCollectionViewController: UICollectionViewController, NSFetchedRes
                     }
                 }
             }
-            collectionView.reloadData()
+            collectionView?.reloadData()
         }
     }
     
@@ -728,40 +728,40 @@ class CoreDataCollectionViewController: UICollectionViewController, NSFetchedRes
         // sections
         if !self.sectionInserts.isEmpty {
             for sectionIndex in self.sectionInserts {
-                self.collectionView.insertSections(NSIndexSet(index: sectionIndex))
+                self.collectionView?.insertSections(NSIndexSet(index: sectionIndex))
             }
             self.sectionInserts.removeAll(keepCapacity: true)
         }
         if !self.sectionDeletes.isEmpty {
             for sectionIndex in self.sectionDeletes {
-                self.collectionView.deleteSections(NSIndexSet(index: sectionIndex))
+                self.collectionView?.deleteSections(NSIndexSet(index: sectionIndex))
             }
             self.sectionDeletes.removeAll(keepCapacity: true)
         }
         if !self.sectionUpdates.isEmpty {
             for sectionIndex in self.sectionUpdates {
-                self.collectionView.reloadSections(NSIndexSet(index: sectionIndex))
+                self.collectionView?.reloadSections(NSIndexSet(index: sectionIndex))
             }
             self.sectionUpdates.removeAll(keepCapacity: true)
         }
         // objects
         if !self.objectInserts.isEmpty {
-            self.collectionView.insertItemsAtIndexPaths(self.objectInserts)
+            self.collectionView?.insertItemsAtIndexPaths(self.objectInserts)
             self.objectInserts.removeAll(keepCapacity: true)
         }
         if !self.objectDeletes.isEmpty {
-            self.collectionView.deleteItemsAtIndexPaths(self.objectDeletes)
+            self.collectionView?.deleteItemsAtIndexPaths(self.objectDeletes)
             self.objectDeletes.removeAll(keepCapacity: true)
         }
         if !self.objectUpdates.isEmpty {
-            self.collectionView.reloadItemsAtIndexPaths(self.objectUpdates)
+            self.collectionView?.reloadItemsAtIndexPaths(self.objectUpdates)
             self.objectUpdates.removeAll(keepCapacity: true)
         }
         if !self.objectMoves.isEmpty {
             let moveOperations = objectMoves.count / 2
             var index = 0
             for i in 0 ..< moveOperations {
-                self.collectionView.moveItemAtIndexPath(self.objectMoves[index], toIndexPath: self.objectMoves[index + 1])
+                self.collectionView?.moveItemAtIndexPath(self.objectMoves[index], toIndexPath: self.objectMoves[index + 1])
                 index = index + 2
             }
             self.objectMoves.removeAll(keepCapacity: true)
@@ -802,12 +802,12 @@ class CoreDataCollectionViewController: UICollectionViewController, NSFetchedRes
     func controllerDidChangeContent(controller: NSFetchedResultsController) {
         if !suspendAutomaticTrackingOfChangesInManagedObjectContext {
             // do batch updates on collection view
-            collectionView.performBatchUpdates({ () -> Void in
+            collectionView?.performBatchUpdates({ () -> Void in
                 self.updateSectionsAndObjects()
             }, completion: { (finished) -> Void in
                 // reload moved items when finished
                 if self.objectReloads.count > 0 {
-                    self.collectionView.reloadItemsAtIndexPaths(self.objectReloads.allObjects)
+                    self.collectionView?.reloadItemsAtIndexPaths(self.objectReloads.allObjects)
                     self.objectReloads.removeAllObjects()
                 }
             })
