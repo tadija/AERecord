@@ -59,14 +59,14 @@ class MasterViewController: CoreDataTableViewController, UISplitViewControllerDe
         if let frc = fetchedResultsController {
             if let event = frc.objectAtIndexPath(indexPath) as? Event {
                 // set data
-                cell.textLabel.text = event.timeStamp.description
+                cell.textLabel?.text = event.timeStamp.description
                 cell.accessoryType = event.selected ? .Checkmark : .None
                 
                 // set highlight color
                 let highlightColorView = UIView()
                 highlightColorView.backgroundColor = yellow
                 cell.selectedBackgroundView = highlightColorView
-                cell.textLabel.highlightedTextColor = UIColor.darkGrayColor()
+                cell.textLabel?.highlightedTextColor = UIColor.darkGrayColor()
             }
         }
     }
