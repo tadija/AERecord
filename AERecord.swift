@@ -292,6 +292,10 @@ extension NSManagedObject {
         return name
     }
     
+    class var entity: NSEntityDescription? {
+        return NSEntityDescription.entityForName(entityName, inManagedObjectContext: AERecord.defaultContext)
+    }
+    
     class func createFetchRequest(predicate: NSPredicate? = nil, sortDescriptors: [NSSortDescriptor]? = nil) -> NSFetchRequest {
         // create request
         let request = NSFetchRequest(entityName: entityName)
@@ -398,6 +402,72 @@ extension NSManagedObject {
     class func allWithAttribute(attribute: String, value: AnyObject, sortDescriptors: [NSSortDescriptor]? = nil, context: NSManagedObjectContext = AERecord.defaultContext) -> [NSManagedObject]? {
         let predicate = NSPredicate(format: "%K = %@", attribute, value as NSObject)
         return allWithPredicate(predicate!, sortDescriptors: sortDescriptors, context: context)
+    }
+    
+    // MARK: Count
+    
+    class func count(context: NSManagedObjectContext = AERecord.defaultContext) -> Int {
+        return countWithPredicate(context: context)
+    }
+    
+    class func countWithPredicate(predicate: NSPredicate? = nil, context: NSManagedObjectContext = AERecord.defaultContext) -> Int {
+        let request = createFetchRequest(predicate: predicate)
+        request.includesSubentities = false
+        
+        var error: NSError?
+        let count = context.countForFetchRequest(request, error: &error)
+        
+        if let err = error {
+            if kAERecordPrintLog {
+                println("Error occured in \(NSStringFromClass(self.dynamicType)) - function: \(__FUNCTION__) | line: \(__LINE__)\n\(err)")
+            }
+        }
+        
+        return count
+    }
+    
+    class func countWithAttribute(attribute: String, value: AnyObject, context: NSManagedObjectContext = AERecord.defaultContext) -> Int {
+        let predicate = NSPredicate(format: "%K = %@", attribute, value as NSObject)
+        return countWithPredicate(predicate: predicate, context: context)
+    }
+    
+    // MARK: Distinct
+    
+    class func distinctValuesForAttribute(attribute: String, predicate: NSPredicate? = nil, sortDescriptors: [NSSortDescriptor]? = nil, context: NSManagedObjectContext = AERecord.defaultContext) -> [AnyObject]? {
+        var distinctValues = [AnyObject]()
+        
+        if let distinctRecords = distinctRecordsForAttributes([attribute], predicate: predicate, sortDescriptors: sortDescriptors, context: context) {
+            for record in distinctRecords {
+                if let value: AnyObject = record[attribute] {
+                    distinctValues.append(value)
+                }
+            }
+        }
+        
+        return distinctValues.count > 0 ? distinctValues : nil
+    }
+    
+    class func distinctRecordsForAttributes(attributes: [String], predicate: NSPredicate? = nil, sortDescriptors: [NSSortDescriptor]? = nil, context: NSManagedObjectContext = AERecord.defaultContext) -> [Dictionary<String, AnyObject>]? {
+        let request = createFetchRequest(predicate: predicate, sortDescriptors: sortDescriptors)
+        
+        request.resultType = .DictionaryResultType
+        request.returnsDistinctResults = true
+        request.propertiesToFetch = attributes
+        
+        var distinctRecords: [Dictionary<String, AnyObject>]?
+        
+        var error: NSError?
+        if let distinctResult = context.executeFetchRequest(request, error: &error) as? [Dictionary<String, AnyObject>] {
+            distinctRecords = distinctResult
+        }
+        
+        if let err = error {
+            if kAERecordPrintLog {
+                println("Error occured in \(NSStringFromClass(self.dynamicType)) - function: \(__FUNCTION__) | line: \(__LINE__)\n\(err)")
+            }
+        }
+        
+        return distinctRecords
     }
     
     // MARK: Auto Increment

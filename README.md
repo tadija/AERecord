@@ -5,16 +5,14 @@
 Why do we need yet another one Core Data wrapper? You tell me!
 
 >Inspired by many different (spoiler alert) magical solutions,
-I needed something which combines complexity and functionality just the way I want.
-All of that boilerplate for setting up of CoreData stack can be packed in 
+I needed something which combines complexity and functionality just the way I want.  
+All of that boilerplate for setting up of Core Data stack can be packed in 
 one reusable and customizible line of code, and it should be.
 Passing the right `NSManagedObjectContext` all accross the project, 
-worrying about threads and stuff, shouldn't really be my concern in every single project.
-And what about that similar `NSFetchRequest` boilerplates for querying or creating of data? So boring.  
-Finally when it comes to connecting your data with the tableView, the best approach is to use `NSFetchedResultsController`,
-and `CoreDataTableViewController` wrapper from [Stanford's CS193p](http://www.stanford.edu/class/cs193p/cgi-bin/drupal/downloads-2013-winter) is the best thing ever,
-I don't know why everybody doesn't use that everywhere.
-I liked it so much that I made `CoreDataCollectionViewController` in the same fashion.  
+worrying about threads and stuff, shouldn't be our concern in every single project.
+And how about that boring `NSFetchRequest` boilerplates for querying or creating of data?  
+Finally when it comes to connecting your data with the tableView, the best approach is to use `NSFetchedResultsController`.
+`CoreDataTableViewController` wrapper from [Stanford's CS193p](http://www.stanford.edu/class/cs193p/cgi-bin/drupal/downloads-2013-winter) is so great at it, that I've made `CoreDataCollectionViewController` too in the same fashion.  
 So, `AERecord` should solve all of these problems for me, I hope you will like it too.
 
 
@@ -22,8 +20,8 @@ So, `AERecord` should solve all of these problems for me, I hope you will like i
 
 Class | Description
 ------------ | -------------
-`AERecord` | main public class
-`AEStack` | private class which takes care of stack
+`AERecord` | main public class (facade)
+`AEStack` | private class which takes care of the stack
 `NSManagedObject extension` | super easy data querying
 `CoreDataTableViewController` | Core Data driven UITableViewController
 `CoreDataCollectionViewController` | Core Data driven UICollectionViewController
@@ -32,7 +30,7 @@ Class | Description
 ## Features
 - Create default or custom Core Data stack **(or more stacks)** easily accessible from everywhere
 - Have **main and background contexts**, always in sync, but don't worry about it
-- Create, find or delete data in many ways with **one liners**
+- Create, find, count or delete data in many ways with **one liners**
 - Batch updating directly in persistent store by using `NSBatchUpdateRequest` **(new in iOS 8)**
 - Connect UI **(tableView or collectionView)** with Core Data, and just manage the data
 - That's all folks **(for now)**
@@ -49,6 +47,8 @@ Class | Description
   	- [Deleting](#deleting)
   	- [Finding first](#finding-first)
   	- [Finding all](#finding-all)
+  	- [Count](#count)
+  	- [Distinct](#distinct)
   	- [Auto increment](#auto-increment)
   	- [Batch updating](#batch-updating)
   - [Use Core Data with tableView](#use-core-data-with-tableview)
@@ -72,7 +72,7 @@ using data driven tableView and collectionView, along with few simple querying.
 I mean, just compare it with the default template and think about that.
 
 ### Create Core Data stack
-Almost everything in `AERecord` is made with optional parameters (which have defaults if you don't specify anything).
+Almost everything in `AERecord` is made with optional parameters (with default values if you don't specify anything).
 So you can load (create if doesn't already exist) CoreData stack like this:
 
 ```swift
@@ -140,13 +140,13 @@ let sortDescriptors = ...
 let request = NSManagedObject.createFetchRequest(predicate: predicate, sortDescriptors: sortDescriptors)
 
 // set some custom request properties
-request.something = something
+request.someProperty = someValue
 
 // execute request and get array of entity objects
 let managedObjects = AERecord.executeFetchRequest(request)
 ```
 
-Of course, all of the often needed requests for creating, finding or deleting entities are already there, so just keep reading.
+Of course, all of the often needed requests for creating, finding, counting or deleting entities are already there, so just keep reading.
 
 #### Creating
 ```swift
@@ -193,6 +193,24 @@ NSManagedObject.allWithPredicate(predicate) // get all objects with predicate
 NSManagedObject.allWithAttribute("year", value: 1984) // get all objects with given attribute name and value
 ```
 
+#### Count
+```swift
+NSManagedObject.count() // count all objects
+
+let predicate = ...
+NSManagedObject.countWithPredicate(predicate) // count all objects with predicate
+
+NSManagedObject.countWithAttribute("selected", value: true) // count all objects with given attribute name and value
+```
+
+#### Distinct
+```swift
+NSManagedObject.distinctValuesForAttribute("city") // get array of all distinct values for given attribute name
+
+let attributes = ["country", "city"]
+NSManagedObject.distinctRecordsForAttributes(attributes) // get dictionary with name and values of all distinct records for multiple given attributes
+```
+
 #### Auto Increment
 If you need to have auto incremented attribute, just create one with Int type and get next ID like this:
 
@@ -233,13 +251,13 @@ class MyTableViewController: CoreDataTableViewController {
 	override func viewDidLoad() {
 	    super.viewDidLoad()
 	    
-	    // setup fetchedResultsController property
-	    refreshFetchedResultsController()
+	    refreshData()
 	}
 
-	func refreshFetchedResultsController() {
+	func refreshData() {
 	    let sortDescriptors = [NSSortDescriptor(key: "timeStamp", ascending: true)]
 	    let request = Event.createFetchRequest(sortDescriptors: sortDescriptors)
+	    // just need to set fetchedResultsController property of CoreDataTableViewController
 	    fetchedResultsController = NSFetchedResultsController(fetchRequest: request, managedObjectContext: AERecord.defaultContext, sectionNameKeyPath: nil, cacheName: nil)
 	}
 
@@ -295,6 +313,7 @@ Context Save | Description
 General | Description
 ------------ | -------------
 `class var entityName: String` | used all across these helpers to reference custom `NSManagedObject` subclass. It must return correct entity name. You may override this property in your custom `NSManagedObject` subclass if needed (but it should work out of the box generally).
+`class var entity: NSEntityDescription?` | NSEntityDescription object
 `class func createFetchRequest(predicate: NSPredicate? = nil, sortDescriptors: [NSSortDescriptor]? = nil) -> NSFetchRequest` | create fetch request for any entity type
 
 Creating | Description
@@ -322,6 +341,17 @@ Finding all | Description
 `class func all(sortDescriptors: [NSSortDescriptor]? = nil, context: NSManagedObjectContext = AERecord.defaultContext) -> [NSManagedObject]?` | get all objects
 `class func allWithPredicate(predicate: NSPredicate, sortDescriptors: [NSSortDescriptor]? = nil, context: NSManagedObjectContext = AERecord.defaultContext) -> [NSManagedObject]?` | get all objects with predicate
 `class func allWithAttribute(attribute: String, value: AnyObject, sortDescriptors: [NSSortDescriptor]? = nil, context: NSManagedObjectContext = AERecord.defaultContext) -> [NSManagedObject]?` | get all objects with given attribute name and value
+
+Count | Description
+------------ | -------------
+`class func count(context: NSManagedObjectContext = AERecord.defaultContext) -> Int` | count all objects
+`class func countWithPredicate(predicate: NSPredicate? = nil, context: NSManagedObjectContext = AERecord.defaultContext) -> Int` | count all objects with predicate
+`class func countWithAttribute(attribute: String, value: AnyObject, context: NSManagedObjectContext = AERecord.defaultContext) -> Int` | count all objects with given attribute name and value
+
+Distinct | Description
+------------ | -------------
+`class func distinctValuesForAttribute(attribute: String, predicate: NSPredicate? = nil, sortDescriptors: [NSSortDescriptor]? = nil, context: NSManagedObjectContext = AERecord.defaultContext) -> [AnyObject]?` | get array of all distinct values for given attribute name
+`class func distinctRecordsForAttributes(attributes: [String], predicate: NSPredicate? = nil, sortDescriptors: [NSSortDescriptor]? = nil, context: NSManagedObjectContext = AERecord.defaultContext) -> [Dictionary<String, AnyObject>]?` | get dictionary with name and values of all distinct records for multiple given attributes
 
 Auto increment | Description
 ------------ | -------------
