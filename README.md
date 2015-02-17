@@ -4,10 +4,10 @@
 
 Why do we need yet another one Core Data wrapper? You tell me!
 
->Inspired by many different (spoiler alert) magical solutions, I needed something which combines complexity and functionality just the way I want.  
-All that boilerplate code for setting up of Core Data stack should be packed in one reusable and customizible line of code.  
-Passing the right `NSManagedObjectContext` all accross the project, different threads and stuff, shouldn't be our concern in every single project.  
-Not to mention that boring `NSFetchRequest` boilerplates for any kind of creating or querying the data.  
+>Inspired by many different (spoiler alert) magical solutions, I needed something which combines complexity and functionality just the way I want.
+All that boilerplate code for setting up of Core Data stack should be packed in one reusable and customizible line of code.
+Passing the right `NSManagedObjectContext` all accross the project, different threads and stuff, shouldn't be our concern in every single project.
+Not to mention that boring `NSFetchRequest` boilerplates for any kind of creating or querying the data.
 Finally when it comes to connecting your data with the UI, the best approach is to use `NSFetchedResultsController`.
 `CoreDataTableViewController` wrapper from [Stanford's CS193p](http://www.stanford.edu/class/cs193p/cgi-bin/drupal/downloads-2013-winter) is so great at it, that I've made `CoreDataCollectionViewController` too in the same fashion.  
 So, `AERecord` should solve all of these problems for me, I hope you will like it too.
@@ -19,7 +19,7 @@ Class | Description
 ------------ | -------------
 `AERecord` | main public class (facade)
 `AEStack` | private class which takes care of the stack
-`NSManagedObject extension` | super easy data querying
+`NSManagedObject extension` | super easy data querying (and more)
 `CoreDataTableViewController` | Core Data driven UITableViewController
 `CoreDataCollectionViewController` | Core Data driven UICollectionViewController
 
@@ -223,9 +223,9 @@ NSManagedObject.autoIncrementedIntegerAttribute("myCustomAutoID") // returns nex
 ```
 
 #### Turn managed object into fault
-NSFetchedResultsController is designed to watch only one entity at a time, but when there is a bit more complex UI (ex. showing data from related entities too),  
-you sometimes have the need to manually refresh this related data, which can be done by turning 'watched' entity object into fault.  
-This is shortcut for doing just that (mergeChanges parameter defaults to true). You can read more about turning objects into faults in Core Data documentation.
+`NSFetchedResultsController` is designed to watch only one entity at a time, but when there is a bit more complex UI (ex. showing data from related entities too),
+you sometimes have to manually refresh this related data, which can be done by turning 'watched' entity object into fault.
+This is shortcut for doing just that (`mergeChanges` parameter defaults to `true`). You can read more about turning objects into faults in Core Data documentation.
 
 ```swift
 let managedObject = ...
