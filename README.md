@@ -4,14 +4,11 @@
 
 Why do we need yet another one Core Data wrapper? You tell me!
 
->Inspired by many different (spoiler alert) magical solutions,
-I needed something which combines complexity and functionality just the way I want.  
-All of that boilerplate for setting up of Core Data stack can be packed in 
-one reusable and customizible line of code, and it should be.
-Passing the right `NSManagedObjectContext` all accross the project, 
-worrying about threads and stuff, shouldn't be our concern in every single project.
-And how about that boring `NSFetchRequest` boilerplates for querying or creating of data?  
-Finally when it comes to connecting your data with the tableView, the best approach is to use `NSFetchedResultsController`.
+>Inspired by many different (spoiler alert) magical solutions, I needed something which combines complexity and functionality just the way I want.  
+All that boilerplate code for setting up of Core Data stack should be packed in one reusable and customizible line of code.  
+Passing the right `NSManagedObjectContext` all accross the project, different threads and stuff, shouldn't be our concern in every single project.  
+Not to mention that boring `NSFetchRequest` boilerplates for any kind of creating or querying the data.  
+Finally when it comes to connecting your data with the UI, the best approach is to use `NSFetchedResultsController`.
 `CoreDataTableViewController` wrapper from [Stanford's CS193p](http://www.stanford.edu/class/cs193p/cgi-bin/drupal/downloads-2013-winter) is so great at it, that I've made `CoreDataCollectionViewController` too in the same fashion.  
 So, `AERecord` should solve all of these problems for me, I hope you will like it too.
 
@@ -50,6 +47,7 @@ Class | Description
   	- [Count](#count)
   	- [Distinct](#distinct)
   	- [Auto increment](#auto-increment)
+    - [Turn managed object into fault](#turn-managed-object-into-fault)
   	- [Batch updating](#batch-updating)
   - [Use Core Data with tableView](#use-core-data-with-tableview)
   - [Use Core Data with collectionView](#use-core-data-with-collectionview)
@@ -123,6 +121,12 @@ let managedObjects = AERecord.executeFetchRequest(request) // returns array of o
 // save context
 AERecord.saveContext() // save default context
 AERecord.saveContextAndWait() // save default context and wait for save to finish
+
+// turn managed objects into faults
+let objectIDS = ...
+AERecord.refreshObjects(objectIDS: objectIDS, mergeChanges: true) // turn objects for given IDs into faults
+
+AERecord.refreshAllRegisteredObjects(mergeChanges: true) // turn all registered objects into faults
 ```
 
 ### Easy querying
@@ -218,6 +222,16 @@ If you need to have auto incremented attribute, just create one with Int type an
 NSManagedObject.autoIncrementedIntegerAttribute("myCustomAutoID") // returns next ID for given attribute of Integer type
 ```
 
+#### Turn managed object into fault
+NSFetchedResultsController is designed to watch only one entity at a time, but when there is a bit more complex UI (ex. showing data from related entities too),  
+you sometimes have the need to manually refresh this related data, which can be done by turning 'watched' entity object into fault.  
+This is shortcut for doing just that (mergeChanges parameter defaults to true). You can read more about turning objects into faults in Core Data documentation.
+
+```swift
+let managedObject = ...
+managedObject.refresh() // turns instance of managed object into fault
+```
+
 #### Batch updating
 Batch updating is the new feature in iOS 8. It's doing stuff directly in persistent store, so be carefull with this and read the docs first. Btw, `NSPredicate` is also optional parameter here.
 
@@ -257,7 +271,6 @@ class MyTableViewController: CoreDataTableViewController {
 	func refreshData() {
 	    let sortDescriptors = [NSSortDescriptor(key: "timeStamp", ascending: true)]
 	    let request = Event.createFetchRequest(sortDescriptors: sortDescriptors)
-	    // just need to set fetchedResultsController property of CoreDataTableViewController
 	    fetchedResultsController = NSFetchedResultsController(fetchRequest: request, managedObjectContext: AERecord.defaultContext, sectionNameKeyPath: nil, cacheName: nil)
 	}
 
@@ -305,6 +318,11 @@ Context Save | Description
 ------------ | -------------
 `class func saveContext(context: NSManagedObjectContext? = nil)` | save context (if not specified `defaultContext` is used)
 `class func saveContextAndWait(context: NSManagedObjectContext? = nil)` | save context and wait for save to finish (if not specified `defaultContext` is used)
+
+Context Faulting Objects | Description
+------------ | -------------
+`class func refreshObjects(#objectIDS: [NSManagedObjectID], mergeChanges: Bool, context: NSManagedObjectContext = AERecord.defaultContext)` | turn objects into faults (for given object IDs)
+`class func refreshAllRegisteredObjects(#mergeChanges: Bool, context: NSManagedObjectContext = AERecord.defaultContext)` | turn all registered objects into faults
 
 
 ### NSManagedObject extension
@@ -356,6 +374,10 @@ Distinct | Description
 Auto increment | Description
 ------------ | -------------
 `class func autoIncrementedIntegerAttribute(attribute: String, context: NSManagedObjectContext = AERecord.defaultContext) -> Int` | get next ID for given attribute of Integer type
+
+Turn object into fault | Description
+------------ | -------------
+`func refresh(mergeChanges: Bool = true, context: NSManagedObjectContext = AERecord.defaultContext)` | turn instance of managed object into fault
 
 Batch updating | Description
 ------------ | -------------

@@ -22,13 +22,12 @@
 // SOFTWARE.
 //
 
-import Foundation
 import UIKit
 import CoreData
 
 let kAERecordPrintLog = true
 
-// MARK: - AERecord (AEStack.sharedInstance Shortcuts)
+// MARK: - AERecord (facade for shared instance of AEStack)
 public class AERecord {
     
     // MARK: Properties
@@ -71,6 +70,16 @@ public class AERecord {
     
     class func saveContextAndWait(context: NSManagedObjectContext? = nil) {
         AEStack.sharedInstance.saveContextAndWait(context: context)
+    }
+    
+    // MARK: Context Faulting Objects
+    
+    class func refreshObjects(#objectIDS: [NSManagedObjectID], mergeChanges: Bool, context: NSManagedObjectContext = AERecord.defaultContext) {
+        AEStack.refreshObjects(objectIDS: objectIDS, mergeChanges: mergeChanges, context: context)
+    }
+    
+    class func refreshAllRegisteredObjects(#mergeChanges: Bool, context: NSManagedObjectContext = AERecord.defaultContext) {
+        AEStack.refreshAllRegisteredObjects(mergeChanges: mergeChanges, context: context)
     }
     
 }
@@ -279,6 +288,38 @@ private class AEStack {
         }
     }
     
+    // MARK: Context Faulting Objects
+    
+    class func refreshObjects(#objectIDS: [NSManagedObjectID], mergeChanges: Bool, context: NSManagedObjectContext = AERecord.defaultContext) {
+        for objectID in objectIDS {
+            var error: NSError?
+            context.performBlockAndWait({ () -> Void in
+                if let object = context.existingObjectWithID(objectID, error: &error) {
+                    if !object.fault && error == nil {
+                        // turn managed object into fault
+                        context.refreshObject(object, mergeChanges: mergeChanges)
+                    } else {
+                        if let err = error {
+                            if kAERecordPrintLog {
+                                println("Error occured in \(NSStringFromClass(self.dynamicType)) - function: \(__FUNCTION__) | line: \(__LINE__)\n\(err)")
+                            }
+                        }
+                    }
+                }
+            })
+        }
+    }
+    
+    class func refreshAllRegisteredObjects(#mergeChanges: Bool, context: NSManagedObjectContext = AERecord.defaultContext) {
+        var registeredObjectIDS = [NSManagedObjectID]()
+        for object in context.registeredObjects {
+            if let managedObject = object as? NSManagedObject {
+                registeredObjectIDS.append(managedObject.objectID)
+            }
+        }
+        refreshObjects(objectIDS: registeredObjectIDS, mergeChanges: mergeChanges)
+    }
+    
 }
 
 // MARK: - NSManagedObject Extension
@@ -485,6 +526,12 @@ extension NSManagedObject {
         }
     }
     
+    // MARK: Turn Object Into Fault
+    
+    func refresh(mergeChanges: Bool = true, context: NSManagedObjectContext = AERecord.defaultContext) {
+        AERecord.refreshObjects(objectIDS: [objectID], mergeChanges: mergeChanges, context: context)
+    }
+    
     // MARK: Batch Updating
     
     class func batchUpdate(predicate: NSPredicate? = nil, properties: [NSObject : AnyObject]? = nil, resultType: NSBatchUpdateRequestResultType = .StatusOnlyResultType, context: NSManagedObjectContext = AERecord.defaultContext) -> NSBatchUpdateResult? {
@@ -525,27 +572,8 @@ extension NSManagedObject {
     class func batchUpdateAndRefreshObjects(predicate: NSPredicate? = nil, properties: [NSObject : AnyObject]? = nil, context: NSManagedObjectContext = AERecord.defaultContext) {
         if let result = batchUpdate(predicate: predicate, properties: properties, resultType: .UpdatedObjectIDsResultType, context: context) {
             if let objectIDS = result.result as? [NSManagedObjectID] {
-                refreshObjects(objectIDS, mergeChanges: true, context: context)
+                AERecord.refreshObjects(objectIDS: objectIDS, mergeChanges: true, context: context)
             }
-        }
-    }
-    
-    class func refreshObjects(objectIDS: [NSManagedObjectID], mergeChanges: Bool, context: NSManagedObjectContext = AERecord.defaultContext) {
-        for objectID in objectIDS {
-            var error: NSError?
-            context.performBlockAndWait({ () -> Void in
-                if let object = context.existingObjectWithID(objectID, error: &error) {
-                    // turn managed objects into faults
-                    if !object.fault {
-                        context.refreshObject(object, mergeChanges: mergeChanges)
-                    }
-                }
-                if let err = error {
-                    if kAERecordPrintLog {
-                        println("Error occured in \(NSStringFromClass(self.dynamicType)) - function: \(__FUNCTION__) | line: \(__LINE__)\n\(err)")
-                    }
-                }
-            })
         }
     }
     
