@@ -122,10 +122,9 @@ let managedObjects = AERecord.executeFetchRequest(request) // returns array of o
 AERecord.saveContext() // save default context
 AERecord.saveContextAndWait() // save default context and wait for save to finish
 
-// turn managed objects into faults
+// turn managed objects into faults (you don't need this often, but sometimes you do)
 let objectIDS = ...
 AERecord.refreshObjects(objectIDS: objectIDS, mergeChanges: true) // turn objects for given IDs into faults
-
 AERecord.refreshAllRegisteredObjects(mergeChanges: true) // turn all registered objects into faults
 ```
 
@@ -241,9 +240,6 @@ NSManagedObject.batchUpdate(properties: ["timeStamp" : NSDate()]) // returns NSB
 NSManagedObject.objectsCountForBatchUpdate(properties: ["timeStamp" : NSDate()]) // returns count of updated objects
 
 NSManagedObject.batchUpdateAndRefreshObjects(properties: ["timeStamp" : NSDate()]) // turns updated objects into faults after updating them in persistent store
-
-let objectIDS = ...
-NSManagedObject.refreshObjects(objectIDS, mergeChanges: true) // turns given objects into faults (this is used in batchUpdateAndRefreshObjects)
 ```
 
 ### Use Core Data with tableView
