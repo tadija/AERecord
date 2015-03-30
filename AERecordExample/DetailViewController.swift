@@ -93,7 +93,7 @@ class DetailViewController: CoreDataCollectionViewController {
     // MARK: - Collection View
     
     override func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCellWithReuseIdentifier("Cell", forIndexPath: indexPath) as CustomCollectionViewCell
+        let cell = collectionView.dequeueReusableCellWithReuseIdentifier("Cell", forIndexPath: indexPath) as! CustomCollectionViewCell
         self.configureCell(cell, atIndexPath: indexPath)
         return cell
     }

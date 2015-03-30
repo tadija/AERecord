@@ -125,7 +125,7 @@ private class AEStack {
     // MARK: Setup Stack
     
     class func storeURLForName(name: String) -> NSURL {
-        let applicationDocumentsDirectory = NSFileManager.defaultManager().URLsForDirectory(.DocumentDirectory, inDomains: .UserDomainMask).last as NSURL
+        let applicationDocumentsDirectory = NSFileManager.defaultManager().URLsForDirectory(.DocumentDirectory, inDomains: .UserDomainMask).last as! NSURL
         let storeName = "\(name).sqlite"
         return applicationDocumentsDirectory.URLByAppendingPathComponent(storeName)
     }
@@ -147,11 +147,11 @@ private class AEStack {
         if let coordinator = persistentStoreCoordinator {
             var error: NSError?
             if coordinator.addPersistentStoreWithType(storeType, configuration: configuration, URL: storeURL, options: options, error: &error) == nil {
-                let dict = NSMutableDictionary()
-                dict[NSLocalizedDescriptionKey] = "Failed to initialize the application's saved data"
-                dict[NSLocalizedFailureReasonErrorKey] = "There was an error creating or loading the application's saved data."
-                dict[NSUnderlyingErrorKey] = error
-                error = NSError(domain: AEStack.bundleIdentifier, code: 1, userInfo: dict)
+                var userInfoDictionary = [NSObject : AnyObject]()
+                userInfoDictionary[NSLocalizedDescriptionKey] = "Failed to initialize the application's saved data"
+                userInfoDictionary[NSLocalizedFailureReasonErrorKey] = "There was an error creating or loading the application's saved data."
+                userInfoDictionary[NSUnderlyingErrorKey] = error
+                error = NSError(domain: AEStack.bundleIdentifier, code: 1, userInfo: userInfoDictionary)
                 if let err = error {
                     if kAERecordPrintLog {
                         println("Error occured in \(NSStringFromClass(self.dynamicType)) - function: \(__FUNCTION__) | line: \(__LINE__)\n\(err)")
@@ -202,7 +202,7 @@ private class AEStack {
     func truncateAllData(context: NSManagedObjectContext? = nil) {
         let moc = context ?? defaultContext
         if let mom = managedObjectModel {
-            for entity in mom.entities as [NSEntityDescription] {
+            for entity in mom.entities as! [NSEntityDescription] {
                 if let entityType = NSClassFromString(entity.managedObjectClassName) as? NSManagedObject.Type {
                     entityType.deleteAll(context: moc)
                 }
@@ -363,7 +363,7 @@ extension NSManagedObject {
     }
     
     class func firstOrCreateWithAttribute(attribute: String, value: AnyObject, context: NSManagedObjectContext = AERecord.defaultContext) -> NSManagedObject {
-        let predicate = NSPredicate(format: "%K = %@", attribute, value as NSObject)
+        let predicate = NSPredicate(format: "%K = %@", argumentArray: [attribute, value])
         let request = createFetchRequest(predicate: predicate)
         request.fetchLimit = 1
         let objects = AERecord.executeFetchRequest(request, context: context)
@@ -417,8 +417,8 @@ extension NSManagedObject {
     }
     
     class func firstWithAttribute(attribute: String, value: AnyObject, sortDescriptors: [NSSortDescriptor]? = nil, context: NSManagedObjectContext = AERecord.defaultContext) -> NSManagedObject? {
-        let predicate = NSPredicate(format: "%K = %@", attribute, value as NSObject)
-        return firstWithPredicate(predicate!, sortDescriptors: sortDescriptors, context: context)
+        let predicate = NSPredicate(format: "%K = %@", argumentArray: [attribute, value])
+        return firstWithPredicate(predicate, sortDescriptors: sortDescriptors, context: context)
     }
     
     class func firstOrderedByAttribute(name: String, ascending: Bool = true, context: NSManagedObjectContext = AERecord.defaultContext) -> NSManagedObject? {
@@ -441,8 +441,8 @@ extension NSManagedObject {
     }
     
     class func allWithAttribute(attribute: String, value: AnyObject, sortDescriptors: [NSSortDescriptor]? = nil, context: NSManagedObjectContext = AERecord.defaultContext) -> [NSManagedObject]? {
-        let predicate = NSPredicate(format: "%K = %@", attribute, value as NSObject)
-        return allWithPredicate(predicate!, sortDescriptors: sortDescriptors, context: context)
+        let predicate = NSPredicate(format: "%K = %@", argumentArray: [attribute, value])
+        return allWithPredicate(predicate, sortDescriptors: sortDescriptors, context: context)
     }
     
     // MARK: Count
@@ -468,7 +468,7 @@ extension NSManagedObject {
     }
     
     class func countWithAttribute(attribute: String, value: AnyObject, context: NSManagedObjectContext = AERecord.defaultContext) -> Int {
-        let predicate = NSPredicate(format: "%K = %@", attribute, value as NSObject)
+        let predicate = NSPredicate(format: "%K = %@", argumentArray: [attribute, value])
         return countWithPredicate(predicate: predicate, context: context)
     }
     
@@ -712,13 +712,11 @@ class CoreDataTableViewController: UITableViewController, NSFetchedResultsContro
     }
     
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        let sectionInfo = fetchedResultsController?.sections![section] as NSFetchedResultsSectionInfo
-        return sectionInfo.numberOfObjects
+        return (fetchedResultsController?.sections?[section] as? NSFetchedResultsSectionInfo)?.numberOfObjects ?? 0
     }
     
     override func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        let sectionInfo = fetchedResultsController?.sections![section] as NSFetchedResultsSectionInfo
-        return sectionInfo.name
+        return (fetchedResultsController?.sections?[section] as? NSFetchedResultsSectionInfo)?.name
     }
     
     override func tableView(tableView: UITableView, sectionForSectionIndexTitle title: String, atIndex index: Int) -> Int {
@@ -919,8 +917,7 @@ class CoreDataCollectionViewController: UICollectionViewController, NSFetchedRes
     }
     
     override func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        let sectionInfo = fetchedResultsController?.sections![section] as NSFetchedResultsSectionInfo
-        return sectionInfo.numberOfObjects
+        return (fetchedResultsController?.sections?[section] as? NSFetchedResultsSectionInfo)?.numberOfObjects ?? 0
     }
     
 }
