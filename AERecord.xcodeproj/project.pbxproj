@@ -46,7 +46,7 @@
 		8BC8955A1A07930500778DB0 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		8BC8955C1A07930500778DB0 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		8BC8955F1A07930500778DB0 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
-		8BC895651A07930500778DB0 /* AERecordExampleTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = AERecordExampleTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		8BC895651A07930500778DB0 /* AERecordTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = AERecordTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		8BC8956A1A07930500778DB0 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		8BC8956B1A07930500778DB0 /* AERecordTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AERecordTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -73,8 +73,8 @@
 			isa = PBXGroup;
 			children = (
 				8BDEBABC1AED5A8C00A12D92 /* AERecord */,
-				8BC8954D1A07930500778DB0 /* AERecordExample */,
 				8BC895681A07930500778DB0 /* AERecordTests */,
+				8BC8954D1A07930500778DB0 /* AERecordExample */,
 				8BC8954C1A07930500778DB0 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -83,7 +83,7 @@
 			isa = PBXGroup;
 			children = (
 				8BC8954B1A07930500778DB0 /* AERecordExample.app */,
-				8BC895651A07930500778DB0 /* AERecordExampleTests.xctest */,
+				8BC895651A07930500778DB0 /* AERecordTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -160,9 +160,9 @@
 			productReference = 8BC8954B1A07930500778DB0 /* AERecordExample.app */;
 			productType = "com.apple.product-type.application";
 		};
-		8BC895641A07930500778DB0 /* AERecordExampleTests */ = {
+		8BC895641A07930500778DB0 /* AERecordTests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 8BC895721A07930500778DB0 /* Build configuration list for PBXNativeTarget "AERecordExampleTests" */;
+			buildConfigurationList = 8BC895721A07930500778DB0 /* Build configuration list for PBXNativeTarget "AERecordTests" */;
 			buildPhases = (
 				8BC895611A07930500778DB0 /* Sources */,
 				8BC895621A07930500778DB0 /* Frameworks */,
@@ -173,9 +173,9 @@
 			dependencies = (
 				8BC895671A07930500778DB0 /* PBXTargetDependency */,
 			);
-			name = AERecordExampleTests;
+			name = AERecordTests;
 			productName = AERecordExampleTests;
-			productReference = 8BC895651A07930500778DB0 /* AERecordExampleTests.xctest */;
+			productReference = 8BC895651A07930500778DB0 /* AERecordTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
 /* End PBXNativeTarget section */
@@ -196,7 +196,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 8BC895461A07930500778DB0 /* Build configuration list for PBXProject "AERecordExample" */;
+			buildConfigurationList = 8BC895461A07930500778DB0 /* Build configuration list for PBXProject "AERecord" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
@@ -210,7 +210,7 @@
 			projectRoot = "";
 			targets = (
 				8BC8954A1A07930500778DB0 /* AERecordExample */,
-				8BC895641A07930500778DB0 /* AERecordExampleTests */,
+				8BC895641A07930500778DB0 /* AERecordTests */,
 			);
 		};
 /* End PBXProject section */
@@ -376,7 +376,7 @@
 				INFOPLIST_FILE = AERecordExample/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = AERecordExample;
 			};
 			name = Debug;
 		};
@@ -388,7 +388,7 @@
 				INFOPLIST_FILE = AERecordExample/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = AERecordExample;
 			};
 			name = Release;
 		};
@@ -406,7 +406,7 @@
 				);
 				INFOPLIST_FILE = AERecordTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = AERecordTests;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/AERecordExample.app/AERecordExample";
 			};
 			name = Debug;
@@ -421,7 +421,7 @@
 				);
 				INFOPLIST_FILE = AERecordTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = AERecordTests;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/AERecordExample.app/AERecordExample";
 			};
 			name = Release;
@@ -429,7 +429,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		8BC895461A07930500778DB0 /* Build configuration list for PBXProject "AERecordExample" */ = {
+		8BC895461A07930500778DB0 /* Build configuration list for PBXProject "AERecord" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				8BC8956D1A07930500778DB0 /* Debug */,
@@ -447,7 +447,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		8BC895721A07930500778DB0 /* Build configuration list for PBXNativeTarget "AERecordExampleTests" */ = {
+		8BC895721A07930500778DB0 /* Build configuration list for PBXNativeTarget "AERecordTests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				8BC895731A07930500778DB0 /* Debug */,
