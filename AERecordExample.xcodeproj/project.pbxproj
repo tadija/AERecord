@@ -72,7 +72,7 @@
 		8BC895421A07930500778DB0 = {
 			isa = PBXGroup;
 			children = (
-				8B975B2A1A098A4800AA3499 /* AERecord.swift */,
+				8BDEBABC1AED5A8C00A12D92 /* AERecord */,
 				8BC8954D1A07930500778DB0 /* AERecordExample */,
 				8BC895681A07930500778DB0 /* AERecordExampleTests */,
 				8BC8954C1A07930500778DB0 /* Products */,
@@ -130,6 +130,14 @@
 				8BC8956A1A07930500778DB0 /* Info.plist */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		8BDEBABC1AED5A8C00A12D92 /* AERecord */ = {
+			isa = PBXGroup;
+			children = (
+				8B975B2A1A098A4800AA3499 /* AERecord.swift */,
+			);
+			path = AERecord;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
