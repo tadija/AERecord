@@ -32,53 +32,53 @@ public class AERecord {
     
     // MARK: Properties
     
-    class var defaultContext: NSManagedObjectContext { return AEStack.sharedInstance.defaultContext } // context for current thread
-    class var mainContext: NSManagedObjectContext { return AEStack.sharedInstance.mainContext } // context for main thread
-    class var backgroundContext: NSManagedObjectContext { return AEStack.sharedInstance.backgroundContext } // context for background thread
+    public class var defaultContext: NSManagedObjectContext { return AEStack.sharedInstance.defaultContext } // context for current thread
+    public class var mainContext: NSManagedObjectContext { return AEStack.sharedInstance.mainContext } // context for main thread
+    public class var backgroundContext: NSManagedObjectContext { return AEStack.sharedInstance.backgroundContext } // context for background thread
     
-    class var persistentStoreCoordinator: NSPersistentStoreCoordinator? { return AEStack.sharedInstance.persistentStoreCoordinator }
+    public class var persistentStoreCoordinator: NSPersistentStoreCoordinator? { return AEStack.sharedInstance.persistentStoreCoordinator }
     
     // MARK: Setup Stack
     
-    class func storeURLForName(name: String) -> NSURL {
+    public class func storeURLForName(name: String) -> NSURL {
         return AEStack.storeURLForName(name)
     }
     
-    class func loadCoreDataStack(managedObjectModel: NSManagedObjectModel = AEStack.defaultModel, storeType: String = NSSQLiteStoreType, configuration: String? = nil, storeURL: NSURL = AEStack.defaultURL, options: [NSObject : AnyObject]? = nil) -> NSError? {
+    public class func loadCoreDataStack(managedObjectModel: NSManagedObjectModel = AEStack.defaultModel, storeType: String = NSSQLiteStoreType, configuration: String? = nil, storeURL: NSURL = AEStack.defaultURL, options: [NSObject : AnyObject]? = nil) -> NSError? {
         return AEStack.sharedInstance.loadCoreDataStack(managedObjectModel: managedObjectModel, storeType: storeType, configuration: configuration, storeURL: storeURL, options: options)
     }
     
-    class func destroyCoreDataStack(storeURL: NSURL = AEStack.defaultURL) {
+    public class func destroyCoreDataStack(storeURL: NSURL = AEStack.defaultURL) {
         AEStack.sharedInstance.destroyCoreDataStack(storeURL: storeURL)
     }
     
-    class func truncateAllData(context: NSManagedObjectContext? = nil) {
+    public class func truncateAllData(context: NSManagedObjectContext? = nil) {
         AEStack.sharedInstance.truncateAllData(context: context)
     }
     
     // MARK: Context Execute
     
-    class func executeFetchRequest(request: NSFetchRequest, context: NSManagedObjectContext? = nil) -> [NSManagedObject] {
+    public class func executeFetchRequest(request: NSFetchRequest, context: NSManagedObjectContext? = nil) -> [NSManagedObject] {
         return AEStack.sharedInstance.executeFetchRequest(request, context: context)
     }
     
     // MARK: Context Save
     
-    class func saveContext(context: NSManagedObjectContext? = nil) {
+    public class func saveContext(context: NSManagedObjectContext? = nil) {
         AEStack.sharedInstance.saveContext(context: context)
     }
     
-    class func saveContextAndWait(context: NSManagedObjectContext? = nil) {
+    public class func saveContextAndWait(context: NSManagedObjectContext? = nil) {
         AEStack.sharedInstance.saveContextAndWait(context: context)
     }
     
     // MARK: Context Faulting Objects
     
-    class func refreshObjects(#objectIDS: [NSManagedObjectID], mergeChanges: Bool, context: NSManagedObjectContext = AERecord.defaultContext) {
+    public class func refreshObjects(#objectIDS: [NSManagedObjectID], mergeChanges: Bool, context: NSManagedObjectContext = AERecord.defaultContext) {
         AEStack.refreshObjects(objectIDS: objectIDS, mergeChanges: mergeChanges, context: context)
     }
     
-    class func refreshAllRegisteredObjects(#mergeChanges: Bool, context: NSManagedObjectContext = AERecord.defaultContext) {
+    public class func refreshAllRegisteredObjects(#mergeChanges: Bool, context: NSManagedObjectContext = AERecord.defaultContext) {
         AEStack.refreshAllRegisteredObjects(mergeChanges: mergeChanges, context: context)
     }
     
@@ -323,7 +323,7 @@ private class AEStack {
 }
 
 // MARK: - NSManagedObject Extension
-extension NSManagedObject {
+public extension NSManagedObject {
     
     // MARK: General
     
@@ -580,7 +580,7 @@ extension NSManagedObject {
 }
 
 //  MARK: - CoreData driven UITableViewController
-class CoreDataTableViewController: UITableViewController, NSFetchedResultsControllerDelegate {
+public class CoreDataTableViewController: UITableViewController, NSFetchedResultsControllerDelegate {
     
     //
     //  Swift version of class originaly created for Stanford CS193p Winter 2013.
@@ -598,7 +598,7 @@ class CoreDataTableViewController: UITableViewController, NSFetchedResultsContro
     //
     
     // The controller (this class fetches nothing if this is not set).
-    var fetchedResultsController: NSFetchedResultsController? {
+    public var fetchedResultsController: NSFetchedResultsController? {
         didSet {
             if let frc = fetchedResultsController {
                 if frc != oldValue {
@@ -617,7 +617,7 @@ class CoreDataTableViewController: UITableViewController, NSFetchedResultsContro
     //  (so if the objects in the context change, you do not need to call performFetch
     //   since the NSFetchedResultsController will notice and update the table automatically).
     // This will also automatically be called if you change the fetchedResultsController @property.
-    func performFetch() {
+    public func performFetch() {
         if let frc = fetchedResultsController {
             var error: NSError?
             if !frc.performFetch(&error) {
@@ -645,7 +645,7 @@ class CoreDataTableViewController: UITableViewController, NSFetchedResultsContro
     // It is not necessary (in fact, not desirable) to set this during row deletion or insertion
     //  (but definitely for row moves).
     private var _suspendAutomaticTrackingOfChangesInManagedObjectContext: Bool = false
-    var suspendAutomaticTrackingOfChangesInManagedObjectContext: Bool {
+    private var suspendAutomaticTrackingOfChangesInManagedObjectContext: Bool {
         get {
             return _suspendAutomaticTrackingOfChangesInManagedObjectContext
         }
@@ -661,14 +661,14 @@ class CoreDataTableViewController: UITableViewController, NSFetchedResultsContro
     
     // MARK: NSFetchedResultsControllerDelegate
     
-    func controllerWillChangeContent(controller: NSFetchedResultsController) {
+    public func controllerWillChangeContent(controller: NSFetchedResultsController) {
         if !suspendAutomaticTrackingOfChangesInManagedObjectContext {
             tableView.beginUpdates()
             beganUpdates = true
         }
     }
     
-    func controller(controller: NSFetchedResultsController, didChangeSection sectionInfo: NSFetchedResultsSectionInfo, atIndex sectionIndex: Int, forChangeType type: NSFetchedResultsChangeType) {
+    public func controller(controller: NSFetchedResultsController, didChangeSection sectionInfo: NSFetchedResultsSectionInfo, atIndex sectionIndex: Int, forChangeType type: NSFetchedResultsChangeType) {
         if !suspendAutomaticTrackingOfChangesInManagedObjectContext {
             switch type {
             case .Insert:
@@ -681,7 +681,7 @@ class CoreDataTableViewController: UITableViewController, NSFetchedResultsContro
         }
     }
     
-    func controller(controller: NSFetchedResultsController, didChangeObject anObject: AnyObject, atIndexPath indexPath: NSIndexPath?, forChangeType type: NSFetchedResultsChangeType, newIndexPath: NSIndexPath?) {
+    public func controller(controller: NSFetchedResultsController, didChangeObject anObject: AnyObject, atIndexPath indexPath: NSIndexPath?, forChangeType type: NSFetchedResultsChangeType, newIndexPath: NSIndexPath?) {
         if !suspendAutomaticTrackingOfChangesInManagedObjectContext {
             switch type {
             case .Insert:
@@ -699,7 +699,7 @@ class CoreDataTableViewController: UITableViewController, NSFetchedResultsContro
         }
     }
     
-    func controllerDidChangeContent(controller: NSFetchedResultsController) {
+    public func controllerDidChangeContent(controller: NSFetchedResultsController) {
         if beganUpdates {
             tableView.endUpdates()
         }
@@ -707,30 +707,30 @@ class CoreDataTableViewController: UITableViewController, NSFetchedResultsContro
     
     // MARK: UITableViewDataSource
     
-    override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+    override public func numberOfSectionsInTableView(tableView: UITableView) -> Int {
         return fetchedResultsController?.sections?.count ?? 0
     }
     
-    override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    override public func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return (fetchedResultsController?.sections?[section] as? NSFetchedResultsSectionInfo)?.numberOfObjects ?? 0
     }
     
-    override func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+    override public func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         return (fetchedResultsController?.sections?[section] as? NSFetchedResultsSectionInfo)?.name
     }
     
-    override func tableView(tableView: UITableView, sectionForSectionIndexTitle title: String, atIndex index: Int) -> Int {
+    override public func tableView(tableView: UITableView, sectionForSectionIndexTitle title: String, atIndex index: Int) -> Int {
         return fetchedResultsController?.sectionForSectionIndexTitle(title, atIndex: index) ?? 0
     }
     
-    override func sectionIndexTitlesForTableView(tableView: UITableView) -> [AnyObject]! {
+    override public func sectionIndexTitlesForTableView(tableView: UITableView) -> [AnyObject]! {
         return fetchedResultsController?.sectionIndexTitles
     }
     
 }
 
 //  MARK: - CoreData driven UICollectionViewController
-class CoreDataCollectionViewController: UICollectionViewController, NSFetchedResultsControllerDelegate {
+public class CoreDataCollectionViewController: UICollectionViewController, NSFetchedResultsControllerDelegate {
     
     //
     //  Same concept as CoreDataTableViewController, but modified for use with UICollectionViewController.
@@ -748,7 +748,7 @@ class CoreDataCollectionViewController: UICollectionViewController, NSFetchedRes
     //
     
     // The controller (this class fetches nothing if this is not set).
-    var fetchedResultsController: NSFetchedResultsController? {
+    public var fetchedResultsController: NSFetchedResultsController? {
         didSet {
             if let frc = fetchedResultsController {
                 if frc != oldValue {
@@ -767,7 +767,7 @@ class CoreDataCollectionViewController: UICollectionViewController, NSFetchedRes
     //  (so if the objects in the context change, you do not need to call performFetch
     //   since the NSFetchedResultsController will notice and update the collection view automatically).
     // This will also automatically be called if you change the fetchedResultsController @property.
-    func performFetch() {
+    public func performFetch() {
         if let frc = fetchedResultsController {
             var error: NSError?
             if !frc.performFetch(&error) {
@@ -795,7 +795,7 @@ class CoreDataCollectionViewController: UICollectionViewController, NSFetchedRes
     // It is not necessary (in fact, not desirable) to set this during row deletion or insertion
     //  (but definitely for cell moves).
     private var _suspendAutomaticTrackingOfChangesInManagedObjectContext: Bool = false
-    var suspendAutomaticTrackingOfChangesInManagedObjectContext: Bool {
+    private var suspendAutomaticTrackingOfChangesInManagedObjectContext: Bool {
         get {
             return _suspendAutomaticTrackingOfChangesInManagedObjectContext
         }
@@ -820,7 +820,7 @@ class CoreDataCollectionViewController: UICollectionViewController, NSFetchedRes
     private var objectMoves = [NSIndexPath]()
     private var objectReloads = NSMutableSet()
     
-    func updateSectionsAndObjects() {
+    private func updateSectionsAndObjects() {
         // sections
         if !self.sectionInserts.isEmpty {
             for sectionIndex in self.sectionInserts {
@@ -866,7 +866,7 @@ class CoreDataCollectionViewController: UICollectionViewController, NSFetchedRes
     
     // MARK: NSFetchedResultsControllerDelegate
     
-    func controller(controller: NSFetchedResultsController, didChangeSection sectionInfo: NSFetchedResultsSectionInfo, atIndex sectionIndex: Int, forChangeType type: NSFetchedResultsChangeType) {
+    public func controller(controller: NSFetchedResultsController, didChangeSection sectionInfo: NSFetchedResultsSectionInfo, atIndex sectionIndex: Int, forChangeType type: NSFetchedResultsChangeType) {
         switch type {
         case .Insert:
             sectionInserts.append(sectionIndex)
@@ -879,7 +879,7 @@ class CoreDataCollectionViewController: UICollectionViewController, NSFetchedRes
         }
     }
     
-    func controller(controller: NSFetchedResultsController, didChangeObject anObject: AnyObject, atIndexPath indexPath: NSIndexPath?, forChangeType type: NSFetchedResultsChangeType, newIndexPath: NSIndexPath?) {
+    public func controller(controller: NSFetchedResultsController, didChangeObject anObject: AnyObject, atIndexPath indexPath: NSIndexPath?, forChangeType type: NSFetchedResultsChangeType, newIndexPath: NSIndexPath?) {
         switch type {
         case .Insert:
             objectInserts.append(newIndexPath!)
@@ -895,7 +895,7 @@ class CoreDataCollectionViewController: UICollectionViewController, NSFetchedRes
         }
     }
 
-    func controllerDidChangeContent(controller: NSFetchedResultsController) {
+    public func controllerDidChangeContent(controller: NSFetchedResultsController) {
         if !suspendAutomaticTrackingOfChangesInManagedObjectContext {
             // do batch updates on collection view
             collectionView?.performBatchUpdates({ () -> Void in
@@ -912,11 +912,11 @@ class CoreDataCollectionViewController: UICollectionViewController, NSFetchedRes
     
     // MARK: UICollectionViewDataSource
     
-    override func numberOfSectionsInCollectionView(collectionView: UICollectionView) -> Int {
+    override public func numberOfSectionsInCollectionView(collectionView: UICollectionView) -> Int {
         return fetchedResultsController?.sections?.count ?? 0
     }
     
-    override func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+    override public func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return (fetchedResultsController?.sections?[section] as? NSFetchedResultsSectionInfo)?.numberOfObjects ?? 0
     }
     
