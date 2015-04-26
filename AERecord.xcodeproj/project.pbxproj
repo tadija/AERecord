@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		8B8FD1D31A0BCC3C009FAE44 /* CustomCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B8FD1D21A0BCC3C009FAE44 /* CustomCollectionViewCell.swift */; };
-		8B8FD1D61A0BE171009FAE44 /* LICENSE in Resources */ = {isa = PBXBuildFile; fileRef = 8B8FD1D41A0BE171009FAE44 /* LICENSE */; };
 		8B975B2B1A098A4800AA3499 /* AERecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B975B2A1A098A4800AA3499 /* AERecord.swift */; };
 		8B975B2D1A098FAF00AA3499 /* Event.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B975B2C1A098FAF00AA3499 /* Event.swift */; };
 		8BC895511A07930500778DB0 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BC895501A07930500778DB0 /* AppDelegate.swift */; };
@@ -32,9 +31,10 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		8B4B477C1AED601F00A0266D /* AERecord.podspec */ = {isa = PBXFileReference; lastKnownFileType = text; path = AERecord.podspec; sourceTree = "<group>"; };
 		8B8FD1D21A0BCC3C009FAE44 /* CustomCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomCollectionViewCell.swift; sourceTree = "<group>"; };
-		8B8FD1D41A0BE171009FAE44 /* LICENSE */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = LICENSE; path = ../LICENSE; sourceTree = "<group>"; };
-		8B8FD1D51A0BE171009FAE44 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; name = README.md; path = ../README.md; sourceTree = "<group>"; };
+		8B8FD1D41A0BE171009FAE44 /* LICENSE */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
+		8B8FD1D51A0BE171009FAE44 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		8B975B2A1A098A4800AA3499 /* AERecord.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AERecord.swift; sourceTree = "<group>"; };
 		8B975B2C1A098FAF00AA3499 /* Event.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Event.swift; sourceTree = "<group>"; };
 		8BC8954B1A07930500778DB0 /* AERecordExample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AERecordExample.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -76,6 +76,9 @@
 				8BC895681A07930500778DB0 /* AERecordTests */,
 				8BC8954D1A07930500778DB0 /* AERecordExample */,
 				8BC8954C1A07930500778DB0 /* Products */,
+				8B8FD1D41A0BE171009FAE44 /* LICENSE */,
+				8B8FD1D51A0BE171009FAE44 /* README.md */,
+				8B4B477C1AED601F00A0266D /* AERecord.podspec */,
 			);
 			sourceTree = "<group>";
 		};
@@ -95,11 +98,9 @@
 				8BC895551A07930500778DB0 /* MasterViewController.swift */,
 				8BC895571A07930500778DB0 /* DetailViewController.swift */,
 				8B8FD1D21A0BCC3C009FAE44 /* CustomCollectionViewCell.swift */,
+				8BC8955E1A07930500778DB0 /* LaunchScreen.xib */,
 				8BC895591A07930500778DB0 /* Main.storyboard */,
 				8BC8955C1A07930500778DB0 /* Images.xcassets */,
-				8BC8955E1A07930500778DB0 /* LaunchScreen.xib */,
-				8BC895521A07930500778DB0 /* AERecordExample.xcdatamodeld */,
-				8B975B2C1A098FAF00AA3499 /* Event.swift */,
 				8BC8954E1A07930500778DB0 /* Supporting Files */,
 			);
 			path = AERecordExample;
@@ -108,9 +109,9 @@
 		8BC8954E1A07930500778DB0 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
-				8B8FD1D41A0BE171009FAE44 /* LICENSE */,
-				8B8FD1D51A0BE171009FAE44 /* README.md */,
 				8BC8954F1A07930500778DB0 /* Info.plist */,
+				8BC895521A07930500778DB0 /* AERecordExample.xcdatamodeld */,
+				8B975B2C1A098FAF00AA3499 /* Event.swift */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -222,7 +223,6 @@
 			files = (
 				8BC8955B1A07930500778DB0 /* Main.storyboard in Resources */,
 				8BC895601A07930500778DB0 /* LaunchScreen.xib in Resources */,
-				8B8FD1D61A0BE171009FAE44 /* LICENSE in Resources */,
 				8BC8955D1A07930500778DB0 /* Images.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
