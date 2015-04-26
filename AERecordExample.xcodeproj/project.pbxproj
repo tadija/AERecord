@@ -74,7 +74,7 @@
 			children = (
 				8BDEBABC1AED5A8C00A12D92 /* AERecord */,
 				8BC8954D1A07930500778DB0 /* AERecordExample */,
-				8BC895681A07930500778DB0 /* AERecordExampleTests */,
+				8BC895681A07930500778DB0 /* AERecordTests */,
 				8BC8954C1A07930500778DB0 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -115,13 +115,13 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
-		8BC895681A07930500778DB0 /* AERecordExampleTests */ = {
+		8BC895681A07930500778DB0 /* AERecordTests */ = {
 			isa = PBXGroup;
 			children = (
 				8BC8956B1A07930500778DB0 /* AERecordTests.swift */,
 				8BC895691A07930500778DB0 /* Supporting Files */,
 			);
-			path = AERecordExampleTests;
+			path = AERecordTests;
 			sourceTree = "<group>";
 		};
 		8BC895691A07930500778DB0 /* Supporting Files */ = {
@@ -404,7 +404,7 @@
 					"DEBUG=1",
 					"$(inherited)",
 				);
-				INFOPLIST_FILE = AERecordExampleTests/Info.plist;
+				INFOPLIST_FILE = AERecordTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/AERecordExample.app/AERecordExample";
@@ -419,7 +419,7 @@
 					"$(SDKROOT)/Developer/Library/Frameworks",
 					"$(inherited)",
 				);
-				INFOPLIST_FILE = AERecordExampleTests/Info.plist;
+				INFOPLIST_FILE = AERecordTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/AERecordExample.app/AERecordExample";
