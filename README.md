@@ -416,7 +416,17 @@ Fetching | Description
 
 
 ## Installation
-Just drag AERecord.swift into your project and start using it.
+
+- Using [CocoaPods](http://cocoapods.org/):
+
+  ```ruby
+  use_frameworks!
+  pod 'AERecord'
+  ```
+
+- Manually:
+
+  Just drag `AERecord.swift` file into your project and start using it.
 
 
 ## License
