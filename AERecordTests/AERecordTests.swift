@@ -1,6 +1,6 @@
 //
-//  AERecordExampleTests.swift
-//  AERecordExampleTests
+//  AERecordTests.swift
+//  AERecordTests
 //
 //  Created by Marko Tadic on 11/3/14.
 //  Copyright (c) 2014 ae. All rights reserved.
@@ -9,7 +9,7 @@
 import UIKit
 import XCTest
 
-class AERecordExampleTests: XCTestCase {
+class AERecordTests: XCTestCase {
     
     override func setUp() {
         super.setUp()

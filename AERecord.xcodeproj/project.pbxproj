@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		8B8FD1D31A0BCC3C009FAE44 /* CustomCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B8FD1D21A0BCC3C009FAE44 /* CustomCollectionViewCell.swift */; };
-		8B8FD1D61A0BE171009FAE44 /* LICENSE in Resources */ = {isa = PBXBuildFile; fileRef = 8B8FD1D41A0BE171009FAE44 /* LICENSE */; };
 		8B975B2B1A098A4800AA3499 /* AERecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B975B2A1A098A4800AA3499 /* AERecord.swift */; };
 		8B975B2D1A098FAF00AA3499 /* Event.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B975B2C1A098FAF00AA3499 /* Event.swift */; };
 		8BC895511A07930500778DB0 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BC895501A07930500778DB0 /* AppDelegate.swift */; };
@@ -18,7 +17,7 @@
 		8BC8955B1A07930500778DB0 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8BC895591A07930500778DB0 /* Main.storyboard */; };
 		8BC8955D1A07930500778DB0 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8BC8955C1A07930500778DB0 /* Images.xcassets */; };
 		8BC895601A07930500778DB0 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8BC8955E1A07930500778DB0 /* LaunchScreen.xib */; };
-		8BC8956C1A07930500778DB0 /* AERecordExampleTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BC8956B1A07930500778DB0 /* AERecordExampleTests.swift */; };
+		8BC8956C1A07930500778DB0 /* AERecordTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BC8956B1A07930500778DB0 /* AERecordTests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -32,9 +31,10 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		8B4B477C1AED601F00A0266D /* AERecord.podspec */ = {isa = PBXFileReference; lastKnownFileType = text; path = AERecord.podspec; sourceTree = "<group>"; };
 		8B8FD1D21A0BCC3C009FAE44 /* CustomCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomCollectionViewCell.swift; sourceTree = "<group>"; };
-		8B8FD1D41A0BE171009FAE44 /* LICENSE */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = LICENSE; path = ../LICENSE; sourceTree = "<group>"; };
-		8B8FD1D51A0BE171009FAE44 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; name = README.md; path = ../README.md; sourceTree = "<group>"; };
+		8B8FD1D41A0BE171009FAE44 /* LICENSE */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
+		8B8FD1D51A0BE171009FAE44 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		8B975B2A1A098A4800AA3499 /* AERecord.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AERecord.swift; sourceTree = "<group>"; };
 		8B975B2C1A098FAF00AA3499 /* Event.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Event.swift; sourceTree = "<group>"; };
 		8BC8954B1A07930500778DB0 /* AERecordExample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AERecordExample.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -46,9 +46,9 @@
 		8BC8955A1A07930500778DB0 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		8BC8955C1A07930500778DB0 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		8BC8955F1A07930500778DB0 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
-		8BC895651A07930500778DB0 /* AERecordExampleTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = AERecordExampleTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		8BC895651A07930500778DB0 /* AERecordTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = AERecordTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		8BC8956A1A07930500778DB0 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		8BC8956B1A07930500778DB0 /* AERecordExampleTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AERecordExampleTests.swift; sourceTree = "<group>"; };
+		8BC8956B1A07930500778DB0 /* AERecordTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AERecordTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -72,10 +72,13 @@
 		8BC895421A07930500778DB0 = {
 			isa = PBXGroup;
 			children = (
-				8B975B2A1A098A4800AA3499 /* AERecord.swift */,
+				8BDEBABC1AED5A8C00A12D92 /* AERecord */,
+				8BC895681A07930500778DB0 /* AERecordTests */,
 				8BC8954D1A07930500778DB0 /* AERecordExample */,
-				8BC895681A07930500778DB0 /* AERecordExampleTests */,
 				8BC8954C1A07930500778DB0 /* Products */,
+				8B8FD1D41A0BE171009FAE44 /* LICENSE */,
+				8B8FD1D51A0BE171009FAE44 /* README.md */,
+				8B4B477C1AED601F00A0266D /* AERecord.podspec */,
 			);
 			sourceTree = "<group>";
 		};
@@ -83,7 +86,7 @@
 			isa = PBXGroup;
 			children = (
 				8BC8954B1A07930500778DB0 /* AERecordExample.app */,
-				8BC895651A07930500778DB0 /* AERecordExampleTests.xctest */,
+				8BC895651A07930500778DB0 /* AERecordTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -95,11 +98,9 @@
 				8BC895551A07930500778DB0 /* MasterViewController.swift */,
 				8BC895571A07930500778DB0 /* DetailViewController.swift */,
 				8B8FD1D21A0BCC3C009FAE44 /* CustomCollectionViewCell.swift */,
+				8BC8955E1A07930500778DB0 /* LaunchScreen.xib */,
 				8BC895591A07930500778DB0 /* Main.storyboard */,
 				8BC8955C1A07930500778DB0 /* Images.xcassets */,
-				8BC8955E1A07930500778DB0 /* LaunchScreen.xib */,
-				8BC895521A07930500778DB0 /* AERecordExample.xcdatamodeld */,
-				8B975B2C1A098FAF00AA3499 /* Event.swift */,
 				8BC8954E1A07930500778DB0 /* Supporting Files */,
 			);
 			path = AERecordExample;
@@ -108,20 +109,20 @@
 		8BC8954E1A07930500778DB0 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
-				8B8FD1D41A0BE171009FAE44 /* LICENSE */,
-				8B8FD1D51A0BE171009FAE44 /* README.md */,
 				8BC8954F1A07930500778DB0 /* Info.plist */,
+				8BC895521A07930500778DB0 /* AERecordExample.xcdatamodeld */,
+				8B975B2C1A098FAF00AA3499 /* Event.swift */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
-		8BC895681A07930500778DB0 /* AERecordExampleTests */ = {
+		8BC895681A07930500778DB0 /* AERecordTests */ = {
 			isa = PBXGroup;
 			children = (
-				8BC8956B1A07930500778DB0 /* AERecordExampleTests.swift */,
+				8BC8956B1A07930500778DB0 /* AERecordTests.swift */,
 				8BC895691A07930500778DB0 /* Supporting Files */,
 			);
-			path = AERecordExampleTests;
+			path = AERecordTests;
 			sourceTree = "<group>";
 		};
 		8BC895691A07930500778DB0 /* Supporting Files */ = {
@@ -130,6 +131,14 @@
 				8BC8956A1A07930500778DB0 /* Info.plist */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		8BDEBABC1AED5A8C00A12D92 /* AERecord */ = {
+			isa = PBXGroup;
+			children = (
+				8B975B2A1A098A4800AA3499 /* AERecord.swift */,
+			);
+			path = AERecord;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -152,9 +161,9 @@
 			productReference = 8BC8954B1A07930500778DB0 /* AERecordExample.app */;
 			productType = "com.apple.product-type.application";
 		};
-		8BC895641A07930500778DB0 /* AERecordExampleTests */ = {
+		8BC895641A07930500778DB0 /* AERecordTests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 8BC895721A07930500778DB0 /* Build configuration list for PBXNativeTarget "AERecordExampleTests" */;
+			buildConfigurationList = 8BC895721A07930500778DB0 /* Build configuration list for PBXNativeTarget "AERecordTests" */;
 			buildPhases = (
 				8BC895611A07930500778DB0 /* Sources */,
 				8BC895621A07930500778DB0 /* Frameworks */,
@@ -165,9 +174,9 @@
 			dependencies = (
 				8BC895671A07930500778DB0 /* PBXTargetDependency */,
 			);
-			name = AERecordExampleTests;
+			name = AERecordTests;
 			productName = AERecordExampleTests;
-			productReference = 8BC895651A07930500778DB0 /* AERecordExampleTests.xctest */;
+			productReference = 8BC895651A07930500778DB0 /* AERecordTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
 /* End PBXNativeTarget section */
@@ -188,7 +197,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 8BC895461A07930500778DB0 /* Build configuration list for PBXProject "AERecordExample" */;
+			buildConfigurationList = 8BC895461A07930500778DB0 /* Build configuration list for PBXProject "AERecord" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
@@ -202,7 +211,7 @@
 			projectRoot = "";
 			targets = (
 				8BC8954A1A07930500778DB0 /* AERecordExample */,
-				8BC895641A07930500778DB0 /* AERecordExampleTests */,
+				8BC895641A07930500778DB0 /* AERecordTests */,
 			);
 		};
 /* End PBXProject section */
@@ -214,7 +223,6 @@
 			files = (
 				8BC8955B1A07930500778DB0 /* Main.storyboard in Resources */,
 				8BC895601A07930500778DB0 /* LaunchScreen.xib in Resources */,
-				8B8FD1D61A0BE171009FAE44 /* LICENSE in Resources */,
 				8BC8955D1A07930500778DB0 /* Images.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -247,7 +255,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				8BC8956C1A07930500778DB0 /* AERecordExampleTests.swift in Sources */,
+				8BC8956C1A07930500778DB0 /* AERecordTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -368,7 +376,7 @@
 				INFOPLIST_FILE = AERecordExample/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = AERecordExample;
 			};
 			name = Debug;
 		};
@@ -380,7 +388,7 @@
 				INFOPLIST_FILE = AERecordExample/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = AERecordExample;
 			};
 			name = Release;
 		};
@@ -396,9 +404,9 @@
 					"DEBUG=1",
 					"$(inherited)",
 				);
-				INFOPLIST_FILE = AERecordExampleTests/Info.plist;
+				INFOPLIST_FILE = AERecordTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = AERecordTests;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/AERecordExample.app/AERecordExample";
 			};
 			name = Debug;
@@ -411,9 +419,9 @@
 					"$(SDKROOT)/Developer/Library/Frameworks",
 					"$(inherited)",
 				);
-				INFOPLIST_FILE = AERecordExampleTests/Info.plist;
+				INFOPLIST_FILE = AERecordTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = AERecordTests;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/AERecordExample.app/AERecordExample";
 			};
 			name = Release;
@@ -421,7 +429,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		8BC895461A07930500778DB0 /* Build configuration list for PBXProject "AERecordExample" */ = {
+		8BC895461A07930500778DB0 /* Build configuration list for PBXProject "AERecord" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				8BC8956D1A07930500778DB0 /* Debug */,
@@ -439,7 +447,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		8BC895721A07930500778DB0 /* Build configuration list for PBXNativeTarget "AERecordExampleTests" */ = {
+		8BC895721A07930500778DB0 /* Build configuration list for PBXNativeTarget "AERecordTests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				8BC895731A07930500778DB0 /* Debug */,
