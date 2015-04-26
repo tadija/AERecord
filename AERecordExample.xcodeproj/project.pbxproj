@@ -18,7 +18,7 @@
 		8BC8955B1A07930500778DB0 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8BC895591A07930500778DB0 /* Main.storyboard */; };
 		8BC8955D1A07930500778DB0 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8BC8955C1A07930500778DB0 /* Images.xcassets */; };
 		8BC895601A07930500778DB0 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8BC8955E1A07930500778DB0 /* LaunchScreen.xib */; };
-		8BC8956C1A07930500778DB0 /* AERecordExampleTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BC8956B1A07930500778DB0 /* AERecordExampleTests.swift */; };
+		8BC8956C1A07930500778DB0 /* AERecordTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BC8956B1A07930500778DB0 /* AERecordTests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -48,7 +48,7 @@
 		8BC8955F1A07930500778DB0 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
 		8BC895651A07930500778DB0 /* AERecordExampleTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = AERecordExampleTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		8BC8956A1A07930500778DB0 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		8BC8956B1A07930500778DB0 /* AERecordExampleTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AERecordExampleTests.swift; sourceTree = "<group>"; };
+		8BC8956B1A07930500778DB0 /* AERecordTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AERecordTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -118,7 +118,7 @@
 		8BC895681A07930500778DB0 /* AERecordExampleTests */ = {
 			isa = PBXGroup;
 			children = (
-				8BC8956B1A07930500778DB0 /* AERecordExampleTests.swift */,
+				8BC8956B1A07930500778DB0 /* AERecordTests.swift */,
 				8BC895691A07930500778DB0 /* Supporting Files */,
 			);
 			path = AERecordExampleTests;
@@ -255,7 +255,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				8BC8956C1A07930500778DB0 /* AERecordExampleTests.swift in Sources */,
+				8BC8956C1A07930500778DB0 /* AERecordTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
