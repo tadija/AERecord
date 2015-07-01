@@ -8,29 +8,47 @@
 
 import UIKit
 import XCTest
+import CoreData
 
 class AERecordTests: XCTestCase {
     
     override func setUp() {
         super.setUp()
-        // Put setup code here. This method is called before the invocation of each test method in the class.
+        
+        let bundle = NSBundle(forClass: AERecordTests.self)
+        let modelURL = bundle.URLForResource("AERecordTestModel", withExtension: "momd")
+        let model = NSManagedObjectModel(contentsOfURL: modelURL!)
+        let storeURL = AERecord.storeURLForName("AERecordTest")
+        AERecord.loadCoreDataStack(managedObjectModel: model!, storeURL: storeURL)
     }
     
     override func tearDown() {
-        // Put teardown code here. This method is called after the invocation of each test method in the class.
+        AERecord.destroyCoreDataStack()
+        
         super.tearDown()
     }
     
-    func testExample() {
-        // This is an example of a functional test case.
-        XCTAssert(true, "Pass")
+    func testEntityName() {
+        XCTAssertEqual(Animal.entityName, "Animal", "Should be able to get name of the entity.")
     }
     
-    func testPerformanceExample() {
-        // This is an example of a performance test case.
-        self.measureBlock() {
-            // Put the code you want to measure the time of here.
-        }
+    func testEntity() {
+        let animalAttributesCount = Animal.entity?.attributesByName.count
+        XCTAssertEqual(animalAttributesCount!, 2, "Should be able to get NSEntityDescription of the entity.")
+    }
+    
+    func testCreateFetchRequest() {
+        let request = Animal.createFetchRequest()
+        XCTAssertEqual(request.entityName!, "Animal", "Should be able to create fetch request for entity.")
+    }
+    
+    func testCompoundPredicateForAttributes() {
+        // TODO:
+    }
+    
+    func testCreate() {
+        let animal = Animal.create()
+//        XCTAssertEqual(animal.description, "", "")
     }
     
 }

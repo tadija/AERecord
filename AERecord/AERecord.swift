@@ -346,6 +346,15 @@ public extension NSManagedObject {
         return request
     }
     
+    class func compoundPredicateForAttributes(attributes: [NSObject : AnyObject], type: NSCompoundPredicateType) -> NSPredicate {
+        var predicates = [NSPredicate]()
+        for (attribute, value) in attributes {
+            predicates.append(NSPredicate(format: "%K = %@", argumentArray: [attribute, value]))
+        }
+        let compoundPredicate = NSCompoundPredicate(type: type, subpredicates: predicates)
+        return compoundPredicate
+    }
+    
     // MARK: Creating
     
     class func create(context: NSManagedObjectContext = AERecord.defaultContext) -> Self {
@@ -368,6 +377,14 @@ public extension NSManagedObject {
         request.fetchLimit = 1
         let objects = AERecord.executeFetchRequest(request, context: context)
         return objects.first ?? createWithAttributes([attribute : value], context: context)
+    }
+    
+    class func firstOrCreateWithAttributes(attributes: [NSObject : AnyObject], context: NSManagedObjectContext = AERecord.defaultContext) -> NSManagedObject {
+        let predicate = compoundPredicateForAttributes(attributes, type: .AndPredicateType)
+        let request = createFetchRequest(predicate: predicate)
+        request.fetchLimit = 1
+        let objects = AERecord.executeFetchRequest(request, context: context)
+        return objects.first ?? createWithAttributes(attributes, context: context)
     }
     
     // MARK: Deleting
