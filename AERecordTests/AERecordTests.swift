@@ -12,6 +12,8 @@ import CoreData
 
 class AERecordTests: XCTestCase {
     
+    // MARK: - Setup & Teardown
+    
     override func setUp() {
         super.setUp()
         
@@ -52,6 +54,10 @@ class AERecordTests: XCTestCase {
         super.tearDown()
     }
     
+    // MARK: - NSManagedObject Extension
+    
+    // MARK: General
+    
     func testEntityName() {
         XCTAssertEqual(Animal.entityName, "Animal", "Should be able to get name of the entity.")
     }
@@ -71,6 +77,8 @@ class AERecordTests: XCTestCase {
         let predicate = Animal.compoundPredicateForAttributes(attributes, type: .AndPredicateType)
         XCTAssertEqual(predicate.predicateFormat, "color == \"lightgray\" AND name == \"Tinna\"", "Should be able to create compound predicate.")
     }
+    
+    // MARK: Creating
     
     func testCreate() {
         let animal = Animal.create()
@@ -99,6 +107,87 @@ class AERecordTests: XCTestCase {
         let tinnaAttributes = ["name" : "Tinna", "color" : "lightgray"]
         let tinna = Animal.firstOrCreateWithAttributes(tinnaAttributes) as! Animal
         XCTAssertEqual(tinna.color, "lightgray", "Should be able to return the first record with given attributes.")
+    }
+    
+    // MARK: Finding First
+    
+    func testFirst() {
+        let sortDescriptor = NSSortDescriptor(key: "name", ascending: true)
+        let firstAnimal = Animal.first(sortDescriptors: [sortDescriptor]) as! Animal
+        XCTAssertEqual(firstAnimal.name, "Betty", "Should be able to return the first record sorted by given sort descriptor.")
+    }
+    
+    func testFirstWithPredicate() {
+        let predicate = NSPredicate(format: "color == %@", "lightgray")
+        let tinna = Animal.firstWithPredicate(predicate) as! Animal
+        XCTAssertEqual(tinna.name, "Tinna", "Should be able to return the first record for given predicate.")
+    }
+    
+    func testFirstWithAttribute() {
+        let kika = Animal.firstWithAttribute("color", value: "black") as! Animal
+        XCTAssertEqual(kika.name, "Kika", "Should be able to return the first record for given attribute.")
+    }
+    
+    func testFirstOrderedByAttribute() {
+        let kika = Animal.firstOrderedByAttribute("color", ascending: true) as! Animal
+        XCTAssertEqual(kika.name, "Kika", "Should be able to return the first record ordered by given attribute.")
+    }
+    
+    // MARK: Finding All
+    
+    func testAll() {
+        let animals = Animal.all()
+        XCTAssertEqual(animals!.count, 7, "Should be able to return all records of entity.")
+    }
+    
+    func testAllWithPredicate() {
+        let predicate = NSPredicate(format: "color == %@", "yellow")
+        let yellowAnimals = Animal.allWithPredicate(predicate)
+        XCTAssertEqual(yellowAnimals!.count, 2, "Should be able to return all records for given predicate.")
+    }
+    
+    func testAllWithAttribute() {
+        let whiteAnimals = Animal.allWithAttribute("color", value: "white")
+        XCTAssertEqual(whiteAnimals!.count, 2, "Should be able to return all records for given attribute.")
+    }
+    
+    // MARK: Deleting
+    
+    func testDelete() {
+        let sortDescriptor = NSSortDescriptor(key: "name", ascending: true)
+        let firstAnimal = Animal.first(sortDescriptors: [sortDescriptor]) as! Animal
+        XCTAssertEqual(firstAnimal.name, "Betty", "Should be able to return the first record sorted by given sort descriptor.")
+        
+        firstAnimal.delete()
+        let betty = Animal.firstWithAttribute("name", value: "Betty") as? Animal
+        XCTAssertNil(betty, "Should be able to delete record.")
+    }
+    
+    func testDeleteAll() {
+        Animal.deleteAll()
+        let animals = Animal.all()
+        XCTAssertNil(animals, "Should be able to delete all records.")
+    }
+    
+    func deleteAllWithPredicate() {
+        let predicate = NSPredicate(format: "color == %@", "yellow")
+        Animal.deleteAllWithPredicate(predicate)
+        
+        let animals = Animal.all()
+        let betty = Animal.firstWithAttribute("name", value: "Betty") as? Animal
+        
+        XCTAssertEqual(animals!.count, 5, "Should be able to delete all records for given predicate.")
+        XCTAssertNil(betty, "Should be able to delete all records for given predicate.")
+    }
+    
+    func deleteAllWithAttribute() {
+        Animal.deleteAllWithAttribute("color", value: "white")
+        
+        let animals = Animal.all()
+        let villy = Animal.firstWithAttribute("name", value: "Villy") as? Animal
+        
+        XCTAssertEqual(animals!.count, 5, "Should be able to delete all records for given attribute.")
+        XCTAssertNil(villy, "Should be able to delete all records for given attribute.")
     }
     
 }
