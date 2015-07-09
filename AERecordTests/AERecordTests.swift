@@ -222,10 +222,10 @@ class AERecordTests: XCTestCase {
     
     func testAutoIncrementedIntegerAttribute() {
         for animal in Animal.all() as! [Animal] {
-            animal.autoID = Animal.autoIncrementedIntegerAttribute("autoID")
+            animal.customID = Animal.autoIncrementedIntegerAttribute("customID")
         }
-        let newAutoID = Animal.autoIncrementedIntegerAttribute("autoID")
-        XCTAssertEqual(newAutoID, 8, "Should be able to return next integer value for given attribute.")
+        let newCustomID = Animal.autoIncrementedIntegerAttribute("customID")
+        XCTAssertEqual(newCustomID, 8, "Should be able to return next integer value for given attribute.")
     }
     
     // MARK: Turn Object Into Fault

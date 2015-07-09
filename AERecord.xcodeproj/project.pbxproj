@@ -8,7 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		8B03862A1B4482B1005950F5 /* AERecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B975B2A1A098A4800AA3499 /* AERecord.swift */; };
-		8B03862D1B44839A005950F5 /* AERecordTestModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 8B03862B1B44839A005950F5 /* AERecordTestModel.xcdatamodeld */; };
+		8B03862D1B44839A005950F5 /* AERecordTest.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 8B03862B1B44839A005950F5 /* AERecordTest.xcdatamodeld */; };
 		8B03862F1B448555005950F5 /* Species.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B03862E1B448555005950F5 /* Species.swift */; };
 		8B0386311B448556005950F5 /* Breed.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B0386301B448556005950F5 /* Breed.swift */; };
 		8B0386331B448556005950F5 /* Animal.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B0386321B448556005950F5 /* Animal.swift */; };
@@ -36,7 +36,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		8B03862C1B44839A005950F5 /* AERecordTestModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = AERecordTestModel.xcdatamodel; sourceTree = "<group>"; };
+		8B03862C1B44839A005950F5 /* AERecordTest.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = AERecordTest.xcdatamodel; sourceTree = "<group>"; };
 		8B03862E1B448555005950F5 /* Species.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Species.swift; sourceTree = "<group>"; };
 		8B0386301B448556005950F5 /* Breed.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Breed.swift; sourceTree = "<group>"; };
 		8B0386321B448556005950F5 /* Animal.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Animal.swift; sourceTree = "<group>"; };
@@ -137,7 +137,7 @@
 		8BC895691A07930500778DB0 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
-				8B03862B1B44839A005950F5 /* AERecordTestModel.xcdatamodeld */,
+				8B03862B1B44839A005950F5 /* AERecordTest.xcdatamodeld */,
 				8B0386321B448556005950F5 /* Animal.swift */,
 				8B0386301B448556005950F5 /* Breed.swift */,
 				8B03862E1B448555005950F5 /* Species.swift */,
@@ -269,7 +269,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				8B03862F1B448555005950F5 /* Species.swift in Sources */,
-				8B03862D1B44839A005950F5 /* AERecordTestModel.xcdatamodeld in Sources */,
+				8B03862D1B44839A005950F5 /* AERecordTest.xcdatamodeld in Sources */,
 				8B03862A1B4482B1005950F5 /* AERecord.swift in Sources */,
 				8B0386311B448556005950F5 /* Breed.swift in Sources */,
 				8BC8956C1A07930500778DB0 /* AERecordTests.swift in Sources */,
@@ -477,13 +477,13 @@
 /* End XCConfigurationList section */
 
 /* Begin XCVersionGroup section */
-		8B03862B1B44839A005950F5 /* AERecordTestModel.xcdatamodeld */ = {
+		8B03862B1B44839A005950F5 /* AERecordTest.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
-				8B03862C1B44839A005950F5 /* AERecordTestModel.xcdatamodel */,
+				8B03862C1B44839A005950F5 /* AERecordTest.xcdatamodel */,
 			);
-			currentVersion = 8B03862C1B44839A005950F5 /* AERecordTestModel.xcdatamodel */;
-			path = AERecordTestModel.xcdatamodeld;
+			currentVersion = 8B03862C1B44839A005950F5 /* AERecordTest.xcdatamodel */;
+			path = AERecordTest.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;
 		};
