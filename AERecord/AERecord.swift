@@ -355,12 +355,12 @@ public extension NSManagedObject {
         return request
     }
     
-    class func compoundPredicateForAttributes(attributes: [NSObject : AnyObject], type: NSCompoundPredicateType) -> NSPredicate {
+    class func compoundPredicateForAttributes(attributes: [NSObject : AnyObject], predicateType: NSCompoundPredicateType) -> NSPredicate {
         var predicates = [NSPredicate]()
         for (attribute, value) in attributes {
             predicates.append(NSPredicate(format: "%K = %@", argumentArray: [attribute, value]))
         }
-        let compoundPredicate = NSCompoundPredicate(type: type, subpredicates: predicates)
+        let compoundPredicate = NSCompoundPredicate(type: predicateType, subpredicates: predicates)
         return compoundPredicate
     }
     
@@ -381,49 +381,15 @@ public extension NSManagedObject {
     }
     
     class func firstOrCreateWithAttribute(attribute: String, value: AnyObject, context: NSManagedObjectContext = AERecord.defaultContext) -> NSManagedObject {
-        let predicate = NSPredicate(format: "%K = %@", argumentArray: [attribute, value])
-        let request = createFetchRequest(predicate: predicate)
-        request.fetchLimit = 1
-        let objects = AERecord.executeFetchRequest(request, context: context)
-        return objects.first ?? createWithAttributes([attribute : value], context: context)
+        return firstOrCreateWithAttributes([attribute : value], context: context)
     }
     
-    class func firstOrCreateWithAttributes(attributes: [NSObject : AnyObject], context: NSManagedObjectContext = AERecord.defaultContext) -> NSManagedObject {
-        let predicate = compoundPredicateForAttributes(attributes, type: .AndPredicateType)
+    class func firstOrCreateWithAttributes(attributes: [NSObject : AnyObject], predicateType: NSCompoundPredicateType = .AndPredicateType, context: NSManagedObjectContext = AERecord.defaultContext) -> NSManagedObject {
+        let predicate = compoundPredicateForAttributes(attributes, predicateType: predicateType)
         let request = createFetchRequest(predicate: predicate)
         request.fetchLimit = 1
         let objects = AERecord.executeFetchRequest(request, context: context)
         return objects.first ?? createWithAttributes(attributes, context: context)
-    }
-    
-    // MARK: Deleting
-    
-    func delete(context: NSManagedObjectContext = AERecord.defaultContext) {
-        context.deleteObject(self)
-    }
-    
-    class func deleteAll(context: NSManagedObjectContext = AERecord.defaultContext) {
-        if let objects = self.all(context: context) {
-            for object in objects {
-                context.deleteObject(object)
-            }
-        }
-    }
-    
-    class func deleteAllWithPredicate(predicate: NSPredicate, context: NSManagedObjectContext = AERecord.defaultContext) {
-        if let objects = self.allWithPredicate(predicate, context: context) {
-            for object in objects {
-                context.deleteObject(object)
-            }
-        }
-    }
-    
-    class func deleteAllWithAttribute(attribute: String, value: AnyObject, context: NSManagedObjectContext = AERecord.defaultContext) {
-        if let objects = self.allWithAttribute(attribute, value: value, context: context) {
-            for object in objects {
-                context.deleteObject(object)
-            }
-        }
     }
     
     // MARK: Finding First
@@ -469,6 +435,36 @@ public extension NSManagedObject {
     class func allWithAttribute(attribute: String, value: AnyObject, sortDescriptors: [NSSortDescriptor]? = nil, context: NSManagedObjectContext = AERecord.defaultContext) -> [NSManagedObject]? {
         let predicate = NSPredicate(format: "%K = %@", argumentArray: [attribute, value])
         return allWithPredicate(predicate, sortDescriptors: sortDescriptors, context: context)
+    }
+    
+    // MARK: Deleting
+    
+    func delete(context: NSManagedObjectContext = AERecord.defaultContext) {
+        context.deleteObject(self)
+    }
+    
+    class func deleteAll(context: NSManagedObjectContext = AERecord.defaultContext) {
+        if let objects = self.all(context: context) {
+            for object in objects {
+                context.deleteObject(object)
+            }
+        }
+    }
+    
+    class func deleteAllWithPredicate(predicate: NSPredicate, context: NSManagedObjectContext = AERecord.defaultContext) {
+        if let objects = self.allWithPredicate(predicate, context: context) {
+            for object in objects {
+                context.deleteObject(object)
+            }
+        }
+    }
+    
+    class func deleteAllWithAttribute(attribute: String, value: AnyObject, context: NSManagedObjectContext = AERecord.defaultContext) {
+        if let objects = self.allWithAttribute(attribute, value: value, context: context) {
+            for object in objects {
+                context.deleteObject(object)
+            }
+        }
     }
     
     // MARK: Count

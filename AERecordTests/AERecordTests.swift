@@ -72,7 +72,7 @@ class AERecordTests: XCTestCase {
     
     func testCompoundPredicateForAttributes() {
         let attributes = ["name" : "Tinna", "color" : "lightgray"]
-        let predicate = Animal.compoundPredicateForAttributes(attributes, type: .AndPredicateType)
+        let predicate = Animal.compoundPredicateForAttributes(attributes, predicateType: .AndPredicateType)
         XCTAssertEqual(predicate.predicateFormat, "color == \"lightgray\" AND name == \"Tinna\"", "Should be able to create compound predicate.")
     }
     
