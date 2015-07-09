@@ -131,6 +131,12 @@ class AERecordTests: XCTestCase {
         XCTAssertEqual(kika.name, "Kika", "Should be able to return the first record ordered by given attribute.")
     }
     
+    func testFirstWithAttributes() {
+        let tinnaAttributes = ["name" : "Tinna", "color" : "lightgray"]
+        let tinna = Animal.firstWithAttributes(tinnaAttributes) as! Animal
+        XCTAssertEqual(tinna.color, "lightgray", "Should be able to return the first record with given attributes.")
+    }
+    
     // MARK: Finding All
     
     func testAll() {
@@ -147,6 +153,17 @@ class AERecordTests: XCTestCase {
     func testAllWithAttribute() {
         let whiteAnimals = Animal.allWithAttribute("color", value: "white")
         XCTAssertEqual(whiteAnimals!.count, 2, "Should be able to return all records for given attribute.")
+    }
+    
+    func testAllWithAttributes() {
+        let whiteAttributes = ["name" : "Villy", "color" : "white"]
+        
+        let villy = Animal.allWithAttributes(whiteAttributes) as! [Animal]
+        XCTAssertEqual(villy.count, 1, "Should be able to return all records for given attributes.")
+        XCTAssertEqual(villy.first!.name, "Villy", "Should be able to return all records for given attributes.")
+        
+        let whiteAnimals = Animal.allWithAttributes(whiteAttributes, predicateType: .OrPredicateType)
+        XCTAssertEqual(whiteAnimals!.count, 2, "Should be able to return all records for given attributes and OR predicate type.")
     }
     
     // MARK: Deleting
@@ -188,6 +205,14 @@ class AERecordTests: XCTestCase {
         XCTAssertNil(villy, "Should be able to delete all records for given attribute.")
     }
     
+    func testDeleteAllWithAttributes() {
+        let attributes = ["color" : "white", "name" : "Caesar"]
+        Animal.deleteAllWithAttributes(attributes, predicateType: .OrPredicateType)
+        
+        let animals = Animal.all()
+        XCTAssertEqual(animals!.count, 4, "Should be able to delete all records for given attributes.")
+    }
+    
     // MARK: Count
     
     func testCount() {
@@ -204,6 +229,12 @@ class AERecordTests: XCTestCase {
     func testCountWithAttribute() {
         let yellowCount = Animal.countWithAttribute("color", value: "yellow")
         XCTAssertEqual(yellowCount, 2, "Should be able to count all records for given attribute.")
+    }
+    
+    func testCountWithAttributes() {
+        let attributes = ["breed.species.name" : "cat"]
+        let catsCount = Animal.countWithAttributes(attributes)
+        XCTAssertEqual(catsCount, 3, "Should be able to count all records for given attributes.")
     }
     
     // MARK: Distinct
