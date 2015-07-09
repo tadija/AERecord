@@ -17,13 +17,10 @@ class AERecordTests: XCTestCase {
     override func setUp() {
         super.setUp()
         
-        /* load CoreData stack */
+        /* create Core Data stack */
         
-        let bundle = NSBundle(forClass: AERecordTests.self)
-        let modelURL = bundle.URLForResource("AERecordTestModel", withExtension: "momd")
-        let model = NSManagedObjectModel(contentsOfURL: modelURL!)
-        let storeURL = AERecord.storeURLForName("AERecordTest")
-        AERecord.loadCoreDataStack(managedObjectModel: model!, storeURL: storeURL)
+        let model = AERecord.modelFromBundle(forClass: AERecordTests.self)
+        AERecord.loadCoreDataStack(managedObjectModel: model, storeType: NSInMemoryStoreType)
         
         /* add dummy data */
         
@@ -49,7 +46,8 @@ class AERecordTests: XCTestCase {
     }
     
     override func tearDown() {
-        AERecord.destroyCoreDataStack()
+        // TODO: improve destroy logic for NSInMemoryStoreType
+        // AERecord.destroyCoreDataStack()
         
         super.tearDown()
     }
@@ -64,7 +62,7 @@ class AERecordTests: XCTestCase {
     
     func testEntity() {
         let animalAttributesCount = Animal.entity?.attributesByName.count
-        XCTAssertEqual(animalAttributesCount!, 2, "Should be able to get NSEntityDescription of the entity.")
+        XCTAssertEqual(animalAttributesCount!, 3, "Should be able to get NSEntityDescription of the entity.")
     }
     
     func testCreateFetchRequest() {
@@ -188,6 +186,69 @@ class AERecordTests: XCTestCase {
         
         XCTAssertEqual(animals!.count, 5, "Should be able to delete all records for given attribute.")
         XCTAssertNil(villy, "Should be able to delete all records for given attribute.")
+    }
+    
+    // MARK: Count
+    
+    func testCount() {
+        let animalsCount = Animal.count()
+        XCTAssertEqual(animalsCount, 7, "Should be able to count all records.")
+    }
+    
+    func testCountWithPredicate() {
+        let predicate = NSPredicate(format: "color == %@", "white")
+        let whiteCount = Animal.countWithPredicate(predicate: predicate)
+        XCTAssertEqual(whiteCount, 2, "Should be able to count all records for given predicate.")
+    }
+    
+    func testCountWithAttribute() {
+        let yellowCount = Animal.countWithAttribute("color", value: "yellow")
+        XCTAssertEqual(yellowCount, 2, "Should be able to count all records for given attribute.")
+    }
+    
+    // MARK: Distinct
+    
+    func testDistinctValuesForAttribute() {
+        // not supported by NSInMemoryStoreType
+        // SEE: http://stackoverflow.com/questions/20950897/fetching-distinct-values-of-nsinmemorystoretype-returns-duplicates-nssqlitestor
+    }
+    
+    func testDistinctRecordsForAttributes() {
+        // not supported by NSInMemoryStoreType
+        // SEE: http://stackoverflow.com/questions/20950897/fetching-distinct-values-of-nsinmemorystoretype-returns-duplicates-nssqlitestor
+    }
+    
+    // MARK: Auto Increment
+    
+    func testAutoIncrementedIntegerAttribute() {
+        for animal in Animal.all() as! [Animal] {
+            animal.autoID = Animal.autoIncrementedIntegerAttribute("autoID")
+        }
+        let newAutoID = Animal.autoIncrementedIntegerAttribute("autoID")
+        XCTAssertEqual(newAutoID, 8, "Should be able to return next integer value for given attribute.")
+    }
+    
+    // MARK: Turn Object Into Fault
+    
+    func testRefresh() {
+        // not sure how to test this in NSInMemoryStoreType
+    }
+    
+    // MARK: Batch Updating
+    
+    func testBatchUpdate() {
+        // not supported by NSInMemoryStoreType
+        // SEE: NSBatchUpdateRequest.h
+    }
+    
+    func testObjectsCountForBatchUpdate() {
+        // not supported by NSInMemoryStoreType
+        // SEE: NSBatchUpdateRequest.h
+    }
+    
+    func testBatchUpdateAndRefreshObjects() {
+        // not supported by NSInMemoryStoreType
+        // SEE: NSBatchUpdateRequest.h
     }
     
 }

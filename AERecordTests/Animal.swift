@@ -11,6 +11,7 @@ import CoreData
 
 class Animal: NSManagedObject {
 
+    @NSManaged var autoID: Int
     @NSManaged var name: String
     @NSManaged var color: String
     @NSManaged var breed: Breed

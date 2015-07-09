@@ -44,6 +44,10 @@ public class AERecord {
         return AEStack.storeURLForName(name)
     }
     
+    public class func modelFromBundle(#forClass: AnyClass) -> NSManagedObjectModel {
+        return AEStack.modelFromBundle(forClass: forClass)
+    }
+    
     public class func loadCoreDataStack(managedObjectModel: NSManagedObjectModel = AEStack.defaultModel, storeType: String = NSSQLiteStoreType, configuration: String? = nil, storeURL: NSURL = AEStack.defaultURL, options: [NSObject : AnyObject]? = nil) -> NSError? {
         return AEStack.sharedInstance.loadCoreDataStack(managedObjectModel: managedObjectModel, storeType: storeType, configuration: configuration, storeURL: storeURL, options: options)
     }
@@ -128,6 +132,11 @@ private class AEStack {
         let applicationDocumentsDirectory = NSFileManager.defaultManager().URLsForDirectory(.DocumentDirectory, inDomains: .UserDomainMask).last as! NSURL
         let storeName = "\(name).sqlite"
         return applicationDocumentsDirectory.URLByAppendingPathComponent(storeName)
+    }
+    
+    class func modelFromBundle(#forClass: AnyClass) -> NSManagedObjectModel {
+        let bundle = NSBundle(forClass: forClass)
+        return NSManagedObjectModel.mergedModelFromBundles([bundle])!
     }
     
     func loadCoreDataStack(managedObjectModel: NSManagedObjectModel = defaultModel,
@@ -509,8 +518,8 @@ public extension NSManagedObject {
         let request = createFetchRequest(predicate: predicate, sortDescriptors: sortDescriptors)
         
         request.resultType = .DictionaryResultType
-        request.returnsDistinctResults = true
         request.propertiesToFetch = attributes
+        request.returnsDistinctResults = true
         
         var distinctRecords: [Dictionary<String, AnyObject>]?
         
