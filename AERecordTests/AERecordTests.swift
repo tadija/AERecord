@@ -112,7 +112,7 @@ class AERecordTests: XCTestCase {
     }
     
     func testExecuteFetchRequest() {
-        let predicate = Animal.compoundPredicateForAttributes(["color" : "lightgray"], predicateType: .AndPredicateType)
+        let predicate = Animal.createPredicateForAttributes(["color" : "lightgray"])
         let request = Animal.createFetchRequest(predicate: predicate)
         let tinna = AERecord.executeFetchRequest(request).first as? Animal
         XCTAssertEqual(tinna!.name, "Tinna", "Should be able to execute given fetch request.")
@@ -175,9 +175,9 @@ class AERecordTests: XCTestCase {
         XCTAssertEqual(request.entityName!, "Animal", "Should be able to create fetch request for entity.")
     }
     
-    func testCompoundPredicateForAttributes() {
+    func testCreatePredicateForAttributes() {
         let attributes = ["name" : "Tinna", "color" : "lightgray"]
-        let predicate = Animal.compoundPredicateForAttributes(attributes, predicateType: .AndPredicateType)
+        let predicate = Animal.createPredicateForAttributes(attributes)
         XCTAssertEqual(predicate.predicateFormat, "color == \"lightgray\" AND name == \"Tinna\"", "Should be able to create compound predicate.")
     }
     

@@ -355,7 +355,9 @@ public extension NSManagedObject {
         return request
     }
     
-    class func compoundPredicateForAttributes(attributes: [NSObject : AnyObject], predicateType: NSCompoundPredicateType) -> NSPredicate {
+    private static let defaultPredicateType: NSCompoundPredicateType = .AndPredicateType
+    
+    class func createPredicateForAttributes(attributes: [NSObject : AnyObject], predicateType: NSCompoundPredicateType = defaultPredicateType) -> NSPredicate {
         var predicates = [NSPredicate]()
         for (attribute, value) in attributes {
             predicates.append(NSPredicate(format: "%K = %@", argumentArray: [attribute, value]))
@@ -384,8 +386,8 @@ public extension NSManagedObject {
         return firstOrCreateWithAttributes([attribute : value], context: context)
     }
     
-    class func firstOrCreateWithAttributes(attributes: [NSObject : AnyObject], predicateType: NSCompoundPredicateType = .AndPredicateType, context: NSManagedObjectContext = AERecord.defaultContext) -> NSManagedObject {
-        let predicate = compoundPredicateForAttributes(attributes, predicateType: predicateType)
+    class func firstOrCreateWithAttributes(attributes: [NSObject : AnyObject], predicateType: NSCompoundPredicateType = defaultPredicateType, context: NSManagedObjectContext = AERecord.defaultContext) -> NSManagedObject {
+        let predicate = createPredicateForAttributes(attributes, predicateType: predicateType)
         let request = createFetchRequest(predicate: predicate)
         request.fetchLimit = 1
         let objects = AERecord.executeFetchRequest(request, context: context)
@@ -418,8 +420,8 @@ public extension NSManagedObject {
         return first(sortDescriptors: sortDescriptors, context: context)
     }
     
-    class func firstWithAttributes(attributes: [NSObject : AnyObject], predicateType: NSCompoundPredicateType = .AndPredicateType, sortDescriptors: [NSSortDescriptor]? = nil, context: NSManagedObjectContext = AERecord.defaultContext) -> NSManagedObject? {
-        let predicate = compoundPredicateForAttributes(attributes, predicateType: predicateType)
+    class func firstWithAttributes(attributes: [NSObject : AnyObject], predicateType: NSCompoundPredicateType = defaultPredicateType, sortDescriptors: [NSSortDescriptor]? = nil, context: NSManagedObjectContext = AERecord.defaultContext) -> NSManagedObject? {
+        let predicate = createPredicateForAttributes(attributes, predicateType: predicateType)
         return firstWithPredicate(predicate, sortDescriptors: sortDescriptors, context: context)
     }
     
@@ -442,8 +444,8 @@ public extension NSManagedObject {
         return allWithPredicate(predicate, sortDescriptors: sortDescriptors, context: context)
     }
     
-    class func allWithAttributes(attributes: [NSObject : AnyObject], predicateType: NSCompoundPredicateType = .AndPredicateType, sortDescriptors: [NSSortDescriptor]? = nil, context: NSManagedObjectContext = AERecord.defaultContext) -> [NSManagedObject]? {
-        let predicate = compoundPredicateForAttributes(attributes, predicateType: predicateType)
+    class func allWithAttributes(attributes: [NSObject : AnyObject], predicateType: NSCompoundPredicateType = defaultPredicateType, sortDescriptors: [NSSortDescriptor]? = nil, context: NSManagedObjectContext = AERecord.defaultContext) -> [NSManagedObject]? {
+        let predicate = createPredicateForAttributes(attributes, predicateType: predicateType)
         return allWithPredicate(predicate, sortDescriptors: sortDescriptors, context: context)
     }
     
@@ -477,7 +479,7 @@ public extension NSManagedObject {
         }
     }
     
-    class func deleteAllWithAttributes(attributes: [NSObject : AnyObject], predicateType: NSCompoundPredicateType = .AndPredicateType, context: NSManagedObjectContext = AERecord.defaultContext) {
+    class func deleteAllWithAttributes(attributes: [NSObject : AnyObject], predicateType: NSCompoundPredicateType = defaultPredicateType, context: NSManagedObjectContext = AERecord.defaultContext) {
         if let objects = self.allWithAttributes(attributes, predicateType: predicateType, context: context) {
             for object in objects {
                 context.deleteObject(object)
@@ -511,8 +513,8 @@ public extension NSManagedObject {
         return countWithAttributes([attribute : value], context: context)
     }
     
-    class func countWithAttributes(attributes: [NSObject : AnyObject], predicateType: NSCompoundPredicateType = .AndPredicateType, context: NSManagedObjectContext = AERecord.defaultContext) -> Int {
-        let predicate = compoundPredicateForAttributes(attributes, predicateType: predicateType)
+    class func countWithAttributes(attributes: [NSObject : AnyObject], predicateType: NSCompoundPredicateType = defaultPredicateType, context: NSManagedObjectContext = AERecord.defaultContext) -> Int {
+        let predicate = createPredicateForAttributes(attributes, predicateType: predicateType)
         return countWithPredicate(predicate: predicate, context: context)
     }
     
