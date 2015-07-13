@@ -175,10 +175,10 @@ NSManagedObject.firstWithPredicate(predicate) // get first object with predicate
 
 NSManagedObject.firstWithAttribute("bike", value: "KTM") // get first object with given attribute name and value
 
-NSManagedObject.firstOrderedByAttribute("speed", ascending: false) // get first object ordered by given attribute name
-
 let attributes = ...
-NSManagedObject.firstWithAttribute(attributes) // get first object with given attributes
+NSManagedObject.firstWithAttributes(attributes) // get first object with given attributes
+
+NSManagedObject.firstOrderedByAttribute("speed", ascending: false) // get first object ordered by given attribute name
 ```
 
 #### Finding all
@@ -203,11 +203,11 @@ NSManagedObject.deleteAll() // delete all objects
 
 NSManagedObject.deleteAllWithAttribute("fat", value: true) // delete all objects with given attribute name and value
 
-let predicate = ...
-NSManagedObject.deleteAllWithPredicate(predicate) // delete all objects with given predicate
-
 let attributes = ...
 NSManagedObject.deleteAllWithAttributes(attributes) // delete all objects with given attributes
+
+let predicate = ...
+NSManagedObject.deleteAllWithPredicate(predicate) // delete all objects with given predicate
 ```
 
 #### Count
@@ -220,7 +220,7 @@ NSManagedObject.countWithPredicate(predicate) // count all objects with predicat
 NSManagedObject.countWithAttribute("selected", value: true) // count all objects with given attribute name and value
 
 let attributes = ...
-NSManagedObject.countWithAttribute(attributes) // count all objects with given attributes
+NSManagedObject.countWithAttributes(attributes) // count all objects with given attributes
 ```
 
 #### Distinct
