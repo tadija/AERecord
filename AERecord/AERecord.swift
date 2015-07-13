@@ -28,60 +28,134 @@ import CoreData
 let kAERecordPrintLog = true
 
 // MARK: - AERecord (facade for shared instance of AEStack)
+
+/**
+    This class is facade for accessing shared instance of `AEStack` (private class which is all about the Core Data Stack).
+*/
 public class AERecord {
     
     // MARK: Properties
     
-    public class var defaultContext: NSManagedObjectContext { return AEStack.sharedInstance.defaultContext } // context for current thread
-    public class var mainContext: NSManagedObjectContext { return AEStack.sharedInstance.mainContext } // context for main thread
-    public class var backgroundContext: NSManagedObjectContext { return AEStack.sharedInstance.backgroundContext } // context for background thread
+    /// Managed object context for current thread.
+    public class var defaultContext: NSManagedObjectContext { return AEStack.sharedInstance.defaultContext }
     
+    /// Managed object context for main thread.
+    public class var mainContext: NSManagedObjectContext { return AEStack.sharedInstance.mainContext }
+    
+    /// Managed object context for background thread.
+    public class var backgroundContext: NSManagedObjectContext { return AEStack.sharedInstance.backgroundContext }
+    
+    /// Persistent Store Coordinator for current stack.
     public class var persistentStoreCoordinator: NSPersistentStoreCoordinator? { return AEStack.sharedInstance.persistentStoreCoordinator }
     
     // MARK: Setup Stack
     
+    /**
+        Returns the final URL in Application Documents Directory for the store with given name.
+    
+        :param: name Filename for the store.
+    */
     public class func storeURLForName(name: String) -> NSURL {
         return AEStack.storeURLForName(name)
     }
     
+    /**
+        Returns merged model from the bundle for given class.
+        
+        :param: forClass Class inside bundle with data model.
+    */
     public class func modelFromBundle(#forClass: AnyClass) -> NSManagedObjectModel {
         return AEStack.modelFromBundle(forClass: forClass)
     }
     
+    /**
+        Loads Core Data Stack *(creates new if it doesn't already exist)* with given options **(all options are optional)**.
+    
+        - Default option for `managedObjectModel` is `NSManagedObjectModel.mergedModelFromBundles(nil)!`.
+        - Default option for `storeType` is `NSSQLiteStoreType`.
+        - Default option for `storeURL` is `bundleIdentifier + ".sqlite"` inside `applicationDocumentsDirectory`.
+    
+        :param: managedObjectModel Managed object model for Core Data Stack.
+        :param: storeType Store type for Persistent Store creation.
+        :param: configuration Configuration for Persistent Store creation.
+        :param: storeURL URL for Persistent Store creation.
+        :param: options Options for Persistent Store creation.
+    
+        :returns: Optional error if something went wrong.
+    */
     public class func loadCoreDataStack(managedObjectModel: NSManagedObjectModel = AEStack.defaultModel, storeType: String = NSSQLiteStoreType, configuration: String? = nil, storeURL: NSURL = AEStack.defaultURL, options: [NSObject : AnyObject]? = nil) -> NSError? {
         return AEStack.sharedInstance.loadCoreDataStack(managedObjectModel: managedObjectModel, storeType: storeType, configuration: configuration, storeURL: storeURL, options: options)
     }
     
+    /**
+        Destroys Core Data Stack for given store URL *(stop notifications, reset contexts, remove persistent store and delete .sqlite file)*. **This action can't be undone.**
+    
+        :param: storeURL Store URL for stack to destroy.
+    */
     public class func destroyCoreDataStack(storeURL: NSURL = AEStack.defaultURL) {
         AEStack.sharedInstance.destroyCoreDataStack(storeURL: storeURL)
     }
     
+    /**
+        Deletes all records from all entities contained in the model.
+    
+        :param: context If not specified, `defaultContext` will be used.
+    */
     public class func truncateAllData(context: NSManagedObjectContext? = nil) {
         AEStack.sharedInstance.truncateAllData(context: context)
     }
     
     // MARK: Context Execute
     
+    /**
+        Executes given fetch request.
+    
+        :param: request Fetch request to execute.
+        :param: context If not specified, `defaultContext` will be used.
+    */
     public class func executeFetchRequest(request: NSFetchRequest, context: NSManagedObjectContext? = nil) -> [NSManagedObject] {
         return AEStack.sharedInstance.executeFetchRequest(request, context: context)
     }
     
     // MARK: Context Save
     
+    /**
+        Saves context *(without waiting - returns immediately)*.
+    
+        :param: context If not specified, `defaultContext` will be used.
+    */
     public class func saveContext(context: NSManagedObjectContext? = nil) {
         AEStack.sharedInstance.saveContext(context: context)
     }
     
+    /**
+        Saves context with waiting *(returns when context is saved)*.
+        
+        :param: context If not specified, `defaultContext` will be used.
+    */
     public class func saveContextAndWait(context: NSManagedObjectContext? = nil) {
         AEStack.sharedInstance.saveContextAndWait(context: context)
     }
     
     // MARK: Context Faulting Objects
     
+    /**
+        Turns objects into faults for given Array of `NSManagedObjectID`.
+    
+        :param: objectIDS Array of `NSManagedObjectID` objects to turn into fault.
+        :param: mergeChanges A Boolean value.
+        :param: context If not specified, `defaultContext` will be used.
+    */
     public class func refreshObjects(#objectIDS: [NSManagedObjectID], mergeChanges: Bool, context: NSManagedObjectContext = AERecord.defaultContext) {
         AEStack.refreshObjects(objectIDS: objectIDS, mergeChanges: mergeChanges, context: context)
     }
     
+    /**
+    Turns all registered objects into faults.
+    
+    :param: mergeChanges A Boolean value.
+    :param: context If not specified, `defaultContext` will be used.
+    */
     public class func refreshAllRegisteredObjects(#mergeChanges: Bool, context: NSManagedObjectContext = AERecord.defaultContext) {
         AEStack.refreshAllRegisteredObjects(mergeChanges: mergeChanges, context: context)
     }
@@ -332,24 +406,42 @@ private class AEStack {
 }
 
 // MARK: - NSManagedObject Extension
+
+/**
+    This extension is all about **easy querying**.
+
+    All queries are called as class functions on `NSManagedObject` (or it's custom subclass), and `defaultContext` is used if you don't specify any.
+*/
 public extension NSManagedObject {
     
     // MARK: General
     
+    /**
+        This property **must return correct entity name** because it's used all across other helpers to reference custom `NSManagedObject` subclass.
+        
+        You may override this property in your custom `NSManagedObject` subclass if needed (but it should work out of the box generally).
+    */
     class var entityName: String {
         var name = NSStringFromClass(self)
         name = name.componentsSeparatedByString(".").last
         return name
     }
     
+    /// An `NSEntityDescription` object describes an entity in Core Data.
     class var entity: NSEntityDescription? {
         return NSEntityDescription.entityForName(entityName, inManagedObjectContext: AERecord.defaultContext)
     }
     
+    /**
+        Creates fetch request **(for any entity type)** with given predicate and sort descriptors *(which are optional)*.
+    
+        :param: predicate Predicate for fetch request.
+        :param sortDescriptors Sort Descriptors for fetch request.
+    
+        :returns: The created fetch request.
+    */
     class func createFetchRequest(predicate: NSPredicate? = nil, sortDescriptors: [NSSortDescriptor]? = nil) -> NSFetchRequest {
-        // create request
         let request = NSFetchRequest(entityName: entityName)
-        // set request parameters
         request.predicate = predicate
         request.sortDescriptors = sortDescriptors
         return request
@@ -357,6 +449,14 @@ public extension NSManagedObject {
     
     private static let defaultPredicateType: NSCompoundPredicateType = .AndPredicateType
     
+    /**
+        Creates predicate for given attributes and predicate type.
+    
+        :param: attributes Attributes for use in predicate.
+        :param: predicateType If not specified, `.AndPredicateType` will be used.
+    
+        :returns: The created predicate.
+    */
     class func createPredicateForAttributes(attributes: [NSObject : AnyObject], predicateType: NSCompoundPredicateType = defaultPredicateType) -> NSPredicate {
         var predicates = [NSPredicate]()
         for (attribute, value) in attributes {
@@ -368,12 +468,27 @@ public extension NSManagedObject {
     
     // MARK: Creating
     
+    /**
+        Creates new instance of entity object.
+    
+        :param: context If not specified, `defaultContext` will be used.
+    
+        :returns: New instance of `Self`.
+    */
     class func create(context: NSManagedObjectContext = AERecord.defaultContext) -> Self {
         let entityDescription = NSEntityDescription.entityForName(entityName, inManagedObjectContext: context)
         let object = self(entity: entityDescription!, insertIntoManagedObjectContext: context)
         return object
     }
     
+    /**
+        Creates new instance of entity object with given attributes.
+    
+        :param: attributes Attributes to set on new instance.
+        :param: context If not specified, `defaultContext` will be used.
+    
+        :returns: New instance of `Self` with set attributes.
+    */
     class func createWithAttributes(attributes: [NSObject : AnyObject], context: NSManagedObjectContext = AERecord.defaultContext) -> Self {
         let object = create(context: context)
         if attributes.count > 0 {
@@ -382,10 +497,28 @@ public extension NSManagedObject {
         return object
     }
     
+    /**
+        Gets the first record with given attribute and value or creates new if the it does not exist.
+    
+        :param: attribute Attribute name.
+        :param: value Attribute value.
+        :param: context If not specified, `defaultContext` will be used.
+    
+        :returns: Instance of managed object.
+    */
     class func firstOrCreateWithAttribute(attribute: String, value: AnyObject, context: NSManagedObjectContext = AERecord.defaultContext) -> NSManagedObject {
         return firstOrCreateWithAttributes([attribute : value], context: context)
     }
     
+    /**
+        Gets the first record with given attributes or creates new if the it does not exist.
+        
+        :param: attributes Attributes name and values.
+        :param: predicateType If not specified, `.AndPredicateType` will be used.
+        :param: context If not specified, `defaultContext` will be used.
+        
+        :returns: Instance of managed object.
+    */
     class func firstOrCreateWithAttributes(attributes: [NSObject : AnyObject], predicateType: NSCompoundPredicateType = defaultPredicateType, context: NSManagedObjectContext = AERecord.defaultContext) -> NSManagedObject {
         let predicate = createPredicateForAttributes(attributes, predicateType: predicateType)
         let request = createFetchRequest(predicate: predicate)
