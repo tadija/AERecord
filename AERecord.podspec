@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
 s.name = 'AERecord'
-s.version = '1.0.8'
+s.version = '1.1.0'
 s.license = { :type => 'MIT', :file => 'LICENSE' }
 s.summary = 'Super awesome Core Data wrapper for iOS written in Swift'
 

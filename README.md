@@ -4,9 +4,9 @@
 
 Why do we need yet another one Core Data wrapper? You tell me!
 
->Inspired by many different (spoiler alert) magical solutions, I needed something which combines complexity and functionality just the way I want.
+>Inspired by many different (spoiler alert) magical solutions, I needed something which combines complexity and functionality just about right.
 All that boilerplate code for setting up of Core Data stack should be packed in one reusable and customizible line of code.
-Passing the right `NSManagedObjectContext` all accross the project, different threads and stuff, shouldn't be our concern in every single project.
+Passing the right `NSManagedObjectContext` all accross the project, different threads and stuff, shouldn't be developer's concern in every single project.
 Not to mention that boring `NSFetchRequest` boilerplates for any kind of creating or querying the data.
 Finally when it comes to connecting your data with the UI, the best approach is to use `NSFetchedResultsController`.
 `CoreDataTableViewController` wrapper from [Stanford's CS193p](http://www.stanford.edu/class/cs193p/cgi-bin/drupal/downloads-2013-winter) is so great at it, that I've made `CoreDataCollectionViewController` too in the same fashion.  
@@ -28,8 +28,9 @@ Class | Description
 - Create default or custom Core Data stack **(or more stacks)** easily accessible from everywhere
 - Have **main and background contexts**, always in sync, but don't worry about it
 - Create, find, count or delete data in many ways with **one liners**
-- Batch updating directly in persistent store by using `NSBatchUpdateRequest` **(new in iOS 8)**
+- Batch updating directly in persistent store by using `NSBatchUpdateRequest` **(new from iOS 8)**
 - Connect UI **(tableView or collectionView)** with Core Data, and just manage the data
+- Covered with **unit tests**
 - That's all folks **(for now)**
 
 
@@ -41,9 +42,9 @@ Class | Description
   - [Easy querying](#easy-querying)
   	- [General](#general)
   	- [Creating](#creating)
-  	- [Deleting](#deleting)
   	- [Finding first](#finding-first)
   	- [Finding all](#finding-all)
+  	- [Deleting](#deleting)
   	- [Count](#count)
   	- [Distinct](#distinct)
   	- [Auto increment](#auto-increment)
@@ -70,7 +71,7 @@ using data driven tableView and collectionView, along with few simple querying.
 I mean, just compare it with the default template and think about that.
 
 ### Create Core Data stack
-Almost everything in `AERecord` is made with optional parameters (with default values if you don't specify anything).
+Almost everything in `AERecord` is made with 'optional' parameters (which have default values if you don't specify anything).
 So you can load (create if doesn't already exist) CoreData stack like this:
 
 ```swift
@@ -80,7 +81,7 @@ AERecord.loadCoreDataStack()
 or like this:
 
 ```swift
-let myModel: NSManagedObjectModel = ...
+let myModel: NSManagedObjectModel = AERecord.modelFromBundle(forClass: MyClass.self)
 let myStoreType = NSInMemoryStoreType
 let myConfiguration = ...
 let myStoreURL = AERecord.storeURLForName("MyName")
@@ -134,11 +135,12 @@ All queries are called on NSManagedObject (or it's subclass), and defaultContext
 All finders have optional parameter for `NSSortDescriptor` which is not used in these examples.
 
 #### General
-If you need custom `NSFetchRequest`, you can use `createFetchRequest`, tweak it as you wish and execute with `AERecord`.
+If you need custom `NSFetchRequest`, you can use `createPredicateForAttributes` and `createFetchRequest`, tweak it as you wish and execute with `AERecord`.
 
 ```swift
 // create request for any entity type
-let predicate = ...
+let attributes = ...
+let predicate = NSManagedObject.createPredicateForAttributes(attributes)
 let sortDescriptors = ...
 let request = NSManagedObject.createFetchRequest(predicate: predicate, sortDescriptors: sortDescriptors)
 
@@ -158,7 +160,38 @@ NSManagedObject.create() // create new object
 let attributes = ...
 NSManagedObject.createWithAttributes(attributes) // create new object and sets it's attributes
 
-NSManagedObject.firstOrCreateWithAttribute("city", value: "Belgrade") // get existing object or create new (if there's not existing object) with given attribute name and value
+NSManagedObject.firstOrCreateWithAttribute("city", value: "Belgrade") // get existing object (or create new if it doesn't already exist) with given attribute
+
+let attributes = ...
+NSManagedObject.firstOrCreateWithAttributes(attributes) // get existing object (or create new if it doesn't already exist) with given attributes
+```
+
+#### Finding first
+```swift
+NSManagedObject.first() // get first object
+
+let predicate = ...
+NSManagedObject.firstWithPredicate(predicate) // get first object with predicate
+
+NSManagedObject.firstWithAttribute("bike", value: "KTM") // get first object with given attribute name and value
+
+NSManagedObject.firstOrderedByAttribute("speed", ascending: false) // get first object ordered by given attribute name
+
+let attributes = ...
+NSManagedObject.firstWithAttribute(attributes) // get first object with given attributes
+```
+
+#### Finding all
+```swift
+NSManagedObject.all() // get all objects
+
+let predicate = ...
+NSManagedObject.allWithPredicate(predicate) // get all objects with predicate
+
+NSManagedObject.allWithAttribute("year", value: 1984) // get all objects with given attribute name and value
+
+let attributes = ...
+NSManagedObject.allWithAttributes(attributes) // get all objects with given attributes
 ```
 
 #### Deleting
@@ -172,28 +205,9 @@ NSManagedObject.deleteAllWithAttribute("fat", value: true) // delete all objects
 
 let predicate = ...
 NSManagedObject.deleteAllWithPredicate(predicate) // delete all objects with given predicate
-```
 
-#### Finding first
-```swift
-NSManagedObject.first() // get first object
-
-let predicate = ...
-NSManagedObject.firstWithPredicate(predicate) // get first object with predicate
-
-NSManagedObject.firstWithAttribute("bike", value: "KTM") // get first object with given attribute name and value
-
-NSManagedObject.firstOrderedByAttribute("speed", ascending: false) // get first object ordered by given attribute name
-```
-
-#### Finding all
-```swift
-NSManagedObject.all() // get all objects
-
-let predicate = ...
-NSManagedObject.allWithPredicate(predicate) // get all objects with predicate
-
-NSManagedObject.allWithAttribute("year", value: 1984) // get all objects with given attribute name and value
+let attributes = ...
+NSManagedObject.deleteAllWithAttributes(attributes) // delete all objects with given attributes
 ```
 
 #### Count
@@ -204,6 +218,9 @@ let predicate = ...
 NSManagedObject.countWithPredicate(predicate) // count all objects with predicate
 
 NSManagedObject.countWithAttribute("selected", value: true) // count all objects with given attribute name and value
+
+let attributes = ...
+NSManagedObject.countWithAttribute(attributes) // count all objects with given attributes
 ```
 
 #### Distinct
@@ -411,7 +428,7 @@ Fetching | Description
 
 ## Requirements
 - Xcode 6.1+
-- iOS 7.0+
+- iOS 8.0+
 - AERecord doesn't require any additional libraries for it to work.
 
 

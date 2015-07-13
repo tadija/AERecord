@@ -44,6 +44,10 @@ public class AERecord {
         return AEStack.storeURLForName(name)
     }
     
+    public class func modelFromBundle(#forClass: AnyClass) -> NSManagedObjectModel {
+        return AEStack.modelFromBundle(forClass: forClass)
+    }
+    
     public class func loadCoreDataStack(managedObjectModel: NSManagedObjectModel = AEStack.defaultModel, storeType: String = NSSQLiteStoreType, configuration: String? = nil, storeURL: NSURL = AEStack.defaultURL, options: [NSObject : AnyObject]? = nil) -> NSError? {
         return AEStack.sharedInstance.loadCoreDataStack(managedObjectModel: managedObjectModel, storeType: storeType, configuration: configuration, storeURL: storeURL, options: options)
     }
@@ -128,6 +132,11 @@ private class AEStack {
         let applicationDocumentsDirectory = NSFileManager.defaultManager().URLsForDirectory(.DocumentDirectory, inDomains: .UserDomainMask).last as! NSURL
         let storeName = "\(name).sqlite"
         return applicationDocumentsDirectory.URLByAppendingPathComponent(storeName)
+    }
+    
+    class func modelFromBundle(#forClass: AnyClass) -> NSManagedObjectModel {
+        let bundle = NSBundle(forClass: forClass)
+        return NSManagedObjectModel.mergedModelFromBundles([bundle])!
     }
     
     func loadCoreDataStack(managedObjectModel: NSManagedObjectModel = defaultModel,
@@ -346,6 +355,17 @@ public extension NSManagedObject {
         return request
     }
     
+    private static let defaultPredicateType: NSCompoundPredicateType = .AndPredicateType
+    
+    class func createPredicateForAttributes(attributes: [NSObject : AnyObject], predicateType: NSCompoundPredicateType = defaultPredicateType) -> NSPredicate {
+        var predicates = [NSPredicate]()
+        for (attribute, value) in attributes {
+            predicates.append(NSPredicate(format: "%K = %@", argumentArray: [attribute, value]))
+        }
+        let compoundPredicate = NSCompoundPredicate(type: predicateType, subpredicates: predicates)
+        return compoundPredicate
+    }
+    
     // MARK: Creating
     
     class func create(context: NSManagedObjectContext = AERecord.defaultContext) -> Self {
@@ -363,11 +383,70 @@ public extension NSManagedObject {
     }
     
     class func firstOrCreateWithAttribute(attribute: String, value: AnyObject, context: NSManagedObjectContext = AERecord.defaultContext) -> NSManagedObject {
-        let predicate = NSPredicate(format: "%K = %@", argumentArray: [attribute, value])
+        return firstOrCreateWithAttributes([attribute : value], context: context)
+    }
+    
+    class func firstOrCreateWithAttributes(attributes: [NSObject : AnyObject], predicateType: NSCompoundPredicateType = defaultPredicateType, context: NSManagedObjectContext = AERecord.defaultContext) -> NSManagedObject {
+        let predicate = createPredicateForAttributes(attributes, predicateType: predicateType)
         let request = createFetchRequest(predicate: predicate)
         request.fetchLimit = 1
         let objects = AERecord.executeFetchRequest(request, context: context)
-        return objects.first ?? createWithAttributes([attribute : value], context: context)
+        return objects.first ?? createWithAttributes(attributes, context: context)
+    }
+    
+    // MARK: Finding First
+    
+    class func first(sortDescriptors: [NSSortDescriptor]? = nil, context: NSManagedObjectContext = AERecord.defaultContext) -> NSManagedObject? {
+        let request = createFetchRequest(sortDescriptors: sortDescriptors)
+        request.fetchLimit = 1
+        let objects = AERecord.executeFetchRequest(request, context: context)
+        return objects.first ?? nil
+    }
+    
+    class func firstWithPredicate(predicate: NSPredicate, sortDescriptors: [NSSortDescriptor]? = nil, context: NSManagedObjectContext = AERecord.defaultContext) -> NSManagedObject? {
+        let request = createFetchRequest(predicate: predicate, sortDescriptors: sortDescriptors)
+        request.fetchLimit = 1
+        let objects = AERecord.executeFetchRequest(request, context: context)
+        return objects.first ?? nil
+    }
+    
+    class func firstWithAttribute(attribute: String, value: AnyObject, sortDescriptors: [NSSortDescriptor]? = nil, context: NSManagedObjectContext = AERecord.defaultContext) -> NSManagedObject? {
+        let predicate = NSPredicate(format: "%K = %@", argumentArray: [attribute, value])
+        return firstWithPredicate(predicate, sortDescriptors: sortDescriptors, context: context)
+    }
+    
+    class func firstOrderedByAttribute(name: String, ascending: Bool = true, context: NSManagedObjectContext = AERecord.defaultContext) -> NSManagedObject? {
+        let sortDescriptors = [NSSortDescriptor(key: name, ascending: ascending)]
+        return first(sortDescriptors: sortDescriptors, context: context)
+    }
+    
+    class func firstWithAttributes(attributes: [NSObject : AnyObject], predicateType: NSCompoundPredicateType = defaultPredicateType, sortDescriptors: [NSSortDescriptor]? = nil, context: NSManagedObjectContext = AERecord.defaultContext) -> NSManagedObject? {
+        let predicate = createPredicateForAttributes(attributes, predicateType: predicateType)
+        return firstWithPredicate(predicate, sortDescriptors: sortDescriptors, context: context)
+    }
+    
+    // MARK: Finding All
+    
+    class func all(sortDescriptors: [NSSortDescriptor]? = nil, context: NSManagedObjectContext = AERecord.defaultContext) -> [NSManagedObject]? {
+        let request = createFetchRequest(sortDescriptors: sortDescriptors)
+        let objects = AERecord.executeFetchRequest(request, context: context)
+        return objects.count > 0 ? objects : nil
+    }
+    
+    class func allWithPredicate(predicate: NSPredicate, sortDescriptors: [NSSortDescriptor]? = nil, context: NSManagedObjectContext = AERecord.defaultContext) -> [NSManagedObject]? {
+        let request = createFetchRequest(predicate: predicate, sortDescriptors: sortDescriptors)
+        let objects = AERecord.executeFetchRequest(request, context: context)
+        return objects.count > 0 ? objects : nil
+    }
+    
+    class func allWithAttribute(attribute: String, value: AnyObject, sortDescriptors: [NSSortDescriptor]? = nil, context: NSManagedObjectContext = AERecord.defaultContext) -> [NSManagedObject]? {
+        let predicate = NSPredicate(format: "%K = %@", argumentArray: [attribute, value])
+        return allWithPredicate(predicate, sortDescriptors: sortDescriptors, context: context)
+    }
+    
+    class func allWithAttributes(attributes: [NSObject : AnyObject], predicateType: NSCompoundPredicateType = defaultPredicateType, sortDescriptors: [NSSortDescriptor]? = nil, context: NSManagedObjectContext = AERecord.defaultContext) -> [NSManagedObject]? {
+        let predicate = createPredicateForAttributes(attributes, predicateType: predicateType)
+        return allWithPredicate(predicate, sortDescriptors: sortDescriptors, context: context)
     }
     
     // MARK: Deleting
@@ -400,49 +479,12 @@ public extension NSManagedObject {
         }
     }
     
-    // MARK: Finding First
-    
-    class func first(sortDescriptors: [NSSortDescriptor]? = nil, context: NSManagedObjectContext = AERecord.defaultContext) -> NSManagedObject? {
-        let request = createFetchRequest(sortDescriptors: sortDescriptors)
-        request.fetchLimit = 1
-        let objects = AERecord.executeFetchRequest(request, context: context)
-        return objects.first ?? nil
-    }
-    
-    class func firstWithPredicate(predicate: NSPredicate, sortDescriptors: [NSSortDescriptor]? = nil, context: NSManagedObjectContext = AERecord.defaultContext) -> NSManagedObject? {
-        let request = createFetchRequest(predicate: predicate, sortDescriptors: sortDescriptors)
-        request.fetchLimit = 1
-        let objects = AERecord.executeFetchRequest(request, context: context)
-        return objects.first ?? nil
-    }
-    
-    class func firstWithAttribute(attribute: String, value: AnyObject, sortDescriptors: [NSSortDescriptor]? = nil, context: NSManagedObjectContext = AERecord.defaultContext) -> NSManagedObject? {
-        let predicate = NSPredicate(format: "%K = %@", argumentArray: [attribute, value])
-        return firstWithPredicate(predicate, sortDescriptors: sortDescriptors, context: context)
-    }
-    
-    class func firstOrderedByAttribute(name: String, ascending: Bool = true, context: NSManagedObjectContext = AERecord.defaultContext) -> NSManagedObject? {
-        let sortDescriptors = [NSSortDescriptor(key: name, ascending: ascending)]
-        return first(sortDescriptors: sortDescriptors, context: context)
-    }
-    
-    // MARK: Finding All
-    
-    class func all(sortDescriptors: [NSSortDescriptor]? = nil, context: NSManagedObjectContext = AERecord.defaultContext) -> [NSManagedObject]? {
-        let request = createFetchRequest(sortDescriptors: sortDescriptors)
-        let objects = AERecord.executeFetchRequest(request, context: context)
-        return objects.count > 0 ? objects : nil
-    }
-    
-    class func allWithPredicate(predicate: NSPredicate, sortDescriptors: [NSSortDescriptor]? = nil, context: NSManagedObjectContext = AERecord.defaultContext) -> [NSManagedObject]? {
-        let request = createFetchRequest(predicate: predicate, sortDescriptors: sortDescriptors)
-        let objects = AERecord.executeFetchRequest(request, context: context)
-        return objects.count > 0 ? objects : nil
-    }
-    
-    class func allWithAttribute(attribute: String, value: AnyObject, sortDescriptors: [NSSortDescriptor]? = nil, context: NSManagedObjectContext = AERecord.defaultContext) -> [NSManagedObject]? {
-        let predicate = NSPredicate(format: "%K = %@", argumentArray: [attribute, value])
-        return allWithPredicate(predicate, sortDescriptors: sortDescriptors, context: context)
+    class func deleteAllWithAttributes(attributes: [NSObject : AnyObject], predicateType: NSCompoundPredicateType = defaultPredicateType, context: NSManagedObjectContext = AERecord.defaultContext) {
+        if let objects = self.allWithAttributes(attributes, predicateType: predicateType, context: context) {
+            for object in objects {
+                context.deleteObject(object)
+            }
+        }
     }
     
     // MARK: Count
@@ -468,7 +510,11 @@ public extension NSManagedObject {
     }
     
     class func countWithAttribute(attribute: String, value: AnyObject, context: NSManagedObjectContext = AERecord.defaultContext) -> Int {
-        let predicate = NSPredicate(format: "%K = %@", argumentArray: [attribute, value])
+        return countWithAttributes([attribute : value], context: context)
+    }
+    
+    class func countWithAttributes(attributes: [NSObject : AnyObject], predicateType: NSCompoundPredicateType = defaultPredicateType, context: NSManagedObjectContext = AERecord.defaultContext) -> Int {
+        let predicate = createPredicateForAttributes(attributes, predicateType: predicateType)
         return countWithPredicate(predicate: predicate, context: context)
     }
     
@@ -492,8 +538,8 @@ public extension NSManagedObject {
         let request = createFetchRequest(predicate: predicate, sortDescriptors: sortDescriptors)
         
         request.resultType = .DictionaryResultType
-        request.returnsDistinctResults = true
         request.propertiesToFetch = attributes
+        request.returnsDistinctResults = true
         
         var distinctRecords: [Dictionary<String, AnyObject>]?
         
@@ -645,7 +691,7 @@ public class CoreDataTableViewController: UITableViewController, NSFetchedResult
     // It is not necessary (in fact, not desirable) to set this during row deletion or insertion
     //  (but definitely for row moves).
     private var _suspendAutomaticTrackingOfChangesInManagedObjectContext: Bool = false
-    private var suspendAutomaticTrackingOfChangesInManagedObjectContext: Bool {
+    public var suspendAutomaticTrackingOfChangesInManagedObjectContext: Bool {
         get {
             return _suspendAutomaticTrackingOfChangesInManagedObjectContext
         }
@@ -795,7 +841,7 @@ public class CoreDataCollectionViewController: UICollectionViewController, NSFet
     // It is not necessary (in fact, not desirable) to set this during row deletion or insertion
     //  (but definitely for cell moves).
     private var _suspendAutomaticTrackingOfChangesInManagedObjectContext: Bool = false
-    private var suspendAutomaticTrackingOfChangesInManagedObjectContext: Bool {
+    public var suspendAutomaticTrackingOfChangesInManagedObjectContext: Bool {
         get {
             return _suspendAutomaticTrackingOfChangesInManagedObjectContext
         }

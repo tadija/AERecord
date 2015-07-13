@@ -7,6 +7,11 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		8B03862A1B4482B1005950F5 /* AERecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B975B2A1A098A4800AA3499 /* AERecord.swift */; };
+		8B03862D1B44839A005950F5 /* AERecordTest.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 8B03862B1B44839A005950F5 /* AERecordTest.xcdatamodeld */; };
+		8B03862F1B448555005950F5 /* Species.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B03862E1B448555005950F5 /* Species.swift */; };
+		8B0386311B448556005950F5 /* Breed.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B0386301B448556005950F5 /* Breed.swift */; };
+		8B0386331B448556005950F5 /* Animal.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B0386321B448556005950F5 /* Animal.swift */; };
 		8B8FD1D31A0BCC3C009FAE44 /* CustomCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B8FD1D21A0BCC3C009FAE44 /* CustomCollectionViewCell.swift */; };
 		8B975B2B1A098A4800AA3499 /* AERecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B975B2A1A098A4800AA3499 /* AERecord.swift */; };
 		8B975B2D1A098FAF00AA3499 /* Event.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B975B2C1A098FAF00AA3499 /* Event.swift */; };
@@ -31,6 +36,10 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		8B03862C1B44839A005950F5 /* AERecordTest.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = AERecordTest.xcdatamodel; sourceTree = "<group>"; };
+		8B03862E1B448555005950F5 /* Species.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Species.swift; sourceTree = "<group>"; };
+		8B0386301B448556005950F5 /* Breed.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Breed.swift; sourceTree = "<group>"; };
+		8B0386321B448556005950F5 /* Animal.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Animal.swift; sourceTree = "<group>"; };
 		8B4B477C1AED601F00A0266D /* AERecord.podspec */ = {isa = PBXFileReference; lastKnownFileType = text; path = AERecord.podspec; sourceTree = "<group>"; };
 		8B8FD1D21A0BCC3C009FAE44 /* CustomCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomCollectionViewCell.swift; sourceTree = "<group>"; };
 		8B8FD1D41A0BE171009FAE44 /* LICENSE */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
@@ -128,6 +137,10 @@
 		8BC895691A07930500778DB0 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				8B03862B1B44839A005950F5 /* AERecordTest.xcdatamodeld */,
+				8B0386321B448556005950F5 /* Animal.swift */,
+				8B0386301B448556005950F5 /* Breed.swift */,
+				8B03862E1B448555005950F5 /* Species.swift */,
 				8BC8956A1A07930500778DB0 /* Info.plist */,
 			);
 			name = "Supporting Files";
@@ -255,7 +268,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8B03862F1B448555005950F5 /* Species.swift in Sources */,
+				8B03862D1B44839A005950F5 /* AERecordTest.xcdatamodeld in Sources */,
+				8B03862A1B4482B1005950F5 /* AERecord.swift in Sources */,
+				8B0386311B448556005950F5 /* Breed.swift in Sources */,
 				8BC8956C1A07930500778DB0 /* AERecordTests.swift in Sources */,
+				8B0386331B448556005950F5 /* Animal.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -374,7 +392,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				INFOPLIST_FILE = AERecordExample/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = AERecordExample;
 			};
@@ -386,7 +404,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				INFOPLIST_FILE = AERecordExample/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = AERecordExample;
 			};
@@ -459,6 +477,16 @@
 /* End XCConfigurationList section */
 
 /* Begin XCVersionGroup section */
+		8B03862B1B44839A005950F5 /* AERecordTest.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				8B03862C1B44839A005950F5 /* AERecordTest.xcdatamodel */,
+			);
+			currentVersion = 8B03862C1B44839A005950F5 /* AERecordTest.xcdatamodel */;
+			path = AERecordTest.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
 		8BC895521A07930500778DB0 /* AERecordExample.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
