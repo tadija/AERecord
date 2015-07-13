@@ -691,7 +691,7 @@ public class CoreDataTableViewController: UITableViewController, NSFetchedResult
     // It is not necessary (in fact, not desirable) to set this during row deletion or insertion
     //  (but definitely for row moves).
     private var _suspendAutomaticTrackingOfChangesInManagedObjectContext: Bool = false
-    private var suspendAutomaticTrackingOfChangesInManagedObjectContext: Bool {
+    public var suspendAutomaticTrackingOfChangesInManagedObjectContext: Bool {
         get {
             return _suspendAutomaticTrackingOfChangesInManagedObjectContext
         }
@@ -841,7 +841,7 @@ public class CoreDataCollectionViewController: UICollectionViewController, NSFet
     // It is not necessary (in fact, not desirable) to set this during row deletion or insertion
     //  (but definitely for cell moves).
     private var _suspendAutomaticTrackingOfChangesInManagedObjectContext: Bool = false
-    private var suspendAutomaticTrackingOfChangesInManagedObjectContext: Bool {
+    public var suspendAutomaticTrackingOfChangesInManagedObjectContext: Bool {
         get {
             return _suspendAutomaticTrackingOfChangesInManagedObjectContext
         }
