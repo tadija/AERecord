@@ -25,7 +25,7 @@
 import UIKit
 import CoreData
 
-let kAERecordPrintLog = true
+let kAERecordPrintLog = true // this will soon be updated to Swift 2.0 error handling.
 
 // MARK: - AERecord (facade for shared instance of AEStack)
 
@@ -151,10 +151,10 @@ public class AERecord {
     }
     
     /**
-    Turns all registered objects into faults.
-    
-    :param: mergeChanges A Boolean value.
-    :param: context If not specified, `defaultContext` will be used.
+        Turns all registered objects into faults.
+        
+        :param: mergeChanges A Boolean value.
+        :param: context If not specified, `defaultContext` will be used.
     */
     public class func refreshAllRegisteredObjects(#mergeChanges: Bool, context: NSManagedObjectContext = AERecord.defaultContext) {
         AEStack.refreshAllRegisteredObjects(mergeChanges: mergeChanges, context: context)
