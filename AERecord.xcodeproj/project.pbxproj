@@ -60,6 +60,7 @@
 		8BC895651A07930500778DB0 /* AERecordTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = AERecordTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		8BC8956A1A07930500778DB0 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		8BC8956B1A07930500778DB0 /* AERecordTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AERecordTests.swift; sourceTree = "<group>"; };
+		8BEFE1741B63F58900088173 /* AECoreDataUI.podspec */ = {isa = PBXFileReference; lastKnownFileType = text; path = AECoreDataUI.podspec; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -92,13 +93,14 @@
 			isa = PBXGroup;
 			children = (
 				8BDEBABC1AED5A8C00A12D92 /* AERecord */,
-				8BC895681A07930500778DB0 /* AERecordTests */,
 				8B4BF76C1B599BC600A523A6 /* AECoreDataUI */,
+				8BC895681A07930500778DB0 /* AERecordTests */,
 				8BC8954D1A07930500778DB0 /* AERecordExample */,
 				8BC8954C1A07930500778DB0 /* Products */,
 				8B8FD1D41A0BE171009FAE44 /* LICENSE */,
 				8B8FD1D51A0BE171009FAE44 /* README.md */,
 				8B4B477C1AED601F00A0266D /* AERecord.podspec */,
+				8BEFE1741B63F58900088173 /* AECoreDataUI.podspec */,
 			);
 			sourceTree = "<group>";
 		};
