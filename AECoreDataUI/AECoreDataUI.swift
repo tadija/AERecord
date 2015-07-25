@@ -70,9 +70,7 @@ public class CoreDataTableViewController: UITableViewController, NSFetchedResult
             var error: NSError?
             if !frc.performFetch(&error) {
                 if let err = error {
-                    if kAERecordPrintLog {
-                        println("Error occured in \(NSStringFromClass(self.dynamicType)) - function: \(__FUNCTION__) | line: \(__LINE__)\n\(err)")
-                    }
+                    println("Error occured in \(NSStringFromClass(self.dynamicType)) - function: \(__FUNCTION__) | line: \(__LINE__)\n\(err)")
                 }
             }
             tableView.reloadData()
@@ -290,9 +288,7 @@ public class CoreDataCollectionViewController: UICollectionViewController, NSFet
             var error: NSError?
             if !frc.performFetch(&error) {
                 if let err = error {
-                    if kAERecordPrintLog {
-                        println("Error occured in \(NSStringFromClass(self.dynamicType)) - function: \(__FUNCTION__) | line: \(__LINE__)\n\(err)")
-                    }
+                    println("Error occured in \(NSStringFromClass(self.dynamicType)) - function: \(__FUNCTION__) | line: \(__LINE__)\n\(err)")
                 }
             }
             collectionView?.reloadData()
