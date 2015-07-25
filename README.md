@@ -1,70 +1,69 @@
-# AERecord
-**Super awesome Core Data wrapper for iOS written in Swift**
+# General
+
+**AERecord** is a [minion](http://tadija.net/public/minion.png) which consists of two pods:  
+- [AERecord](https://cocoapods.org/pods/AERecord) - Super awesome Core Data wrapper in Swift (for iOS and OSX)  
+- [AECoreDataUI](https://cocoapods.org/pods/AECoreDataUI) - Super awesome Core Data driven UI in Swift (for iOS)
+
+## AERecord
+**Super awesome Core Data wrapper in Swift (for iOS and OSX)**
+
+>Why do we need yet another one Core Data wrapper? You tell me!  
+Inspired by many different (spoiler alert) **magical** solutions, I needed something which combines complexity and functionality just about right.
+All that boilerplate code for setting up of Core Data stack, passing the right `NSManagedObjectContext` all accross the project, different threads and stuff, and not to mention that boring `NSFetchRequest` boilerplates for any kind of creating or querying the data - should be less complicated now, with **AERecord**.
 
 
-Why do we need yet another one Core Data wrapper? You tell me!
-
->Inspired by many different (spoiler alert) magical solutions, I needed something which combines complexity and functionality just about right.
-All that boilerplate code for setting up of Core Data stack should be packed in one reusable and customizible line of code.
-Passing the right `NSManagedObjectContext` all accross the project, different threads and stuff, shouldn't be developer's concern in every single project.
-Not to mention that boring `NSFetchRequest` boilerplates for any kind of creating or querying the data.
-Finally when it comes to connecting your data with the UI, the best approach is to use `NSFetchedResultsController`.
-`CoreDataTableViewController` wrapper from [Stanford's CS193p](http://www.stanford.edu/class/cs193p/cgi-bin/drupal/downloads-2013-winter) is so great at it, that I've made `CoreDataCollectionViewController` too in the same fashion.  
-So, `AERecord` should solve all of these problems for me, I hope you will like it too.
-
-
-**AERecord** is a [minion](http://tadija.net/public/minion.png) which consists of these classes / extensions:  
-
-Class | Description
------------- | -------------
-`AERecord` | main public class (facade)
-`AEStack` | private class which takes care of the stack
-`NSManagedObject extension` | super easy data querying (and more)
-`CoreDataTableViewController` | Core Data driven UITableViewController
-`CoreDataCollectionViewController` | Core Data driven UICollectionViewController
-
-
-## Features
+### Features
 - Create default or custom Core Data stack **(or more stacks)** easily accessible from everywhere
 - Have **main and background contexts**, always in sync, but don't worry about it
 - Create, find, count or delete data in many ways with **one liners**
 - Batch updating directly in persistent store by using `NSBatchUpdateRequest` **(new from iOS 8)**
-- Connect UI **(tableView or collectionView)** with Core Data, and just manage the data
 - Covered with **unit tests**
 - Covered with [docs](http://tadija.net/projects/AERecord/docs/)
-- That's all folks **(for now)**
+
+## AECoreDataUI
+**Super awesome Core Data driven UI in Swift (for iOS)**
+
+>Finally when it comes to connecting your data with the UI, the best approach is to use `NSFetchedResultsController`.
+`CoreDataTableViewController` wrapper from [Stanford's CS193p](http://www.stanford.edu/class/cs193p/cgi-bin/drupal/downloads-2013-winter) is so great at it, that I've written it in Swift and made `CoreDataCollectionViewController` too in the same fashion.  
+
+
+### Features
+- Core Data driven **UITableViewController** (UI automatically reflects data in Core Data model)
+- Core Data driven **UICollectionViewController** (UI automatically reflects data in Core Data model)
+- Covered with [docs](http://tadija.net/projects/AERecord/docs/)
 
 
 ## Index
-- [Examples](#examples)
-  - [About AERecordExample project](#about-aerecordexample-project)
-  - [Create Core Data stack](#create-core-data-stack)
-  - [Context operations](#context-operations)
-  - [Easy querying](#easy-querying)
-  	- [General](#general)
-  	- [Creating](#creating)
-  	- [Finding first](#finding-first)
-  	- [Finding all](#finding-all)
-  	- [Deleting](#deleting)
-  	- [Count](#count)
-  	- [Distinct](#distinct)
-  	- [Auto increment](#auto-increment)
-    - [Turn managed object into fault](#turn-managed-object-into-fault)
-  	- [Batch updating](#batch-updating)
-  - [Use Core Data with tableView](#use-core-data-with-tableview)
-  - [Use Core Data with collectionView](#use-core-data-with-collectionview)
+
+### About AERecordExample project
+This project is made of default Master-Detail Application template with Core Data enabled,
+but modified to show off some of the **AERecord** as well as **AECoreDataUI** features such as creating of Core Data stack,
+using data driven tableView and collectionView, along with few simple querying.
+I mean, just compare it with the default template and think about that.
+
+- [AERecord features](#aerecord-features)
+	- [Create Core Data stack](#create-core-data-stack)
+	- [Context operations](#context-operations)
+	- [Easy querying](#easy-querying)
+		- [General](#general)
+		- [Creating](#creating)
+		- [Finding first](#finding-first)
+		- [Finding all](#finding-all)
+		- [Deleting](#deleting)
+		- [Count](#count)
+		- [Distinct](#distinct)
+		- [Auto increment](#auto-increment)
+		- [Turn managed object into fault](#turn-managed-object-into-fault)
+		- [Batch updating](#batch-updating)
+- [AECoreDataUI features](#aecoredataui-features)
+	- [Use Core Data with tableView](#use-core-data-with-tableview)
+	- [Use Core Data with collectionView](#use-core-data-with-collectionview)
 - [Requirements](#requirements)
 - [Installation](#installation)
 - [License](#license)
 
 
-## Examples
-
-### About AERecordExample project
-This project is made of default Master-Detail Application template with Core Data enabled,
-but modified to show off some of the `AERecord` features such as creating of Core Data stack,
-using data driven tableView and collectionView, along with few simple querying.  
-I mean, just compare it with the default template and think about that.
+## AERecord features
 
 ### Create Core Data stack
 Almost everything in `AERecord` is made with 'optional' parameters (which have default values if you don't specify anything).
@@ -255,9 +254,11 @@ NSManagedObject.objectsCountForBatchUpdate(properties: ["timeStamp" : NSDate()])
 NSManagedObject.batchUpdateAndRefreshObjects(properties: ["timeStamp" : NSDate()]) // turns updated objects into faults after updating them in persistent store
 ```
 
+## AECoreDataUI features
+
 ### Use Core Data with tableView
 `CoreDataTableViewController` mostly just copies the code from `NSFetchedResultsController`
-documentation page into a subclass of UITableViewController.
+documentation page into a subclass of `UITableViewController`.
 
 Just subclass it and set it's `fetchedResultsController` property.
 
@@ -304,6 +305,8 @@ Same as with the tableView.
 - Xcode 6.1+
 - iOS 8.0+
 - AERecord doesn't require any additional libraries for it to work.
+- AERecord can be used in iOS and OSX too.
+- AECoreDataUI is just for iOS.
 
 
 ## Installation
@@ -313,11 +316,12 @@ Same as with the tableView.
   ```ruby
   use_frameworks!
   pod 'AERecord'
+  pod 'AECoreDataUI'
   ```
 
 - Manually:
 
-  Just drag `AERecord.swift` file into your project and start using it.
+  Just drag **AERecord.swift** and/or **AECoreDataUI.swift** into your project and start using it.
 
 
 ## License
