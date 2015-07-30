@@ -20,7 +20,12 @@ class AERecordTests: XCTestCase {
         /* create Core Data stack */
         
         let model = AERecord.modelFromBundle(forClass: AERecordTests.self)
-        AERecord.loadCoreDataStack(managedObjectModel: model, storeType: NSInMemoryStoreType)
+        do {
+            try AERecord.loadCoreDataStack(managedObjectModel: model, storeType: NSInMemoryStoreType)
+        }
+        catch {
+            print(error)
+        }
         
         /* add dummy data */
         
@@ -36,13 +41,13 @@ class AERecordTests: XCTestCase {
         let miniatureSchnauzer = Breed.createWithAttributes(["name" : "Miniature Schnauzer", "species" : dogs])
         
         // animals
-        let tinna = Animal.createWithAttributes(["name" : "Tinna", "color" : "lightgray", "breed" : siberian])
-        let rose = Animal.createWithAttributes(["name" : "Rose", "color" : "darkgray", "breed" : domestic])
-        let caesar = Animal.createWithAttributes(["name" : "Caesar", "color" : "yellow", "breed" : domestic])
-        let villy = Animal.createWithAttributes(["name" : "Villy", "color" : "white", "breed" : bullTerrier])
-        let spot = Animal.createWithAttributes(["name" : "Spot", "color" : "white", "breed" : bullTerrier])
-        let betty = Animal.createWithAttributes(["name" : "Betty", "color" : "yellow", "breed" : goldenRetriever])
-        let kika = Animal.createWithAttributes(["name" : "Kika", "color" : "black", "breed" : miniatureSchnauzer])
+        Animal.createWithAttributes(["name" : "Tinna", "color" : "lightgray", "breed" : siberian])
+        Animal.createWithAttributes(["name" : "Rose", "color" : "darkgray", "breed" : domestic])
+        Animal.createWithAttributes(["name" : "Caesar", "color" : "yellow", "breed" : domestic])
+        Animal.createWithAttributes(["name" : "Villy", "color" : "white", "breed" : bullTerrier])
+        Animal.createWithAttributes(["name" : "Spot", "color" : "white", "breed" : bullTerrier])
+        Animal.createWithAttributes(["name" : "Betty", "color" : "yellow", "breed" : goldenRetriever])
+        Animal.createWithAttributes(["name" : "Kika", "color" : "black", "breed" : miniatureSchnauzer])
     }
     
     override func tearDown() {
@@ -85,7 +90,7 @@ class AERecordTests: XCTestCase {
     
     func testStoreURLForName() {
         let storeURL = AERecord.storeURLForName("test")
-        let applicationDocumentsDirectory = NSFileManager.defaultManager().URLsForDirectory(.DocumentDirectory, inDomains: .UserDomainMask).last as! NSURL
+        let applicationDocumentsDirectory = NSFileManager.defaultManager().URLsForDirectory(.DocumentDirectory, inDomains: .UserDomainMask).last!
         let expectedStoreURL = applicationDocumentsDirectory.URLByAppendingPathComponent("test.sqlite")
         XCTAssertEqual(storeURL, expectedStoreURL, "")
     }
@@ -93,7 +98,7 @@ class AERecordTests: XCTestCase {
     func testModelFromBundle() {
         let model = AERecord.modelFromBundle(forClass: AERecordTests.self)
         let entityNames = model.entitiesByName.keys.array
-        let expectedEntityNames = ["Animal", "Species", "Breed"]
+        let expectedEntityNames = ["Species", "Breed", "Animal"]
         XCTAssertEqual(entityNames, expectedEntityNames, "Should be able to load merged model from bundle for given class.")
     }
     
@@ -128,7 +133,7 @@ class AERecordTests: XCTestCase {
         XCTAssertEqual(hasChangesAfterSaving, true, "Should still have changes after saving context without waiting.")
         
         let expectation = expectationWithDescription("Context Saving")
-        var dispatchTime: dispatch_time_t = dispatch_time(DISPATCH_TIME_NOW, Int64(1.0 * Double(NSEC_PER_SEC)))
+        let dispatchTime: dispatch_time_t = dispatch_time(DISPATCH_TIME_NOW, Int64(1.0 * Double(NSEC_PER_SEC)))
         dispatch_after(dispatchTime, dispatch_get_main_queue(), {
             expectation.fulfill()
         })
@@ -278,7 +283,7 @@ class AERecordTests: XCTestCase {
         let firstAnimal = Animal.first(sortDescriptors: [sortDescriptor]) as! Animal
         XCTAssertEqual(firstAnimal.name, "Betty", "Should be able to return the first record sorted by given sort descriptor.")
         
-        firstAnimal.delete()
+        firstAnimal.deleteFromContext()
         let betty = Animal.firstWithAttribute("name", value: "Betty") as? Animal
         XCTAssertNil(betty, "Should be able to delete record.")
     }
@@ -327,7 +332,7 @@ class AERecordTests: XCTestCase {
     
     func testCountWithPredicate() {
         let predicate = NSPredicate(format: "color == %@", "white")
-        let whiteCount = Animal.countWithPredicate(predicate: predicate)
+        let whiteCount = Animal.countWithPredicate(predicate)
         XCTAssertEqual(whiteCount, 2, "Should be able to count all records for given predicate.")
     }
     

@@ -50,7 +50,7 @@ class MasterViewController: CoreDataTableViewController, UISplitViewControllerDe
     // MARK: - Table View
 
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCellWithIdentifier("Cell", forIndexPath: indexPath) as! UITableViewCell
+        let cell = tableView.dequeueReusableCellWithIdentifier("Cell", forIndexPath: indexPath)
         self.configureCell(cell, atIndexPath: indexPath)
         return cell
     }
@@ -79,8 +79,8 @@ class MasterViewController: CoreDataTableViewController, UISplitViewControllerDe
     override func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
         if editingStyle == .Delete {
             // delete object
-            if let event = fetchedResultsController?.objectAtIndexPath(indexPath) as? NSManagedObject {
-                event.delete()
+            if let event = fetchedResultsController?.objectAtIndexPath(indexPath) {
+                event.deleteFromContext()
                 AERecord.saveContext()
             }
         }
@@ -102,7 +102,7 @@ class MasterViewController: CoreDataTableViewController, UISplitViewControllerDe
     
     // MARK: - UISplitViewControllerDelegate
     
-    func splitViewController(splitViewController: UISplitViewController, collapseSecondaryViewController secondaryViewController: UIViewController!, ontoPrimaryViewController primaryViewController: UIViewController!) -> Bool {
+    func splitViewController(splitViewController: UISplitViewController, collapseSecondaryViewController secondaryViewController: UIViewController, ontoPrimaryViewController primaryViewController: UIViewController) -> Bool {
         return collapseDetailViewController
     }
 

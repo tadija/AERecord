@@ -40,7 +40,7 @@ class DetailViewController: CoreDataCollectionViewController {
         
         let addFewAction = UIAlertAction(title: "Add Few", style: .Default) { (action) -> Void in
             // create few objects
-            for i in 1...5 {
+            for _ in 1...5 {
                 Event.createWithAttributes(["timeStamp" : NSDate()])
             }
             AERecord.saveContextAndWait()
@@ -52,16 +52,20 @@ class DetailViewController: CoreDataCollectionViewController {
             AERecord.saveContextAndWait()
         }
         
-        let updateAllAction = UIAlertAction(title: "Update All", style: .Default) { (action) -> Void in
+        let updateAllAction = UIAlertAction(title: "Update All", style: .Default) { (action) in
             if NSProcessInfo.instancesRespondToSelector("isOperatingSystemAtLeastVersion:") {
                 // >= iOS 8
                 // batch update all objects (directly in persistent store) then refresh objects in context
                 Event.batchUpdateAndRefreshObjects(properties: ["timeStamp" : NSDate()])
                 // note that if using NSFetchedResultsController you have to call performFetch after batch updating
-                self.performFetch()
+                do {
+                    try self.performFetch()
+                } catch {
+                    print(error)
+                }
             } else {
                 // < iOS 8
-                println("Batch updating is new in iOS 8.")
+                print("Batch updating is new in iOS 8.")
                 // update all objects through context
                 if let events = Event.all() as? [Event] {
                     for e in events {
