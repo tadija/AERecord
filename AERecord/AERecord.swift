@@ -86,11 +86,7 @@ public class AERecord {
         configuration: String? = nil,
         storeURL: NSURL = AEStack.defaultURL,
         options: [NSObject : AnyObject]? = nil) throws {
-        do {
-            try AEStack.sharedInstance.loadCoreDataStack(managedObjectModel: managedObjectModel, storeType: storeType, configuration: configuration, storeURL: storeURL, options: options)
-        } catch {
-            throw error
-        }
+        try AEStack.sharedInstance.loadCoreDataStack(managedObjectModel: managedObjectModel, storeType: storeType, configuration: configuration, storeURL: storeURL, options: options)
     }
     
     /**
@@ -99,11 +95,7 @@ public class AERecord {
         :param: storeURL Store URL for stack to destroy.
     */
     public class func destroyCoreDataStack(storeURL: NSURL = AEStack.defaultURL) throws {
-        do {
-            try AEStack.sharedInstance.destroyCoreDataStack(storeURL: storeURL)
-        } catch {
-            throw error
-        }
+        try AEStack.sharedInstance.destroyCoreDataStack(storeURL: storeURL)
     }
     
     /**
@@ -239,14 +231,10 @@ private class AEStack {
         // create the coordinator and store
         persistentStoreCoordinator = NSPersistentStoreCoordinator(managedObjectModel: managedObjectModel)
         if let coordinator = persistentStoreCoordinator {
-            do {
-                try coordinator.addPersistentStoreWithType(storeType, configuration: configuration, URL: storeURL, options: options)
-                mainContext.persistentStoreCoordinator = coordinator
-                backgroundContext.persistentStoreCoordinator = coordinator
-                startReceivingContextNotifications()
-            } catch {
-                throw error
-            }
+            try coordinator.addPersistentStoreWithType(storeType, configuration: configuration, URL: storeURL, options: options)
+            mainContext.persistentStoreCoordinator = coordinator
+            backgroundContext.persistentStoreCoordinator = coordinator
+            startReceivingContextNotifications()
         }
     }
     
@@ -267,12 +255,8 @@ private class AEStack {
         // finally, remove persistent store
         if let coordinator = persistentStoreCoordinator {
             if let store = coordinator.persistentStoreForURL(storeURL) {
-                do {
-                    try coordinator.removePersistentStore(store)
-                    try NSFileManager.defaultManager().removeItemAtURL(storeURL)
-                } catch {
-                    throw error
-                }
+                try coordinator.removePersistentStore(store)
+                try NSFileManager.defaultManager().removeItemAtURL(storeURL)
             }
         }
         
@@ -315,28 +299,30 @@ private class AEStack {
     
     // MARK: Context Save
     
+    // TODO: async error throwing
     func saveContext(context: NSManagedObjectContext? = nil) {
         let moc = context ?? defaultContext
         moc.performBlock { () -> Void in
-            do {
-                if moc.hasChanges {
+            if moc.hasChanges {
+                do {
                     try moc.save()
+                } catch {
+                    print(error)
                 }
-            } catch {
-                print(error)
             }
         }
     }
     
     func saveContextAndWait(context: NSManagedObjectContext? = nil) {
         let moc = context ?? defaultContext
+        // TODO: async error throwing
         moc.performBlockAndWait { () -> Void in
-            do {
-                if moc.hasChanges {
+            if moc.hasChanges {
+                do {
                     try moc.save()
+                } catch {
+                    print(error)
                 }
-            } catch {
-                print(error)
             }
         }
     }
@@ -365,6 +351,7 @@ private class AEStack {
     
     class func refreshObjects(objectIDS objectIDS: [NSManagedObjectID], mergeChanges: Bool, context: NSManagedObjectContext = AERecord.defaultContext) {
         for objectID in objectIDS {
+            // TODO: async error throwing
             context.performBlockAndWait { () -> Void in
                 do {
                     // get managed object
@@ -791,10 +778,10 @@ public extension NSManagedObject {
     
         :returns: Optional Array of `AnyObject`.
     */
-    class func distinctValuesForAttribute(attribute: String, predicate: NSPredicate? = nil, sortDescriptors: [NSSortDescriptor]? = nil, context: NSManagedObjectContext = AERecord.defaultContext) -> [AnyObject]? {
+    class func distinctValuesForAttribute(attribute: String, predicate: NSPredicate? = nil, sortDescriptors: [NSSortDescriptor]? = nil, context: NSManagedObjectContext = AERecord.defaultContext) throws -> [AnyObject]? {
         var distinctValues = [AnyObject]()
         
-        if let distinctRecords = distinctRecordsForAttributes([attribute], predicate: predicate, sortDescriptors: sortDescriptors, context: context) {
+        if let distinctRecords = try distinctRecordsForAttributes([attribute], predicate: predicate, sortDescriptors: sortDescriptors, context: context) {
             for record in distinctRecords {
                 if let value: AnyObject = record[attribute] {
                     distinctValues.append(value)
@@ -815,7 +802,7 @@ public extension NSManagedObject {
         
         :returns: Optional Array of `AnyObject`.
     */
-    class func distinctRecordsForAttributes(attributes: [String], predicate: NSPredicate? = nil, sortDescriptors: [NSSortDescriptor]? = nil, context: NSManagedObjectContext = AERecord.defaultContext) -> [Dictionary<String, AnyObject>]? {
+    class func distinctRecordsForAttributes(attributes: [String], predicate: NSPredicate? = nil, sortDescriptors: [NSSortDescriptor]? = nil, context: NSManagedObjectContext = AERecord.defaultContext) throws -> [Dictionary<String, AnyObject>]? {
         let request = createFetchRequest(predicate: predicate, sortDescriptors: sortDescriptors)
         
         request.resultType = .DictionaryResultType
@@ -824,12 +811,8 @@ public extension NSManagedObject {
         
         var distinctRecords: [Dictionary<String, AnyObject>]?
         
-        do {
-            if let distinctResult = try context.executeFetchRequest(request) as? [Dictionary<String, AnyObject>] {
-                distinctRecords = distinctResult
-            }
-        } catch {
-            print(error)
+        if let distinctResult = try context.executeFetchRequest(request) as? [Dictionary<String, AnyObject>] {
+            distinctRecords = distinctResult
         }
         
         return distinctRecords
@@ -891,6 +874,7 @@ public extension NSManagedObject {
         request.resultType = resultType
         // execute request
         var batchResult: NSBatchUpdateResult? = nil
+        // TODO: async error throwing
         context.performBlockAndWait { () -> Void in
             do {
                 if let result = try context.executeRequest(request) as? NSBatchUpdateResult {
