@@ -24,8 +24,6 @@
 
 import CoreData
 
-let kAERecordPrintLog = true // this will soon be updated to Swift 2.0 error handling.
-
 // MARK: - AERecord (facade for shared instance of AEStack)
 
 /**
@@ -82,7 +80,12 @@ public class AERecord {
     
         :returns: Optional error if something went wrong.
     */
-    public class func loadCoreDataStack(managedObjectModel managedObjectModel: NSManagedObjectModel = AEStack.defaultModel, storeType: String = NSSQLiteStoreType, configuration: String? = nil, storeURL: NSURL = AEStack.defaultURL, options: [NSObject : AnyObject]? = nil) throws {
+    public class func loadCoreDataStack(
+        managedObjectModel managedObjectModel: NSManagedObjectModel = AEStack.defaultModel,
+        storeType: String = NSSQLiteStoreType,
+        configuration: String? = nil,
+        storeURL: NSURL = AEStack.defaultURL,
+        options: [NSObject : AnyObject]? = nil) throws {
         do {
             try AEStack.sharedInstance.loadCoreDataStack(managedObjectModel: managedObjectModel, storeType: storeType, configuration: configuration, storeURL: storeURL, options: options)
         } catch {
@@ -220,12 +223,13 @@ private class AEStack {
         return NSManagedObjectModel.mergedModelFromBundles([bundle])!
     }
     
-    func loadCoreDataStack(managedObjectModel managedObjectModel: NSManagedObjectModel = defaultModel,
+    func loadCoreDataStack(
+        managedObjectModel managedObjectModel: NSManagedObjectModel = defaultModel,
         storeType: String = NSSQLiteStoreType,
         configuration: String? = nil,
         storeURL: NSURL = defaultURL,
-        options: [NSObject : AnyObject]? = nil) throws
-    {
+        options: [NSObject : AnyObject]? = nil) throws {
+            
         self.managedObjectModel = managedObjectModel
         
         // setup main and background contexts
@@ -290,9 +294,6 @@ private class AEStack {
     
     deinit {
         stopReceivingContextNotifications()
-        if kAERecordPrintLog {
-            print("\(NSStringFromClass(self.dynamicType)) deinitialized - function: \(__FUNCTION__) | line: \(__LINE__)\n")
-        }
     }
     
     // MARK: Context Execute
