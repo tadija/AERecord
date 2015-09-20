@@ -302,7 +302,7 @@ Same as with the tableView.
 
 
 ## Requirements
-- Xcode 6.1+
+- Xcode 7.0+
 - iOS 8.0+
 - AERecord doesn't require any additional libraries for it to work.
 - AERecord can be used in iOS and OSX too.
