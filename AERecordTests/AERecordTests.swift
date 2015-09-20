@@ -64,23 +64,23 @@ class AERecordTests: XCTestCase {
         let backgroundQueue = dispatch_get_global_queue(qualityOfServiceClass, 0)
         dispatch_async(backgroundQueue, {
             let context = AERecord.defaultContext
-            XCTAssertEqual(context.concurrencyType, .PrivateQueueConcurrencyType, "Should be able to return background context as default context when called from the background queue.")
+            XCTAssertEqual(context.concurrencyType, NSManagedObjectContextConcurrencyType.PrivateQueueConcurrencyType, "Should be able to return background context as default context when called from the background queue.")
             
             dispatch_async(dispatch_get_main_queue(), { () -> Void in
                 let context = AERecord.defaultContext
-                XCTAssertEqual(context.concurrencyType, .MainQueueConcurrencyType, "Should be able to return main context as default context when called from the main queue.")
+                XCTAssertEqual(context.concurrencyType, NSManagedObjectContextConcurrencyType.MainQueueConcurrencyType, "Should be able to return main context as default context when called from the main queue.")
             })
         })
     }
     
     func testMainContext() {
         let context = AERecord.mainContext
-        XCTAssertEqual(context.concurrencyType, .MainQueueConcurrencyType, "Should be able to create main context with .MainQueueConcurrencyType")
+        XCTAssertEqual(context.concurrencyType, NSManagedObjectContextConcurrencyType.MainQueueConcurrencyType, "Should be able to create main context with .MainQueueConcurrencyType")
     }
     
     func testBackgroundContext() {
         let context = AERecord.backgroundContext
-        XCTAssertEqual(context.concurrencyType, .PrivateQueueConcurrencyType, "Should be able to create background context with .PrivateQueueConcurrencyType")
+        XCTAssertEqual(context.concurrencyType, NSManagedObjectContextConcurrencyType.PrivateQueueConcurrencyType, "Should be able to create background context with .PrivateQueueConcurrencyType")
     }
     
     func testPersistentStoreCoordinator() {
@@ -97,8 +97,8 @@ class AERecordTests: XCTestCase {
     
     func testModelFromBundle() {
         let model = AERecord.modelFromBundle(forClass: AERecordTests.self)
-        let entityNames = model.entitiesByName.keys.array
-        let expectedEntityNames = ["Species", "Breed", "Animal"]
+        let entityNames = Array(model.entitiesByName.keys).sort()
+        let expectedEntityNames = ["Animal", "Breed", "Species"]
         XCTAssertEqual(entityNames, expectedEntityNames, "Should be able to load merged model from bundle for given class.")
     }
     
