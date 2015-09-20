@@ -156,7 +156,7 @@ public class CoreDataTableViewController: UITableViewController, NSFetchedResult
         :param: type The type of change.
         :param: newIndexPath The destination path for the object for insertions or moves (this value is nil for a deletion).
     */
-    public func controller(controller: NSFetchedResultsController, didChangeObject anObject: NSManagedObject, atIndexPath indexPath: NSIndexPath?, forChangeType type: NSFetchedResultsChangeType, newIndexPath: NSIndexPath?) {
+    public func controller(controller: NSFetchedResultsController, didChangeObject anObject: AnyObject, atIndexPath indexPath: NSIndexPath?, forChangeType type: NSFetchedResultsChangeType, newIndexPath: NSIndexPath?) {
         if !suspendAutomaticTrackingOfChangesInManagedObjectContext {
             switch type {
             case .Insert:
@@ -422,7 +422,7 @@ public class CoreDataCollectionViewController: UICollectionViewController, NSFet
         :param: type The type of change.
         :param: newIndexPath The destination path for the object for insertions or moves (this value is nil for a deletion).
     */
-    public func controller(controller: NSFetchedResultsController, didChangeObject anObject: NSManagedObject, atIndexPath indexPath: NSIndexPath?, forChangeType type: NSFetchedResultsChangeType, newIndexPath: NSIndexPath?) {
+    public func controller(controller: NSFetchedResultsController, didChangeObject anObject: AnyObject, atIndexPath indexPath: NSIndexPath?, forChangeType type: NSFetchedResultsChangeType, newIndexPath: NSIndexPath?) {
         switch type {
         case .Insert:
             objectInserts.append(newIndexPath!)

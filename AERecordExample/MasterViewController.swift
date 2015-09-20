@@ -79,7 +79,7 @@ class MasterViewController: CoreDataTableViewController, UISplitViewControllerDe
     override func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
         if editingStyle == .Delete {
             // delete object
-            if let event = fetchedResultsController?.objectAtIndexPath(indexPath) {
+            if let event = fetchedResultsController?.objectAtIndexPath(indexPath) as? Event {
                 event.deleteFromContext()
                 AERecord.saveContext()
             }
