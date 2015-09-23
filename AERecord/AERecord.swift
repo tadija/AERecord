@@ -24,8 +24,6 @@
 
 import CoreData
 
-let kAERecordPrintLog = true // this will soon be updated to Swift 2.0 error handling.
-
 // MARK: - AERecord (facade for shared instance of AEStack)
 
 /**
@@ -63,7 +61,7 @@ public class AERecord {
         
         :param: forClass Class inside bundle with data model.
     */
-    public class func modelFromBundle(#forClass: AnyClass) -> NSManagedObjectModel {
+    public class func modelFromBundle(forClass forClass: AnyClass) -> NSManagedObjectModel {
         return AEStack.modelFromBundle(forClass: forClass)
     }
     
@@ -80,19 +78,26 @@ public class AERecord {
         :param: storeURL URL for Persistent Store creation.
         :param: options Options for Persistent Store creation.
     
-        :returns: Optional error if something went wrong.
+        :returns: Throws error if something went wrong.
     */
-    public class func loadCoreDataStack(managedObjectModel: NSManagedObjectModel = AEStack.defaultModel, storeType: String = NSSQLiteStoreType, configuration: String? = nil, storeURL: NSURL = AEStack.defaultURL, options: [NSObject : AnyObject]? = nil) -> NSError? {
-        return AEStack.sharedInstance.loadCoreDataStack(managedObjectModel: managedObjectModel, storeType: storeType, configuration: configuration, storeURL: storeURL, options: options)
+    public class func loadCoreDataStack(
+        managedObjectModel managedObjectModel: NSManagedObjectModel = AEStack.defaultModel,
+        storeType: String = NSSQLiteStoreType,
+        configuration: String? = nil,
+        storeURL: NSURL = AEStack.defaultURL,
+        options: [NSObject : AnyObject]? = nil) throws {
+        try AEStack.sharedInstance.loadCoreDataStack(managedObjectModel: managedObjectModel, storeType: storeType, configuration: configuration, storeURL: storeURL, options: options)
     }
     
     /**
         Destroys Core Data Stack for given store URL *(stop notifications, reset contexts, remove persistent store and delete .sqlite file)*. **This action can't be undone.**
     
         :param: storeURL Store URL for stack to destroy.
+    
+        :returns: Throws error if something went wrong.
     */
-    public class func destroyCoreDataStack(storeURL: NSURL = AEStack.defaultURL) {
-        AEStack.sharedInstance.destroyCoreDataStack(storeURL: storeURL)
+    public class func destroyCoreDataStack(storeURL: NSURL = AEStack.defaultURL) throws {
+        try AEStack.sharedInstance.destroyCoreDataStack(storeURL: storeURL)
     }
     
     /**
@@ -124,7 +129,7 @@ public class AERecord {
         :param: context If not specified, `defaultContext` will be used.
     */
     public class func saveContext(context: NSManagedObjectContext? = nil) {
-        AEStack.sharedInstance.saveContext(context: context)
+        AEStack.sharedInstance.saveContext(context)
     }
     
     /**
@@ -133,7 +138,7 @@ public class AERecord {
         :param: context If not specified, `defaultContext` will be used.
     */
     public class func saveContextAndWait(context: NSManagedObjectContext? = nil) {
-        AEStack.sharedInstance.saveContextAndWait(context: context)
+        AEStack.sharedInstance.saveContextAndWait(context)
     }
     
     // MARK: Context Faulting Objects
@@ -145,7 +150,7 @@ public class AERecord {
         :param: mergeChanges A Boolean value.
         :param: context If not specified, `defaultContext` will be used.
     */
-    public class func refreshObjects(#objectIDS: [NSManagedObjectID], mergeChanges: Bool, context: NSManagedObjectContext = AERecord.defaultContext) {
+    public class func refreshObjects(objectIDS objectIDS: [NSManagedObjectID], mergeChanges: Bool, context: NSManagedObjectContext = AERecord.defaultContext) {
         AEStack.refreshObjects(objectIDS: objectIDS, mergeChanges: mergeChanges, context: context)
     }
     
@@ -155,7 +160,7 @@ public class AERecord {
         :param: mergeChanges A Boolean value.
         :param: context If not specified, `defaultContext` will be used.
     */
-    public class func refreshAllRegisteredObjects(#mergeChanges: Bool, context: NSManagedObjectContext = AERecord.defaultContext) {
+    public class func refreshAllRegisteredObjects(mergeChanges mergeChanges: Bool, context: NSManagedObjectContext = AERecord.defaultContext) {
         AEStack.refreshAllRegisteredObjects(mergeChanges: mergeChanges, context: context)
     }
     
@@ -166,12 +171,7 @@ private class AEStack {
     
     // MARK: Shared Instance
     
-    class var sharedInstance: AEStack  {
-        struct Singleton {
-            static let instance = AEStack()
-        }
-        return Singleton.instance
-    }
+    static let sharedInstance = AEStack()
     
     // MARK: Default settings
     
@@ -202,22 +202,23 @@ private class AEStack {
     // MARK: Setup Stack
     
     class func storeURLForName(name: String) -> NSURL {
-        let applicationDocumentsDirectory = NSFileManager.defaultManager().URLsForDirectory(.DocumentDirectory, inDomains: .UserDomainMask).last as! NSURL
+        let applicationDocumentsDirectory = NSFileManager.defaultManager().URLsForDirectory(.DocumentDirectory, inDomains: .UserDomainMask).last!
         let storeName = "\(name).sqlite"
         return applicationDocumentsDirectory.URLByAppendingPathComponent(storeName)
     }
     
-    class func modelFromBundle(#forClass: AnyClass) -> NSManagedObjectModel {
+    class func modelFromBundle(forClass forClass: AnyClass) -> NSManagedObjectModel {
         let bundle = NSBundle(forClass: forClass)
         return NSManagedObjectModel.mergedModelFromBundles([bundle])!
     }
     
-    func loadCoreDataStack(managedObjectModel: NSManagedObjectModel = defaultModel,
+    func loadCoreDataStack(
+        managedObjectModel managedObjectModel: NSManagedObjectModel = defaultModel,
         storeType: String = NSSQLiteStoreType,
         configuration: String? = nil,
         storeURL: NSURL = defaultURL,
-        options: [NSObject : AnyObject]? = nil) -> NSError?
-    {
+        options: [NSObject : AnyObject]? = nil) throws {
+            
         self.managedObjectModel = managedObjectModel
         
         // setup main and background contexts
@@ -227,64 +228,44 @@ private class AEStack {
         // create the coordinator and store
         persistentStoreCoordinator = NSPersistentStoreCoordinator(managedObjectModel: managedObjectModel)
         if let coordinator = persistentStoreCoordinator {
-            var error: NSError?
-            if coordinator.addPersistentStoreWithType(storeType, configuration: configuration, URL: storeURL, options: options, error: &error) == nil {
-                var userInfoDictionary = [NSObject : AnyObject]()
-                userInfoDictionary[NSLocalizedDescriptionKey] = "Failed to initialize the application's saved data"
-                userInfoDictionary[NSLocalizedFailureReasonErrorKey] = "There was an error creating or loading the application's saved data."
-                userInfoDictionary[NSUnderlyingErrorKey] = error
-                error = NSError(domain: AEStack.bundleIdentifier, code: 1, userInfo: userInfoDictionary)
-                if let err = error {
-                    if kAERecordPrintLog {
-                        println("Error occured in \(NSStringFromClass(self.dynamicType)) - function: \(__FUNCTION__) | line: \(__LINE__)\n\(err)")
-                    }
-                }
-                return error
-            } else {
-                // everything went ok
-                mainContext.persistentStoreCoordinator = coordinator
-                backgroundContext.persistentStoreCoordinator = coordinator
-                startReceivingContextNotifications()
-                return nil
-            }
-        } else {
-            return NSError(domain: AEStack.bundleIdentifier, code: 2, userInfo: [NSLocalizedDescriptionKey : "Could not create NSPersistentStoreCoordinator from given NSManagedObjectModel."])
+            try coordinator.addPersistentStoreWithType(storeType, configuration: configuration, URL: storeURL, options: options)
+            mainContext.persistentStoreCoordinator = coordinator
+            backgroundContext.persistentStoreCoordinator = coordinator
+            startReceivingContextNotifications()
         }
     }
     
-    func destroyCoreDataStack(storeURL: NSURL = defaultURL) -> NSError? {
+    func destroyCoreDataStack(storeURL storeURL: NSURL = defaultURL) throws {
         // must load this core data stack first
-        loadCoreDataStack(storeURL: storeURL) // because there is no persistentStoreCoordinator if destroyCoreDataStack is called before loadCoreDataStack
-        // also if we're in other stack currently that persistentStoreCoordinator doesn't know about this storeURL
+        do {
+            try loadCoreDataStack(storeURL: storeURL) // because there is no persistentStoreCoordinator if destroyCoreDataStack is called before loadCoreDataStack
+            // also if we're in other stack currently that persistentStoreCoordinator doesn't know about this storeURL
+        } catch {
+            throw error
+        }
         stopReceivingContextNotifications() // stop receiving notifications for these contexts
+        
         // reset contexts
         mainContext.reset()
         backgroundContext.reset()
+        
         // finally, remove persistent store
-        var error: NSError?
         if let coordinator = persistentStoreCoordinator {
             if let store = coordinator.persistentStoreForURL(storeURL) {
-                if coordinator.removePersistentStore(store, error: &error) {
-                    NSFileManager.defaultManager().removeItemAtURL(storeURL, error: &error)
-                }
+                try coordinator.removePersistentStore(store)
+                try NSFileManager.defaultManager().removeItemAtURL(storeURL)
             }
         }
+        
         // reset coordinator and model
         persistentStoreCoordinator = nil
         managedObjectModel = nil
-
-        if let err = error {
-            if kAERecordPrintLog {
-                println("Error occured in \(NSStringFromClass(self.dynamicType)) - function: \(__FUNCTION__) | line: \(__LINE__)\n\(err)")
-            }
-        }
-        return error ?? nil
     }
     
-    func truncateAllData(context: NSManagedObjectContext? = nil) {
+    func truncateAllData(context context: NSManagedObjectContext? = nil) {
         let moc = context ?? defaultContext
         if let mom = managedObjectModel {
-            for entity in mom.entities as! [NSEntityDescription] {
+            for entity in mom.entities {
                 if let entityType = NSClassFromString(entity.managedObjectClassName) as? NSManagedObject.Type {
                     entityType.deleteAll(context: moc)
                 }
@@ -294,9 +275,6 @@ private class AEStack {
     
     deinit {
         stopReceivingContextNotifications()
-        if kAERecordPrintLog {
-            println("\(NSStringFromClass(self.dynamicType)) deinitialized - function: \(__FUNCTION__) | line: \(__LINE__)\n")
-        }
     }
     
     // MARK: Context Execute
@@ -305,32 +283,27 @@ private class AEStack {
         var fetchedObjects = [NSManagedObject]()
         let moc = context ?? defaultContext
         moc.performBlockAndWait { () -> Void in
-            var error: NSError?
-            if let result = moc.executeFetchRequest(request, error: &error) {
-                if let managedObjects = result as? [NSManagedObject] {
+            do {
+                if let managedObjects = try moc.executeFetchRequest(request) as? [NSManagedObject] {
                     fetchedObjects = managedObjects
                 }
-            }
-            if let err = error {
-                if kAERecordPrintLog {
-                    println("Error occured in \(NSStringFromClass(self.dynamicType)) - function: \(__FUNCTION__) | line: \(__LINE__)\n\(err)")
-                }
+            } catch {
+                print(error)
             }
         }
         return fetchedObjects
     }
     
     // MARK: Context Save
-    
+
     func saveContext(context: NSManagedObjectContext? = nil) {
         let moc = context ?? defaultContext
         moc.performBlock { () -> Void in
-            var error: NSError?
-            if moc.hasChanges && !moc.save(&error) {
-                if let err = error {
-                    if kAERecordPrintLog {
-                        println("Error occured in \(NSStringFromClass(self.dynamicType)) - function: \(__FUNCTION__) | line: \(__LINE__)\n\(err)")
-                    }
+            if moc.hasChanges {
+                do {
+                    try moc.save()
+                } catch {
+                    print(error)
                 }
             }
         }
@@ -339,12 +312,11 @@ private class AEStack {
     func saveContextAndWait(context: NSManagedObjectContext? = nil) {
         let moc = context ?? defaultContext
         moc.performBlockAndWait { () -> Void in
-            var error: NSError?
-            if moc.hasChanges && !moc.save(&error) {
-                if let err = error {
-                    if kAERecordPrintLog {
-                        println("Error occured in \(NSStringFromClass(self.dynamicType)) - function: \(__FUNCTION__) | line: \(__LINE__)\n\(err)")
-                    }
+            if moc.hasChanges {
+                do {
+                    try moc.save()
+                } catch {
+                    print(error)
                 }
             }
         }
@@ -372,32 +344,25 @@ private class AEStack {
     
     // MARK: Context Faulting Objects
     
-    class func refreshObjects(#objectIDS: [NSManagedObjectID], mergeChanges: Bool, context: NSManagedObjectContext = AERecord.defaultContext) {
+    class func refreshObjects(objectIDS objectIDS: [NSManagedObjectID], mergeChanges: Bool, context: NSManagedObjectContext = AERecord.defaultContext) {
         for objectID in objectIDS {
-            var error: NSError?
-            context.performBlockAndWait({ () -> Void in
-                if let object = context.existingObjectWithID(objectID, error: &error) {
-                    if !object.fault && error == nil {
-                        // turn managed object into fault
-                        context.refreshObject(object, mergeChanges: mergeChanges)
-                    } else {
-                        if let err = error {
-                            if kAERecordPrintLog {
-                                println("Error occured in \(NSStringFromClass(self.dynamicType)) - function: \(__FUNCTION__) | line: \(__LINE__)\n\(err)")
-                            }
-                        }
-                    }
+            context.performBlockAndWait { () -> Void in
+                do {
+                    let managedObject = try context.existingObjectWithID(objectID)
+                    // turn managed object into fault
+                    context.refreshObject(managedObject, mergeChanges: mergeChanges)
                 }
-            })
+                catch {
+                    print(error)
+                }
+            }
         }
     }
     
-    class func refreshAllRegisteredObjects(#mergeChanges: Bool, context: NSManagedObjectContext = AERecord.defaultContext) {
+    class func refreshAllRegisteredObjects(mergeChanges mergeChanges: Bool, context: NSManagedObjectContext = AERecord.defaultContext) {
         var registeredObjectIDS = [NSManagedObjectID]()
         for object in context.registeredObjects {
-            if let managedObject = object as? NSManagedObject {
-                registeredObjectIDS.append(managedObject.objectID)
-            }
+            registeredObjectIDS.append(object.objectID)
         }
         refreshObjects(objectIDS: registeredObjectIDS, mergeChanges: mergeChanges)
     }
@@ -422,7 +387,7 @@ public extension NSManagedObject {
     */
     class var entityName: String {
         var name = NSStringFromClass(self)
-        name = name.componentsSeparatedByString(".").last
+        name = name.componentsSeparatedByString(".").last!
         return name
     }
     
@@ -439,7 +404,7 @@ public extension NSManagedObject {
     
         :returns: The created fetch request.
     */
-    class func createFetchRequest(predicate: NSPredicate? = nil, sortDescriptors: [NSSortDescriptor]? = nil) -> NSFetchRequest {
+    class func createFetchRequest(predicate predicate: NSPredicate? = nil, sortDescriptors: [NSSortDescriptor]? = nil) -> NSFetchRequest {
         let request = NSFetchRequest(entityName: entityName)
         request.predicate = predicate
         request.sortDescriptors = sortDescriptors
@@ -474,9 +439,9 @@ public extension NSManagedObject {
     
         :returns: New instance of `Self`.
     */
-    class func create(context: NSManagedObjectContext = AERecord.defaultContext) -> Self {
+    class func create(context context: NSManagedObjectContext = AERecord.defaultContext) -> Self {
         let entityDescription = NSEntityDescription.entityForName(entityName, inManagedObjectContext: context)
-        let object = self(entity: entityDescription!, insertIntoManagedObjectContext: context)
+        let object = self.init(entity: entityDescription!, insertIntoManagedObjectContext: context)
         return object
     }
     
@@ -488,7 +453,7 @@ public extension NSManagedObject {
     
         :returns: New instance of `Self` with set attributes.
     */
-    class func createWithAttributes(attributes: [NSObject : AnyObject], context: NSManagedObjectContext = AERecord.defaultContext) -> Self {
+    class func createWithAttributes(attributes: [String : AnyObject], context: NSManagedObjectContext = AERecord.defaultContext) -> Self {
         let object = create(context: context)
         if attributes.count > 0 {
             object.setValuesForKeysWithDictionary(attributes)
@@ -518,7 +483,7 @@ public extension NSManagedObject {
         
         :returns: Instance of managed object.
     */
-    class func firstOrCreateWithAttributes(attributes: [NSObject : AnyObject], predicateType: NSCompoundPredicateType = defaultPredicateType, context: NSManagedObjectContext = AERecord.defaultContext) -> NSManagedObject {
+    class func firstOrCreateWithAttributes(attributes: [String : AnyObject], predicateType: NSCompoundPredicateType = defaultPredicateType, context: NSManagedObjectContext = AERecord.defaultContext) -> NSManagedObject {
         let predicate = createPredicateForAttributes(attributes, predicateType: predicateType)
         let request = createFetchRequest(predicate: predicate)
         request.fetchLimit = 1
@@ -536,7 +501,7 @@ public extension NSManagedObject {
     
         :returns: Optional managed object.
     */
-    class func first(sortDescriptors: [NSSortDescriptor]? = nil, context: NSManagedObjectContext = AERecord.defaultContext) -> NSManagedObject? {
+    class func first(sortDescriptors sortDescriptors: [NSSortDescriptor]? = nil, context: NSManagedObjectContext = AERecord.defaultContext) -> NSManagedObject? {
         let request = createFetchRequest(sortDescriptors: sortDescriptors)
         request.fetchLimit = 1
         let objects = AERecord.executeFetchRequest(request, context: context)
@@ -671,7 +636,7 @@ public extension NSManagedObject {
         
         :param: context If not specified, `defaultContext` will be used.
     */
-    func delete(context: NSManagedObjectContext = AERecord.defaultContext) {
+    func deleteFromContext(context: NSManagedObjectContext = AERecord.defaultContext) {
         context.deleteObject(self)
     }
     
@@ -680,7 +645,7 @@ public extension NSManagedObject {
     
         :param: context If not specified, `defaultContext` will be used.
     */
-    class func deleteAll(context: NSManagedObjectContext = AERecord.defaultContext) {
+    class func deleteAll(context context: NSManagedObjectContext = AERecord.defaultContext) {
         if let objects = self.all(context: context) {
             for object in objects {
                 context.deleteObject(object)
@@ -761,9 +726,7 @@ public extension NSManagedObject {
         let count = context.countForFetchRequest(request, error: &error)
         
         if let err = error {
-            if kAERecordPrintLog {
-                println("Error occured in \(NSStringFromClass(self.dynamicType)) - function: \(__FUNCTION__) | line: \(__LINE__)\n\(err)")
-            }
+            print(err)
         }
         
         return count
@@ -793,7 +756,7 @@ public extension NSManagedObject {
     */
     class func countWithAttributes(attributes: [NSObject : AnyObject], predicateType: NSCompoundPredicateType = defaultPredicateType, context: NSManagedObjectContext = AERecord.defaultContext) -> Int {
         let predicate = createPredicateForAttributes(attributes, predicateType: predicateType)
-        return countWithPredicate(predicate: predicate, context: context)
+        return countWithPredicate(predicate, context: context)
     }
     
     // MARK: Distinct
@@ -806,12 +769,12 @@ public extension NSManagedObject {
         :param: sortDescriptors Sort descriptors.
         :param: context If not specified, `defaultContext` will be used.
     
-        :returns: Optional Array of `AnyObject`.
+        :returns: Throws optional Array of `AnyObject`.
     */
-    class func distinctValuesForAttribute(attribute: String, predicate: NSPredicate? = nil, sortDescriptors: [NSSortDescriptor]? = nil, context: NSManagedObjectContext = AERecord.defaultContext) -> [AnyObject]? {
+    class func distinctValuesForAttribute(attribute: String, predicate: NSPredicate? = nil, sortDescriptors: [NSSortDescriptor]? = nil, context: NSManagedObjectContext = AERecord.defaultContext) throws -> [AnyObject]? {
         var distinctValues = [AnyObject]()
         
-        if let distinctRecords = distinctRecordsForAttributes([attribute], predicate: predicate, sortDescriptors: sortDescriptors, context: context) {
+        if let distinctRecords = try distinctRecordsForAttributes([attribute], predicate: predicate, sortDescriptors: sortDescriptors, context: context) {
             for record in distinctRecords {
                 if let value: AnyObject = record[attribute] {
                     distinctValues.append(value)
@@ -830,26 +793,18 @@ public extension NSManagedObject {
         :param: sortDescriptors Sort descriptors.
         :param: context If not specified, `defaultContext` will be used.
         
-        :returns: Optional Array of `AnyObject`.
+        :returns: Throws optional Array of `AnyObject`.
     */
-    class func distinctRecordsForAttributes(attributes: [String], predicate: NSPredicate? = nil, sortDescriptors: [NSSortDescriptor]? = nil, context: NSManagedObjectContext = AERecord.defaultContext) -> [Dictionary<String, AnyObject>]? {
+    class func distinctRecordsForAttributes(attributes: [String], predicate: NSPredicate? = nil, sortDescriptors: [NSSortDescriptor]? = nil, context: NSManagedObjectContext = AERecord.defaultContext) throws -> [Dictionary<String, AnyObject>]? {
         let request = createFetchRequest(predicate: predicate, sortDescriptors: sortDescriptors)
-        
         request.resultType = .DictionaryResultType
         request.propertiesToFetch = attributes
         request.returnsDistinctResults = true
         
         var distinctRecords: [Dictionary<String, AnyObject>]?
         
-        var error: NSError?
-        if let distinctResult = context.executeFetchRequest(request, error: &error) as? [Dictionary<String, AnyObject>] {
+        if let distinctResult = try context.executeFetchRequest(request) as? [Dictionary<String, AnyObject>] {
             distinctRecords = distinctResult
-        }
-        
-        if let err = error {
-            if kAERecordPrintLog {
-                println("Error occured in \(NSStringFromClass(self.dynamicType)) - function: \(__FUNCTION__) | line: \(__LINE__)\n\(err)")
-            }
         }
         
         return distinctRecords
@@ -902,26 +857,24 @@ public extension NSManagedObject {
     
         :returns: Batch update result.
     */
-    class func batchUpdate(predicate: NSPredicate? = nil, properties: [NSObject : AnyObject]? = nil, resultType: NSBatchUpdateRequestResultType = .StatusOnlyResultType, context: NSManagedObjectContext = AERecord.defaultContext) -> NSBatchUpdateResult? {
-        // create request
+    class func batchUpdate(predicate predicate: NSPredicate? = nil, properties: [NSObject : AnyObject]? = nil, resultType: NSBatchUpdateRequestResultType = .StatusOnlyResultType, context: NSManagedObjectContext = AERecord.defaultContext) -> NSBatchUpdateResult? {
         let request = NSBatchUpdateRequest(entityName: entityName)
-        // set request parameters
         request.predicate = predicate
         request.propertiesToUpdate = properties
         request.resultType = resultType
-        // execute request
+
         var batchResult: NSBatchUpdateResult? = nil
+
         context.performBlockAndWait { () -> Void in
-            var error: NSError?
-            if let result = context.executeRequest(request, error: &error) as? NSBatchUpdateResult {
-                batchResult = result
-            }
-            if let err = error {
-                if kAERecordPrintLog {
-                    println("Error occured in \(NSStringFromClass(self.dynamicType)) - function: \(__FUNCTION__) | line: \(__LINE__)\n\(err)")
+            do {
+                if let result = try context.executeRequest(request) as? NSBatchUpdateResult {
+                    batchResult = result
                 }
+            } catch {
+                print(error)
             }
         }
+
         return batchResult
     }
     

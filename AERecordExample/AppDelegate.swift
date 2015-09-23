@@ -16,8 +16,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         
-        // setup CoreData stack with default options
-        AERecord.loadCoreDataStack()
+        do {
+            try AERecord.loadCoreDataStack()
+        } catch {
+            print(error)
+        }
         
         return true
     }

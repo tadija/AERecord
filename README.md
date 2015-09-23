@@ -19,6 +19,7 @@ All that boilerplate code for setting up of Core Data stack, passing the right `
 - Batch updating directly in persistent store by using `NSBatchUpdateRequest` **(new from iOS 8)**
 - Covered with **unit tests**
 - Covered with [docs](http://tadija.net/projects/AERecord/docs/)
+- **Swift 2.0** ready
 
 ## AECoreDataUI
 **Super awesome Core Data driven UI in Swift (for iOS)**
@@ -70,7 +71,11 @@ Almost everything in `AERecord` is made with 'optional' parameters (which have d
 So you can load (create if doesn't already exist) CoreData stack like this:
 
 ```swift
-AERecord.loadCoreDataStack()
+do {
+    try AERecord.loadCoreDataStack()
+} catch {
+    print(error)
+}
 ```
 
 or like this:
@@ -81,7 +86,11 @@ let myStoreType = NSInMemoryStoreType
 let myConfiguration = ...
 let myStoreURL = AERecord.storeURLForName("MyName")
 let myOptions = [NSMigratePersistentStoresAutomaticallyOption : true]
-AERecord.loadCoreDataStack(managedObjectModel: myModel, storeType: myStoreType, configuration: myConfiguration, storeURL: myStoreURL, options: myOptions)
+do {
+    try AERecord.loadCoreDataStack(managedObjectModel: myModel, storeType: myStoreType, configuration: myConfiguration, storeURL: myStoreURL, options: myOptions)
+} catch {
+    print(error)
+}
 ```
 
 or any combination of these.
@@ -89,10 +98,18 @@ or any combination of these.
 If for any reason you want to completely remove your stack and start over (separate demo data stack for example) you can do it as simple as this:
 
 ```swift
-AERecord.destroyCoreDataStack() // destroy deafult stack
+do {
+    AERecord.destroyCoreDataStack() // destroy deafult stack
+} catch {
+    print(error)
+}
 
-let demoStoreURL = AERecord.storeURLForName("Demo")
-AERecord.destroyCoreDataStack(storeURL: demoStoreURL) // destroy custom stack
+do {
+    let demoStoreURL = AERecord.storeURLForName("Demo")
+    AERecord.destroyCoreDataStack(storeURL: demoStoreURL) // destroy custom stack
+} catch {
+    print(error)
+}
 ```
 
 Similarly you can delete all data from all entities (without messing with the stack) like this:
@@ -220,10 +237,18 @@ NSManagedObject.countWithAttributes(attributes) // count all objects with given 
 
 #### Distinct
 ```swift
-NSManagedObject.distinctValuesForAttribute("city") // get array of all distinct values for given attribute name
+do {
+    NSManagedObject.distinctValuesForAttribute("city") // get array of all distinct values for given attribute name
+} catch {
+    print(error)
+}
 
-let attributes = ["country", "city"]
-NSManagedObject.distinctRecordsForAttributes(attributes) // get dictionary with name and values of all distinct records for multiple given attributes
+do {
+    let attributes = ["country", "city"]
+    NSManagedObject.distinctRecordsForAttributes(attributes) // get dictionary with name and values of all distinct records for multiple given attributes
+} catch {
+    print(error)
+}
 ```
 
 #### Auto Increment
@@ -302,7 +327,7 @@ Same as with the tableView.
 
 
 ## Requirements
-- Xcode 6.1+
+- Xcode 7.0+
 - iOS 8.0+
 - AERecord doesn't require any additional libraries for it to work.
 - AERecord can be used in iOS and OSX too.

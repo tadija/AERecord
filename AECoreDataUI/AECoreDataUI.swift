@@ -49,7 +49,11 @@ public class CoreDataTableViewController: UITableViewController, NSFetchedResult
             if let frc = fetchedResultsController {
                 if frc != oldValue {
                     frc.delegate = self
-                    performFetch()
+                    do {
+                        try performFetch()
+                    } catch {
+                        print(error)
+                    }
                 }
             } else {
                 tableView.reloadData()
@@ -65,15 +69,16 @@ public class CoreDataTableViewController: UITableViewController, NSFetchedResult
         since the `NSFetchedResultsController` will notice and update the table automatically).
         This will also automatically be called if you change the `fetchedResultsController` property.
     */
-    public func performFetch() {
+    public func performFetch() throws {
         if let frc = fetchedResultsController {
-            var error: NSError?
-            if !frc.performFetch(&error) {
-                if let err = error {
-                    println("Error occured in \(NSStringFromClass(self.dynamicType)) - function: \(__FUNCTION__) | line: \(__LINE__)\n\(err)")
-                }
+            defer {
+                tableView.reloadData()
             }
-            tableView.reloadData()
+            do {
+                try frc.performFetch()
+            } catch {
+                throw error
+            }
         }
     }
     
@@ -161,10 +166,10 @@ public class CoreDataTableViewController: UITableViewController, NSFetchedResult
             case .Update:
                 tableView.reloadRowsAtIndexPaths([indexPath!], withRowAnimation: .Fade)
             case .Move:
+                // TODO: fix bug when moving rows in iOS 8.3 and 8.4 - Xcode 7.0 (7A220)
+                // SEE: http://stackoverflow.com/questions/31383760/ios-9-attempt-to-delete-and-reload-the-same-index-path
                 tableView.deleteRowsAtIndexPaths([indexPath!], withRowAnimation: .Fade)
                 tableView.insertRowsAtIndexPaths([newIndexPath!], withRowAnimation: .Fade)
-            default:
-                return
             }
         }
     }
@@ -189,7 +194,7 @@ public class CoreDataTableViewController: UITableViewController, NSFetchedResult
         
         :returns: The number of sections in tableView.
     */
-    override public func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+    public override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
         return fetchedResultsController?.sections?.count ?? 0
     }
     
@@ -201,8 +206,8 @@ public class CoreDataTableViewController: UITableViewController, NSFetchedResult
         
         :returns: The number of rows in section.
     */
-    override public func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return (fetchedResultsController?.sections?[section] as? NSFetchedResultsSectionInfo)?.numberOfObjects ?? 0
+    public override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return (fetchedResultsController?.sections?[section])?.numberOfObjects ?? 0
     }
     
     /**
@@ -213,8 +218,8 @@ public class CoreDataTableViewController: UITableViewController, NSFetchedResult
         
         :returns: A string to use as the title of the section header.
     */
-    override public func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        return (fetchedResultsController?.sections?[section] as? NSFetchedResultsSectionInfo)?.name
+    public override func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        return (fetchedResultsController?.sections?[section])?.name
     }
     
     /**
@@ -226,7 +231,7 @@ public class CoreDataTableViewController: UITableViewController, NSFetchedResult
         
         :returns: An index number identifying a section.
     */
-    override public func tableView(tableView: UITableView, sectionForSectionIndexTitle title: String, atIndex index: Int) -> Int {
+    public override func tableView(tableView: UITableView, sectionForSectionIndexTitle title: String, atIndex index: Int) -> Int {
         return fetchedResultsController?.sectionForSectionIndexTitle(title, atIndex: index) ?? 0
     }
     
@@ -237,7 +242,7 @@ public class CoreDataTableViewController: UITableViewController, NSFetchedResult
         
         :returns: An array of strings that serve as the title of sections in the table view and appear in the index list on the right side of the table view.
     */
-    override public func sectionIndexTitlesForTableView(tableView: UITableView) -> [AnyObject]! {
+    public override func sectionIndexTitlesForTableView(tableView: UITableView) -> [String]? {
         return fetchedResultsController?.sectionIndexTitles
     }
     
@@ -267,7 +272,11 @@ public class CoreDataCollectionViewController: UICollectionViewController, NSFet
             if let frc = fetchedResultsController {
                 if frc != oldValue {
                     frc.delegate = self
-                    performFetch()
+                    do {
+                        try performFetch()
+                    } catch {
+                        print(error)
+                    }
                 }
             } else {
                 collectionView?.reloadData()
@@ -283,15 +292,16 @@ public class CoreDataCollectionViewController: UICollectionViewController, NSFet
         since the `NSFetchedResultsController` will notice and update the collection view automatically).
         This will also automatically be called if you change the `fetchedResultsController` property.
     */
-    public func performFetch() {
+    public func performFetch() throws {
         if let frc = fetchedResultsController {
-            var error: NSError?
-            if !frc.performFetch(&error) {
-                if let err = error {
-                    println("Error occured in \(NSStringFromClass(self.dynamicType)) - function: \(__FUNCTION__) | line: \(__LINE__)\n\(err)")
-                }
+            defer {
+                collectionView?.reloadData()
             }
-            collectionView?.reloadData()
+            do {
+                try frc.performFetch()
+            } catch {
+                throw error
+            }
         }
     }
     
@@ -334,7 +344,7 @@ public class CoreDataCollectionViewController: UICollectionViewController, NSFet
     private var objectDeletes = [NSIndexPath]()
     private var objectUpdates = [NSIndexPath]()
     private var objectMoves = [NSIndexPath]()
-    private var objectReloads = NSMutableSet()
+    private var objectReloads = Set<NSIndexPath>()
     
     private func updateSectionsAndObjects() {
         // sections
@@ -372,7 +382,7 @@ public class CoreDataCollectionViewController: UICollectionViewController, NSFet
         if !self.objectMoves.isEmpty {
             let moveOperations = objectMoves.count / 2
             var index = 0
-            for i in 0 ..< moveOperations {
+            for _ in 0 ..< moveOperations {
                 self.collectionView?.moveItemAtIndexPath(self.objectMoves[index], toIndexPath: self.objectMoves[index + 1])
                 index = index + 2
             }
@@ -423,8 +433,8 @@ public class CoreDataCollectionViewController: UICollectionViewController, NSFet
         case .Move:
             objectMoves.append(indexPath!)
             objectMoves.append(newIndexPath!)
-            objectReloads.addObject(indexPath!)
-            objectReloads.addObject(newIndexPath!)
+            objectReloads.insert(indexPath!)
+            objectReloads.insert(newIndexPath!)
         }
     }
     
@@ -441,8 +451,8 @@ public class CoreDataCollectionViewController: UICollectionViewController, NSFet
                 }, completion: { (finished) -> Void in
                     // reload moved items when finished
                     if self.objectReloads.count > 0 {
-                        self.collectionView?.reloadItemsAtIndexPaths(self.objectReloads.allObjects)
-                        self.objectReloads.removeAllObjects()
+                        self.collectionView?.reloadItemsAtIndexPaths(Array(self.objectReloads))
+                        self.objectReloads.removeAll()
                     }
             })
         }
@@ -470,7 +480,7 @@ public class CoreDataCollectionViewController: UICollectionViewController, NSFet
         :returns: The number of rows in section.
     */
     override public func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return (fetchedResultsController?.sections?[section] as? NSFetchedResultsSectionInfo)?.numberOfObjects ?? 0
+        return (fetchedResultsController?.sections?[section])?.numberOfObjects ?? 0
     }
     
 }
