@@ -169,12 +169,7 @@ private class AEStack {
     
     // MARK: Shared Instance
     
-    class var sharedInstance: AEStack  {
-        struct Singleton {
-            static let instance = AEStack()
-        }
-        return Singleton.instance
-    }
+    static let sharedInstance = AEStack()
     
     // MARK: Default settings
     
@@ -298,8 +293,7 @@ private class AEStack {
     }
     
     // MARK: Context Save
-    
-    // TODO: async error throwing
+
     func saveContext(context: NSManagedObjectContext? = nil) {
         let moc = context ?? defaultContext
         moc.performBlock { () -> Void in
@@ -315,7 +309,6 @@ private class AEStack {
     
     func saveContextAndWait(context: NSManagedObjectContext? = nil) {
         let moc = context ?? defaultContext
-        // TODO: async error throwing
         moc.performBlockAndWait { () -> Void in
             if moc.hasChanges {
                 do {
@@ -351,13 +344,11 @@ private class AEStack {
     
     class func refreshObjects(objectIDS objectIDS: [NSManagedObjectID], mergeChanges: Bool, context: NSManagedObjectContext = AERecord.defaultContext) {
         for objectID in objectIDS {
-            // TODO: async error throwing
             context.performBlockAndWait { () -> Void in
                 do {
-                    // get managed object
-                    let object = try context.existingObjectWithID(objectID)
+                    let managedObject = try context.existingObjectWithID(objectID)
                     // turn managed object into fault
-                    context.refreshObject(object, mergeChanges: mergeChanges)
+                    context.refreshObject(managedObject, mergeChanges: mergeChanges)
                 }
                 catch {
                     print(error)
@@ -804,7 +795,6 @@ public extension NSManagedObject {
     */
     class func distinctRecordsForAttributes(attributes: [String], predicate: NSPredicate? = nil, sortDescriptors: [NSSortDescriptor]? = nil, context: NSManagedObjectContext = AERecord.defaultContext) throws -> [Dictionary<String, AnyObject>]? {
         let request = createFetchRequest(predicate: predicate, sortDescriptors: sortDescriptors)
-        
         request.resultType = .DictionaryResultType
         request.propertiesToFetch = attributes
         request.returnsDistinctResults = true
@@ -866,15 +856,13 @@ public extension NSManagedObject {
         :returns: Batch update result.
     */
     class func batchUpdate(predicate predicate: NSPredicate? = nil, properties: [NSObject : AnyObject]? = nil, resultType: NSBatchUpdateRequestResultType = .StatusOnlyResultType, context: NSManagedObjectContext = AERecord.defaultContext) -> NSBatchUpdateResult? {
-        // create request
         let request = NSBatchUpdateRequest(entityName: entityName)
-        // set request parameters
         request.predicate = predicate
         request.propertiesToUpdate = properties
         request.resultType = resultType
-        // execute request
+
         var batchResult: NSBatchUpdateResult? = nil
-        // TODO: async error throwing
+
         context.performBlockAndWait { () -> Void in
             do {
                 if let result = try context.executeRequest(request) as? NSBatchUpdateResult {
@@ -884,6 +872,7 @@ public extension NSManagedObject {
                 print(error)
             }
         }
+
         return batchResult
     }
     
