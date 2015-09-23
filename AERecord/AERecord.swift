@@ -78,7 +78,7 @@ public class AERecord {
         :param: storeURL URL for Persistent Store creation.
         :param: options Options for Persistent Store creation.
     
-        :returns: Optional error if something went wrong.
+        :returns: Throws error if something went wrong.
     */
     public class func loadCoreDataStack(
         managedObjectModel managedObjectModel: NSManagedObjectModel = AEStack.defaultModel,
@@ -93,6 +93,8 @@ public class AERecord {
         Destroys Core Data Stack for given store URL *(stop notifications, reset contexts, remove persistent store and delete .sqlite file)*. **This action can't be undone.**
     
         :param: storeURL Store URL for stack to destroy.
+    
+        :returns: Throws error if something went wrong.
     */
     public class func destroyCoreDataStack(storeURL: NSURL = AEStack.defaultURL) throws {
         try AEStack.sharedInstance.destroyCoreDataStack(storeURL: storeURL)
@@ -767,7 +769,7 @@ public extension NSManagedObject {
         :param: sortDescriptors Sort descriptors.
         :param: context If not specified, `defaultContext` will be used.
     
-        :returns: Optional Array of `AnyObject`.
+        :returns: Throws optional Array of `AnyObject`.
     */
     class func distinctValuesForAttribute(attribute: String, predicate: NSPredicate? = nil, sortDescriptors: [NSSortDescriptor]? = nil, context: NSManagedObjectContext = AERecord.defaultContext) throws -> [AnyObject]? {
         var distinctValues = [AnyObject]()
@@ -791,7 +793,7 @@ public extension NSManagedObject {
         :param: sortDescriptors Sort descriptors.
         :param: context If not specified, `defaultContext` will be used.
         
-        :returns: Optional Array of `AnyObject`.
+        :returns: Throws optional Array of `AnyObject`.
     */
     class func distinctRecordsForAttributes(attributes: [String], predicate: NSPredicate? = nil, sortDescriptors: [NSSortDescriptor]? = nil, context: NSManagedObjectContext = AERecord.defaultContext) throws -> [Dictionary<String, AnyObject>]? {
         let request = createFetchRequest(predicate: predicate, sortDescriptors: sortDescriptors)
