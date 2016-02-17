@@ -195,7 +195,7 @@ public class CoreDataTableViewController: UITableViewController, NSFetchedResult
         :returns: The number of sections in tableView.
     */
     public override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
-        return fetchedResultsController?.sections?.count ?? 0
+        return fetchedResultsController?.sections?.count ?? super.numberOfSectionsInTableView(tableView)
     }
     
     /**
@@ -207,7 +207,7 @@ public class CoreDataTableViewController: UITableViewController, NSFetchedResult
         :returns: The number of rows in section.
     */
     public override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return (fetchedResultsController?.sections?[section])?.numberOfObjects ?? 0
+        return (fetchedResultsController?.sections?[section])?.numberOfObjects ?? super.tableView(tableView, numberOfRowsInSection: section)
     }
     
     /**
