@@ -219,7 +219,7 @@ public class CoreDataTableViewController: UITableViewController, NSFetchedResult
         :returns: A string to use as the title of the section header.
     */
     public override func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        return (fetchedResultsController?.sections?[section])?.name
+        return (fetchedResultsController?.sections?[section])?.name ?? super.tableView(tableView, titleForHeaderInSection: section)
     }
     
     /**
