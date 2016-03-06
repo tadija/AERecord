@@ -614,6 +614,21 @@ public extension NSManagedObject {
         let predicate = createPredicateForAttributes(attributes, predicateType: predicateType)
         return firstWithPredicate(predicate, sortDescriptors: sortDescriptors, context: context)
     }
+    
+    /**
+     Finds the first record for given attributes. Generic version.
+     
+     :param: attributes Dictionary of attribute names and values.
+     :param: predicateType If not specified, `.AndPredicateType` will be used.
+     :param: sortDescriptors Sort descriptors.
+     :param: context If not specified, `defaultContext` will be used.
+     
+     :returns: Optional instance of `Self`.
+     */
+    class func firstWithAttributes<T>(attributes: [NSObject : AnyObject], predicateType: NSCompoundPredicateType = defaultPredicateType, sortDescriptors: [NSSortDescriptor]? = nil, context: NSManagedObjectContext = AERecord.defaultContext) -> T? {
+        let object: NSManagedObject? = firstWithAttributes(attributes, predicateType: predicateType, sortDescriptors: sortDescriptors, context: context)
+        return object as? T
+    }
 
     /**
         Finds the first record ordered by given attribute.
