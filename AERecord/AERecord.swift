@@ -732,6 +732,21 @@ public extension NSManagedObject {
     }
     
     /**
+     Finds all records for given attribute and value. Generic version
+     
+     :param: attribute Attribute name.
+     :param: value Attribute value.
+     :param: sortDescriptors Sort descriptors.
+     :param: context If not specified, `defaultContext` will be used.
+     
+     :returns: Optional array of `Self` instances.
+     */
+    class func allWithAttribute<T>(attribute: String, value: AnyObject, sortDescriptors: [NSSortDescriptor]? = nil, context: NSManagedObjectContext = AERecord.defaultContext) -> [T]? {
+        let objects: [NSManagedObject]? = allWithAttribute(attribute, value: value, sortDescriptors: sortDescriptors, context: context)
+        return objects?.map { $0 as! T }
+    }
+    
+    /**
         Finds all records for given attributes.
         
         :param: attributes Dictionary of attribute names and values.
