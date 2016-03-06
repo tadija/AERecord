@@ -475,15 +475,14 @@ public extension NSManagedObject {
     }
     
     /**
-     Finds the first record for given attribute and value or creates new if the it does not exist. Generic version.
-     
-     :param: attribute Attribute name.
-     :param: value Attribute value.
-     :param: sortDescriptors Sort descriptors.
-     :param: context If not specified, `defaultContext` will be used.
-     
-     :returns: Instance of `Self`.
-     */
+        Finds the first record for given attribute and value or creates new if the it does not exist. Generic version.
+
+        :param: attribute Attribute name.
+        :param: value Attribute value.
+        :param: context If not specified, `defaultContext` will be used.
+
+        :returns: Instance of `Self`.
+    */
     
     class func firstOrCreateWithAttribute<T>(attribute: String, value: AnyObject, context: NSManagedObjectContext = AERecord.defaultContext) -> T {
         let object: NSManagedObject? = firstOrCreateWithAttribute(attribute, value: value, context: context)
@@ -524,15 +523,13 @@ public extension NSManagedObject {
         return objects.first ?? nil
     }
     
-    // MARK: Finding First
-    
     /**
-    Finds the first record. Generic version.
-    
-    :param: sortDescriptors Sort descriptors.
-    :param: context If not specified, `defaultContext` will be used.
-    
-    :returns: Optional instance of `Self`.
+        Finds the first record. Generic version.
+
+        :param: sortDescriptors Sort descriptors.
+        :param: context If not specified, `defaultContext` will be used.
+
+        :returns: Optional instance of `Self`.
     */
     class func first<T>(sortDescriptors sortDescriptors: [NSSortDescriptor]? = nil, context: NSManagedObjectContext = AERecord.defaultContext) -> T? {
         let object: NSManagedObject? = first(sortDescriptors: sortDescriptors, context: context)
@@ -556,14 +553,14 @@ public extension NSManagedObject {
     }
     
     /**
-     Finds the first record for given predicate. Generic version
-     
-     :param: predicate Predicate.
-     :param: sortDescriptors Sort descriptors.
-     :param: context If not specified, `defaultContext` will be used.
-     
-     :returns: Optional managed object.
-     */
+        Finds the first record for given predicate. Generic version
+
+        :param: predicate Predicate.
+        :param: sortDescriptors Sort descriptors.
+        :param: context If not specified, `defaultContext` will be used.
+
+        :returns: Optional instance of `Self`.
+    */
     class func firstWithPredicate<T>(predicate: NSPredicate, sortDescriptors: [NSSortDescriptor]? = nil, context: NSManagedObjectContext = AERecord.defaultContext) -> T? {
         let object: NSManagedObject? = firstWithPredicate(predicate, sortDescriptors: sortDescriptors, context: context)
         return object as? T
@@ -585,16 +582,15 @@ public extension NSManagedObject {
     }
     
     /**
-     Finds the first record for given attribute and value. Generic version.
-     
-     :param: attribute Attribute name.
-     :param: value Attribute value.
-     :param: sortDescriptors Sort descriptors.
-     :param: context If not specified, `defaultContext` will be used.
-     
-     :returns: Optional object of `Self`.
+        Finds the first record for given attribute and value. Generic version.
+
+        :param: attribute Attribute name.
+        :param: value Attribute value.
+        :param: sortDescriptors Sort descriptors.
+        :param: context If not specified, `defaultContext` will be used.
+
+        :returns: Optional object of `Self`.
      */
-    
     class func firstWithAttribute<T>(attribute: String, value: AnyObject, sortDescriptors: [NSSortDescriptor]? = nil, context: NSManagedObjectContext = AERecord.defaultContext) -> T? {
         let object: NSManagedObject? = firstWithAttribute(attribute, value: value, sortDescriptors: sortDescriptors, context: context)
         return object as? T
@@ -616,15 +612,15 @@ public extension NSManagedObject {
     }
     
     /**
-     Finds the first record for given attributes. Generic version.
-     
-     :param: attributes Dictionary of attribute names and values.
-     :param: predicateType If not specified, `.AndPredicateType` will be used.
-     :param: sortDescriptors Sort descriptors.
-     :param: context If not specified, `defaultContext` will be used.
-     
-     :returns: Optional instance of `Self`.
-     */
+        Finds the first record for given attributes. Generic version.
+
+        :param: attributes Dictionary of attribute names and values.
+        :param: predicateType If not specified, `.AndPredicateType` will be used.
+        :param: sortDescriptors Sort descriptors.
+        :param: context If not specified, `defaultContext` will be used.
+
+        :returns: Optional instance of `Self`.
+    */
     class func firstWithAttributes<T>(attributes: [NSObject : AnyObject], predicateType: NSCompoundPredicateType = defaultPredicateType, sortDescriptors: [NSSortDescriptor]? = nil, context: NSManagedObjectContext = AERecord.defaultContext) -> T? {
         let object: NSManagedObject? = firstWithAttributes(attributes, predicateType: predicateType, sortDescriptors: sortDescriptors, context: context)
         return object as? T
@@ -645,14 +641,14 @@ public extension NSManagedObject {
     }
     
     /**
-     Finds the first record ordered by given attribute. Generic version.
-     
-     :param: name Attribute name.
-     :param: ascending A Boolean value.
-     :param: context If not specified, `defaultContext` will be used.
-     
-     :returns: Optional instance of `Self`.
-     */
+        Finds the first record ordered by given attribute. Generic version.
+
+        :param: name Attribute name.
+        :param: ascending A Boolean value.
+        :param: context If not specified, `defaultContext` will be used.
+
+        :returns: Optional instance of `Self`.
+    */
     class func firstOrderedByAttribute<T>(name: String, ascending: Bool = true, context: NSManagedObjectContext = AERecord.defaultContext) -> T? {
         let object: NSManagedObject? = firstOrderedByAttribute(name, ascending: ascending, context: context)
         return object as? T
@@ -675,13 +671,13 @@ public extension NSManagedObject {
     }
     
     /**
-     Finds all records. Generic version.
-     
-     :param: sortDescriptors Sort descriptors.
-     :param: context If not specified, `defaultContext` will be used.
-     
-     :returns: Optional array of `Self` instances.
-     */
+        Finds all records. Generic version.
+
+        :param: sortDescriptors Sort descriptors.
+        :param: context If not specified, `defaultContext` will be used.
+
+        :returns: Optional array of `Self` instances.
+    */
     class func all<T>(sortDescriptors: [NSSortDescriptor]? = nil, context: NSManagedObjectContext = AERecord.defaultContext) -> [T]? {
         let objects: [NSManagedObject]? = all(sortDescriptors, context: context)
         return objects?.map { $0 as! T }
@@ -703,14 +699,14 @@ public extension NSManagedObject {
     }
     
     /**
-     Finds all records for given predicate. Generic version
-     
-     :param: predicate Predicate.
-     :param: sortDescriptors Sort descriptors.
-     :param: context If not specified, `defaultContext` will be used.
-     
-     :returns: Optional array of `Self` instances.
-     */
+        Finds all records for given predicate. Generic version
+
+        :param: predicate Predicate.
+        :param: sortDescriptors Sort descriptors.
+        :param: context If not specified, `defaultContext` will be used.
+
+        :returns: Optional array of `Self` instances.
+    */
     class func allWithPredicate<T>(predicate: NSPredicate, sortDescriptors: [NSSortDescriptor]? = nil, context: NSManagedObjectContext = AERecord.defaultContext) -> [T]? {
         let objects: [NSManagedObject]? = allWithPredicate(predicate, sortDescriptors: sortDescriptors, context: context)
         return objects?.map { $0 as! T }
@@ -732,15 +728,15 @@ public extension NSManagedObject {
     }
     
     /**
-     Finds all records for given attribute and value. Generic version
-     
-     :param: attribute Attribute name.
-     :param: value Attribute value.
-     :param: sortDescriptors Sort descriptors.
-     :param: context If not specified, `defaultContext` will be used.
-     
-     :returns: Optional array of `Self` instances.
-     */
+        Finds all records for given attribute and value. Generic version
+
+        :param: attribute Attribute name.
+        :param: value Attribute value.
+        :param: sortDescriptors Sort descriptors.
+        :param: context If not specified, `defaultContext` will be used.
+
+        :returns: Optional array of `Self` instances.
+    */
     class func allWithAttribute<T>(attribute: String, value: AnyObject, sortDescriptors: [NSSortDescriptor]? = nil, context: NSManagedObjectContext = AERecord.defaultContext) -> [T]? {
         let objects: [NSManagedObject]? = allWithAttribute(attribute, value: value, sortDescriptors: sortDescriptors, context: context)
         return objects?.map { $0 as! T }
@@ -762,15 +758,15 @@ public extension NSManagedObject {
     }
     
     /**
-     Finds all records for given attributes. Generic version.
-     
-     :param: attributes Dictionary of attribute names and values.
-     :param: predicateType If not specified, `.AndPredicateType` will be used.
-     :param: sortDescriptors Sort descriptors.
-     :param: context If not specified, `defaultContext` will be used.
-     
-     :returns: Optional array of `Self` instances.
-     */
+        Finds all records for given attributes. Generic version.
+
+        :param: attributes Dictionary of attribute names and values.
+        :param: predicateType If not specified, `.AndPredicateType` will be used.
+        :param: sortDescriptors Sort descriptors.
+        :param: context If not specified, `defaultContext` will be used.
+
+        :returns: Optional array of `Self` instances.
+    */
     class func allWithAttributes<T>(attributes: [NSObject : AnyObject], predicateType: NSCompoundPredicateType = defaultPredicateType, sortDescriptors: [NSSortDescriptor]? = nil, context: NSManagedObjectContext = AERecord.defaultContext) -> [T]? {
         let objects: [NSManagedObject]? = allWithAttributes(attributes, predicateType: predicateType, sortDescriptors: sortDescriptors, context: context)
         return objects?.map { $0 as! T }
