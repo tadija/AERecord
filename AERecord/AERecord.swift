@@ -703,6 +703,20 @@ public extension NSManagedObject {
     }
     
     /**
+     Finds all records for given predicate. Generic version
+     
+     :param: predicate Predicate.
+     :param: sortDescriptors Sort descriptors.
+     :param: context If not specified, `defaultContext` will be used.
+     
+     :returns: Optional array of `Self` instances.
+     */
+    class func allWithPredicate<T>(predicate: NSPredicate, sortDescriptors: [NSSortDescriptor]? = nil, context: NSManagedObjectContext = AERecord.defaultContext) -> [T]? {
+        let objects: [NSManagedObject]? = allWithPredicate(predicate, sortDescriptors: sortDescriptors, context: context)
+        return objects?.map { $0 as! T }
+    }
+    
+    /**
         Finds all records for given attribute and value.
         
         :param: attribute Attribute name.
