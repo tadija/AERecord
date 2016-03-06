@@ -524,6 +524,21 @@ public extension NSManagedObject {
         return objects.first ?? nil
     }
     
+    // MARK: Finding First
+    
+    /**
+    Finds the first record. Generic version.
+    
+    :param: sortDescriptors Sort descriptors.
+    :param: context If not specified, `defaultContext` will be used.
+    
+    :returns: Optional instance of `Self`.
+    */
+    class func first<T>(sortDescriptors sortDescriptors: [NSSortDescriptor]? = nil, context: NSManagedObjectContext = AERecord.defaultContext) -> T? {
+        let object: NSManagedObject? = first(sortDescriptors: sortDescriptors, context: context)
+        return object as? T
+    }
+    
     /**
         Finds the first record for given predicate.
         
