@@ -195,7 +195,8 @@ public class CoreDataTableViewController: UITableViewController, NSFetchedResult
         :returns: The number of sections in tableView.
     */
     public override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
-        return fetchedResultsController?.sections?.count ?? super.numberOfSectionsInTableView(tableView)
+        let superNumberOfSections = super.numberOfSectionsInTableView(tableView)
+        return fetchedResultsController?.sections?.count ?? superNumberOfSections
     }
     
     /**
@@ -207,7 +208,8 @@ public class CoreDataTableViewController: UITableViewController, NSFetchedResult
         :returns: The number of rows in section.
     */
     public override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return (fetchedResultsController?.sections?[section])?.numberOfObjects ?? super.tableView(tableView, numberOfRowsInSection: section)
+        let superNumberOfRows = super.tableView(tableView, numberOfRowsInSection: section)
+        return (fetchedResultsController?.sections?[section])?.numberOfObjects ?? superNumberOfRows
     }
     
     /**
@@ -219,7 +221,8 @@ public class CoreDataTableViewController: UITableViewController, NSFetchedResult
         :returns: A string to use as the title of the section header.
     */
     public override func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        return (fetchedResultsController?.sections?[section])?.name ?? super.tableView(tableView, titleForHeaderInSection: section)
+        let superTitleForHeader = super.tableView(tableView, titleForHeaderInSection: section)
+        return (fetchedResultsController?.sections?[section])?.name ?? superTitleForHeader
     }
     
     /**
