@@ -286,7 +286,7 @@ private class AEStack {
         stopReceivingContextNotifications()
     }
     
-    // MARK: Context Execute
+    // MARK: Context Operations
     
     func executeFetchRequest(request: NSFetchRequest, context: NSManagedObjectContext? = nil) -> [NSManagedObject] {
         var fetchedObjects = [NSManagedObject]()
@@ -302,8 +302,6 @@ private class AEStack {
         }
         return fetchedObjects
     }
-    
-    // MARK: Context Save
 
     func saveContext(context: NSManagedObjectContext? = nil) {
         let moc = context ?? defaultContext
@@ -331,27 +329,11 @@ private class AEStack {
         }
     }
     
-    // MARK: Context Sync
-    
-    func startReceivingContextNotifications() {
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "contextDidSave:", name: NSManagedObjectContextDidSaveNotification, object: mainContext)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "contextDidSave:", name: NSManagedObjectContextDidSaveNotification, object: backgroundContext)
+    func mergeChangesFromNotification(notification: NSNotification, inContext context: NSManagedObjectContext) {
+        context.performBlock({ () -> Void in
+            context.mergeChangesFromContextDidSaveNotification(notification)
+        })
     }
-    
-    func stopReceivingContextNotifications() {
-        NSNotificationCenter.defaultCenter().removeObserver(self)
-    }
-    
-    @objc func contextDidSave(notification: NSNotification) {
-        if let context = notification.object as? NSManagedObjectContext {
-            let contextToRefresh = context == mainContext ? backgroundContext : mainContext
-            contextToRefresh.performBlock({ () -> Void in
-                contextToRefresh.mergeChangesFromContextDidSaveNotification(notification)
-            })
-        }
-    }
-    
-    // MARK: Context Faulting Objects
     
     class func refreshObjects(objectIDS objectIDS: [NSManagedObjectID], mergeChanges: Bool, context: NSManagedObjectContext = AERecord.defaultContext) {
         for objectID in objectIDS {
@@ -374,6 +356,49 @@ private class AEStack {
             registeredObjectIDS.append(object.objectID)
         }
         refreshObjects(objectIDS: registeredObjectIDS, mergeChanges: mergeChanges)
+    }
+    
+    // MARK: Notifications
+    
+    func startReceivingContextNotifications() {
+        let center = NSNotificationCenter.defaultCenter()
+        
+        // Context Sync
+        center.addObserver(self, selector: "contextDidSave:", name: NSManagedObjectContextDidSaveNotification, object: mainContext)
+        center.addObserver(self, selector: "contextDidSave:", name: NSManagedObjectContextDidSaveNotification, object: backgroundContext)
+        
+        // iCloud Support
+        center.addObserver(self, selector: "persistentStoreDidImportUbiquitousContentChanges:", name: NSPersistentStoreDidImportUbiquitousContentChangesNotification, object: persistentStoreCoordinator)
+        center.addObserver(self, selector: "storesWillChange:", name: NSPersistentStoreCoordinatorStoresWillChangeNotification, object: persistentStoreCoordinator)
+        center.addObserver(self, selector: "storesDidChange:", name: NSPersistentStoreCoordinatorStoresDidChangeNotification, object: persistentStoreCoordinator)
+    }
+    
+    func stopReceivingContextNotifications() {
+        let center = NSNotificationCenter.defaultCenter()
+        center.removeObserver(self)
+    }
+    
+    // MARK: Context Sync
+    
+    @objc func contextDidSave(notification: NSNotification) {
+        if let context = notification.object as? NSManagedObjectContext {
+            let contextToRefresh = context == mainContext ? backgroundContext : mainContext
+            mergeChangesFromNotification(notification, inContext: contextToRefresh)
+        }
+    }
+    
+    // MARK: iCloud Support
+    
+    @objc func persistentStoreDidImportUbiquitousContentChanges(changeNotification: NSNotification) {
+        mergeChangesFromNotification(changeNotification, inContext: defaultContext)
+    }
+    
+    @objc func storesWillChange(notification: NSNotification) {
+        saveContextAndWait()
+    }
+    
+    @objc func storesDidChange(notification: NSNotification) {
+        // Does nothing here. You should probably update your UI now.
     }
     
 }
