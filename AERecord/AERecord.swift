@@ -48,7 +48,7 @@ public class AERecord {
     // MARK: Setup Stack
     
     /**
-        Returns the final URL in Application Documents Directory for the store with given name.
+        Returns the final URL for the store with given name.
     
         :param: name Filename for the store.
     */
@@ -201,10 +201,19 @@ private class AEStack {
     
     // MARK: Setup Stack
     
+    class var defaultSearchPath: NSSearchPathDirectory {
+        #if os(tvOS)
+            return .CachesDirectory
+        #else
+            return .DocumentDirectory
+        #endif
+    }
+    
     class func storeURLForName(name: String) -> NSURL {
-        let applicationDocumentsDirectory = NSFileManager.defaultManager().URLsForDirectory(.DocumentDirectory, inDomains: .UserDomainMask).last!
+        let fileManager = NSFileManager.defaultManager()
+        let directoryURL = fileManager.URLsForDirectory(defaultSearchPath, inDomains: .UserDomainMask).last!
         let storeName = "\(name).sqlite"
-        return applicationDocumentsDirectory.URLByAppendingPathComponent(storeName)
+        return directoryURL.URLByAppendingPathComponent(storeName)
     }
     
     class func modelFromBundle(forClass forClass: AnyClass) -> NSManagedObjectModel {

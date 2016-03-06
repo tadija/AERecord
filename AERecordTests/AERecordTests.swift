@@ -90,9 +90,17 @@ class AERecordTests: XCTestCase {
     
     func testStoreURLForName() {
         let storeURL = AERecord.storeURLForName("test")
-        let applicationDocumentsDirectory = NSFileManager.defaultManager().URLsForDirectory(.DocumentDirectory, inDomains: .UserDomainMask).last!
-        let expectedStoreURL = applicationDocumentsDirectory.URLByAppendingPathComponent("test.sqlite")
+        let directoryURL = NSFileManager.defaultManager().URLsForDirectory(defaultSearchPath, inDomains: .UserDomainMask).last!
+        let expectedStoreURL = directoryURL.URLByAppendingPathComponent("test.sqlite")
         XCTAssertEqual(storeURL, expectedStoreURL, "")
+    }
+    
+    var defaultSearchPath: NSSearchPathDirectory {
+        #if os(tvOS)
+            return .CachesDirectory
+        #else
+            return .DocumentDirectory
+        #endif
     }
     
     func testModelFromBundle() {
