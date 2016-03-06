@@ -475,6 +475,22 @@ public extension NSManagedObject {
     }
     
     /**
+     Finds the first record for given attribute and value or creates new if the it does not exist. Generic version.
+     
+     :param: attribute Attribute name.
+     :param: value Attribute value.
+     :param: sortDescriptors Sort descriptors.
+     :param: context If not specified, `defaultContext` will be used.
+     
+     :returns: Instance of `Self`.
+     */
+    
+    class func firstOrCreateWithAttribute<T>(attribute: String, value: AnyObject, context: NSManagedObjectContext = AERecord.defaultContext) -> T {
+        let object: NSManagedObject? = firstOrCreateWithAttribute(attribute, value: value, context: context)
+        return object as! T
+    }
+    
+    /**
         Finds the first record for given attributes or creates new if the it does not exist.
         
         :param: attributes Dictionary of attribute names and values.
@@ -539,6 +555,22 @@ public extension NSManagedObject {
         return firstWithPredicate(predicate, sortDescriptors: sortDescriptors, context: context)
     }
     
+    /**
+     Finds the first record for given attribute and value. Generic version.
+     
+     :param: attribute Attribute name.
+     :param: value Attribute value.
+     :param: sortDescriptors Sort descriptors.
+     :param: context If not specified, `defaultContext` will be used.
+     
+     :returns: Optional object of `Self`.
+     */
+    
+    class func firstWithAttribute<T>(attribute: String, value: AnyObject, sortDescriptors: [NSSortDescriptor]? = nil, context: NSManagedObjectContext = AERecord.defaultContext) -> T? {
+        let object: NSManagedObject? = firstWithAttribute(attribute, value: value, sortDescriptors: sortDescriptors, context: context)
+        return object as? T
+    }
+
     /**
         Finds the first record for given attributes.
         

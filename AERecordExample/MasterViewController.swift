@@ -91,7 +91,7 @@ class MasterViewController: CoreDataTableViewController, UISplitViewControllerDe
         if let frc = fetchedResultsController {
             if let event = frc.objectAtIndexPath(indexPath) as? Event {
                 // deselect previous / select current
-                if let previous = Event.firstWithAttribute("selected", value: true) as? Event {
+                if let previous: Event = Event.firstWithAttribute("selected", value: true) {
                     previous.selected = false
                 }
                 event.selected = true
