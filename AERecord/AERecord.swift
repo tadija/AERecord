@@ -368,9 +368,12 @@ private class AEStack {
         center.addObserver(self, selector: "contextDidSave:", name: NSManagedObjectContextDidSaveNotification, object: backgroundContext)
         
         // iCloud Support
-        center.addObserver(self, selector: "persistentStoreDidImportUbiquitousContentChanges:", name: NSPersistentStoreDidImportUbiquitousContentChangesNotification, object: persistentStoreCoordinator)
         center.addObserver(self, selector: "storesWillChange:", name: NSPersistentStoreCoordinatorStoresWillChangeNotification, object: persistentStoreCoordinator)
         center.addObserver(self, selector: "storesDidChange:", name: NSPersistentStoreCoordinatorStoresDidChangeNotification, object: persistentStoreCoordinator)
+        center.addObserver(self, selector: "willRemoveStore:", name: NSPersistentStoreCoordinatorWillRemoveStoreNotification, object: persistentStoreCoordinator)
+        #if !os(tvOS)
+            center.addObserver(self, selector: "persistentStoreDidImportUbiquitousContentChanges:", name: NSPersistentStoreDidImportUbiquitousContentChangesNotification, object: persistentStoreCoordinator)
+        #endif
     }
     
     func stopReceivingContextNotifications() {
@@ -389,16 +392,20 @@ private class AEStack {
     
     // MARK: iCloud Support
     
-    @objc func persistentStoreDidImportUbiquitousContentChanges(changeNotification: NSNotification) {
-        mergeChangesFromNotification(changeNotification, inContext: defaultContext)
-    }
-    
     @objc func storesWillChange(notification: NSNotification) {
         saveContextAndWait()
     }
     
     @objc func storesDidChange(notification: NSNotification) {
         // Does nothing here. You should probably update your UI now.
+    }
+    
+    @objc func willRemoveStore(notification: NSNotification) {
+        // Does nothing here (for now).
+    }
+    
+    @objc func persistentStoreDidImportUbiquitousContentChanges(changeNotification: NSNotification) {
+        mergeChangesFromNotification(changeNotification, inContext: defaultContext)
     }
     
 }
