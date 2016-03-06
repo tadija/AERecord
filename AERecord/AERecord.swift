@@ -556,6 +556,20 @@ public extension NSManagedObject {
     }
     
     /**
+     Finds the first record for given predicate. Generic version
+     
+     :param: predicate Predicate.
+     :param: sortDescriptors Sort descriptors.
+     :param: context If not specified, `defaultContext` will be used.
+     
+     :returns: Optional managed object.
+     */
+    class func firstWithPredicate<T>(predicate: NSPredicate, sortDescriptors: [NSSortDescriptor]? = nil, context: NSManagedObjectContext = AERecord.defaultContext) -> T? {
+        let object: NSManagedObject? = firstWithPredicate(predicate, sortDescriptors: sortDescriptors, context: context)
+        return object as? T
+    }
+    
+    /**
         Finds the first record for given attribute and value.
         
         :param: attribute Attribute name.
