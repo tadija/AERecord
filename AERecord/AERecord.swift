@@ -644,6 +644,20 @@ public extension NSManagedObject {
         return first(sortDescriptors: sortDescriptors, context: context)
     }
     
+    /**
+     Finds the first record ordered by given attribute. Generic version.
+     
+     :param: name Attribute name.
+     :param: ascending A Boolean value.
+     :param: context If not specified, `defaultContext` will be used.
+     
+     :returns: Optional instance of `Self`.
+     */
+    class func firstOrderedByAttribute<T>(name: String, ascending: Bool = true, context: NSManagedObjectContext = AERecord.defaultContext) -> T? {
+        let object: NSManagedObject? = firstOrderedByAttribute(name, ascending: ascending, context: context)
+        return object as? T
+    }
+    
     // MARK: Finding All
     
     /**
