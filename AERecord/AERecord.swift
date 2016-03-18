@@ -513,8 +513,8 @@ public extension NSManagedObject {
     
         :returns: Instance of managed object.
     */
-    class func firstOrCreateWithAttribute(attribute: String, value: AnyObject, context: NSManagedObjectContext = AERecord.defaultContext) -> NSManagedObject {
-        return firstOrCreateWithAttributes([attribute : value], context: context)
+    class func firstOrCreateWithAttribute(attribute: String, value: AnyObject, context: NSManagedObjectContext = AERecord.defaultContext) -> Self {
+        return _firstOrCreateWithAttribute(attribute, value: value, context: context)
     }
     
     /**
@@ -526,8 +526,9 @@ public extension NSManagedObject {
 
         :returns: Instance of `Self`.
     */
-    class func firstOrCreateWithAttribute<T>(attribute: String, value: AnyObject, context: NSManagedObjectContext = AERecord.defaultContext) -> T {
-        let object = firstOrCreateWithAttribute(attribute, value: value, context: context)
+    private class func _firstOrCreateWithAttribute<T>(attribute: String, value: AnyObject, context: NSManagedObjectContext = AERecord.defaultContext) -> T {
+        let object = firstOrCreateWithAttributes([attribute : value], context: context)
+        
         return object as! T
     }
     
@@ -540,12 +541,8 @@ public extension NSManagedObject {
         
         :returns: Instance of managed object.
     */
-    class func firstOrCreateWithAttributes(attributes: [String : AnyObject], predicateType: NSCompoundPredicateType = defaultPredicateType, context: NSManagedObjectContext = AERecord.defaultContext) -> NSManagedObject {
-        let predicate = createPredicateForAttributes(attributes, predicateType: predicateType)
-        let request = createFetchRequest(predicate: predicate)
-        request.fetchLimit = 1
-        let objects = AERecord.executeFetchRequest(request, context: context)
-        return objects.first ?? createWithAttributes(attributes, context: context)
+    class func firstOrCreateWithAttributes(attributes: [String : AnyObject], predicateType: NSCompoundPredicateType = defaultPredicateType, context: NSManagedObjectContext = AERecord.defaultContext) -> Self {
+        return _firstOrCreateWithAttributes(attributes, predicateType: predicateType, context: context)
     }
     
     /**
@@ -557,9 +554,13 @@ public extension NSManagedObject {
 
         :returns: Instance of `Self`.
     */
-    class func firstOrCreateWithAttributes<T>(attributes: [String : AnyObject], predicateType: NSCompoundPredicateType = defaultPredicateType, context: NSManagedObjectContext = AERecord.defaultContext) -> T {
-        let object = firstOrCreateWithAttributes(attributes, predicateType: predicateType, context: context)
-        return object as! T
+    private class func _firstOrCreateWithAttributes<T>(attributes: [String : AnyObject], predicateType: NSCompoundPredicateType = defaultPredicateType, context: NSManagedObjectContext = AERecord.defaultContext) -> T {
+        let predicate = createPredicateForAttributes(attributes, predicateType: predicateType)
+        let request = createFetchRequest(predicate: predicate)
+        request.fetchLimit = 1
+        let objects = AERecord.executeFetchRequest(request, context: context)
+        
+        return (objects.first ?? createWithAttributes(attributes, context: context)) as! T
     }
     
     // MARK: Find First
@@ -572,11 +573,8 @@ public extension NSManagedObject {
     
         :returns: Optional managed object.
     */
-    class func first(sortDescriptors sortDescriptors: [NSSortDescriptor]? = nil, context: NSManagedObjectContext = AERecord.defaultContext) -> NSManagedObject? {
-        let request = createFetchRequest(sortDescriptors: sortDescriptors)
-        request.fetchLimit = 1
-        let objects = AERecord.executeFetchRequest(request, context: context)
-        return objects.first ?? nil
+    class func first(sortDescriptors sortDescriptors: [NSSortDescriptor]? = nil, context: NSManagedObjectContext = AERecord.defaultContext) -> Self? {
+        return _first(sortDescriptors: sortDescriptors, context: context)
     }
     
     /**
@@ -587,9 +585,12 @@ public extension NSManagedObject {
 
         :returns: Optional instance of `Self`.
     */
-    class func first<T>(sortDescriptors sortDescriptors: [NSSortDescriptor]? = nil, context: NSManagedObjectContext = AERecord.defaultContext) -> T? {
-        let object = first(sortDescriptors: sortDescriptors, context: context)
-        return object as? T
+    private class func _first<T>(sortDescriptors sortDescriptors: [NSSortDescriptor]? = nil, context: NSManagedObjectContext = AERecord.defaultContext) -> T? {
+        let request = createFetchRequest(sortDescriptors: sortDescriptors)
+        request.fetchLimit = 1
+        let objects = AERecord.executeFetchRequest(request, context: context)
+        
+        return objects.first as? T
     }
     
     /**
@@ -601,11 +602,8 @@ public extension NSManagedObject {
         
         :returns: Optional managed object.
     */
-    class func firstWithPredicate(predicate: NSPredicate, sortDescriptors: [NSSortDescriptor]? = nil, context: NSManagedObjectContext = AERecord.defaultContext) -> NSManagedObject? {
-        let request = createFetchRequest(predicate: predicate, sortDescriptors: sortDescriptors)
-        request.fetchLimit = 1
-        let objects = AERecord.executeFetchRequest(request, context: context)
-        return objects.first ?? nil
+    class func firstWithPredicate(predicate: NSPredicate, sortDescriptors: [NSSortDescriptor]? = nil, context: NSManagedObjectContext = AERecord.defaultContext) -> Self? {
+        return _firstWithPredicate(predicate, sortDescriptors: sortDescriptors, context: context)
     }
     
     /**
@@ -617,9 +615,12 @@ public extension NSManagedObject {
 
         :returns: Optional instance of `Self`.
     */
-    class func firstWithPredicate<T>(predicate: NSPredicate, sortDescriptors: [NSSortDescriptor]? = nil, context: NSManagedObjectContext = AERecord.defaultContext) -> T? {
-        let object = firstWithPredicate(predicate, sortDescriptors: sortDescriptors, context: context)
-        return object as? T
+    private class func _firstWithPredicate<T>(predicate: NSPredicate, sortDescriptors: [NSSortDescriptor]? = nil, context: NSManagedObjectContext = AERecord.defaultContext) -> T? {
+        let request = createFetchRequest(predicate: predicate, sortDescriptors: sortDescriptors)
+        request.fetchLimit = 1
+        let objects = AERecord.executeFetchRequest(request, context: context)
+        
+        return objects.first as? T
     }
     
     /**
@@ -632,24 +633,9 @@ public extension NSManagedObject {
         
         :returns: Optional managed object.
     */
-    class func firstWithAttribute(attribute: String, value: AnyObject, sortDescriptors: [NSSortDescriptor]? = nil, context: NSManagedObjectContext = AERecord.defaultContext) -> NSManagedObject? {
+    class func firstWithAttribute(attribute: String, value: AnyObject, sortDescriptors: [NSSortDescriptor]? = nil, context: NSManagedObjectContext = AERecord.defaultContext) -> Self? {
         let predicate = NSPredicate(format: "%K = %@", argumentArray: [attribute, value])
         return firstWithPredicate(predicate, sortDescriptors: sortDescriptors, context: context)
-    }
-    
-    /**
-        Finds the first record for given attribute and value. Generic version.
-
-        :param: attribute Attribute name.
-        :param: value Attribute value.
-        :param: sortDescriptors Sort descriptors.
-        :param: context If not specified, `defaultContext` will be used.
-
-        :returns: Optional object of `Self`.
-     */
-    class func firstWithAttribute<T>(attribute: String, value: AnyObject, sortDescriptors: [NSSortDescriptor]? = nil, context: NSManagedObjectContext = AERecord.defaultContext) -> T? {
-        let object = firstWithAttribute(attribute, value: value, sortDescriptors: sortDescriptors, context: context)
-        return object as? T
     }
 
     /**
@@ -662,26 +648,11 @@ public extension NSManagedObject {
         
         :returns: Optional managed object.
     */
-    class func firstWithAttributes(attributes: [NSObject : AnyObject], predicateType: NSCompoundPredicateType = defaultPredicateType, sortDescriptors: [NSSortDescriptor]? = nil, context: NSManagedObjectContext = AERecord.defaultContext) -> NSManagedObject? {
+    class func firstWithAttributes(attributes: [NSObject : AnyObject], predicateType: NSCompoundPredicateType = defaultPredicateType, sortDescriptors: [NSSortDescriptor]? = nil, context: NSManagedObjectContext = AERecord.defaultContext) -> Self? {
         let predicate = createPredicateForAttributes(attributes, predicateType: predicateType)
         return firstWithPredicate(predicate, sortDescriptors: sortDescriptors, context: context)
     }
     
-    /**
-        Finds the first record for given attributes. Generic version.
-
-        :param: attributes Dictionary of attribute names and values.
-        :param: predicateType If not specified, `.AndPredicateType` will be used.
-        :param: sortDescriptors Sort descriptors.
-        :param: context If not specified, `defaultContext` will be used.
-
-        :returns: Optional instance of `Self`.
-    */
-    class func firstWithAttributes<T>(attributes: [NSObject : AnyObject], predicateType: NSCompoundPredicateType = defaultPredicateType, sortDescriptors: [NSSortDescriptor]? = nil, context: NSManagedObjectContext = AERecord.defaultContext) -> T? {
-        let object = firstWithAttributes(attributes, predicateType: predicateType, sortDescriptors: sortDescriptors, context: context)
-        return object as? T
-    }
-
     /**
         Finds the first record ordered by given attribute.
         
@@ -691,23 +662,9 @@ public extension NSManagedObject {
         
         :returns: Optional managed object.
     */
-    class func firstOrderedByAttribute(name: String, ascending: Bool = true, context: NSManagedObjectContext = AERecord.defaultContext) -> NSManagedObject? {
+    class func firstOrderedByAttribute(name: String, ascending: Bool = true, context: NSManagedObjectContext = AERecord.defaultContext) -> Self? {
         let sortDescriptors = [NSSortDescriptor(key: name, ascending: ascending)]
         return first(sortDescriptors: sortDescriptors, context: context)
-    }
-    
-    /**
-        Finds the first record ordered by given attribute. Generic version.
-
-        :param: name Attribute name.
-        :param: ascending A Boolean value.
-        :param: context If not specified, `defaultContext` will be used.
-
-        :returns: Optional instance of `Self`.
-    */
-    class func firstOrderedByAttribute<T>(name: String, ascending: Bool = true, context: NSManagedObjectContext = AERecord.defaultContext) -> T? {
-        let object = firstOrderedByAttribute(name, ascending: ascending, context: context)
-        return object as? T
     }
     
     // MARK: Find All
