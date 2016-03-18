@@ -1,25 +1,26 @@
 # General
 
 **AERecord** is a [minion](http://tadija.net/public/minion.png) which consists of two pods:  
-- [AERecord](https://cocoapods.org/pods/AERecord) - Super awesome Core Data wrapper in Swift (for iOS and OSX)  
-- [AECoreDataUI](https://cocoapods.org/pods/AECoreDataUI) - Super awesome Core Data driven UI in Swift (for iOS)
+- [AERecord](https://cocoapods.org/pods/AERecord) - Super awesome Core Data wrapper in Swift (works on iOS, OSX, tvOS)  
+- [AECoreDataUI](https://cocoapods.org/pods/AECoreDataUI) - Super awesome Core Data driven UI in Swift (for iOS only)  
 
 ## AERecord
-**Super awesome Core Data wrapper in Swift (for iOS and OSX)**
+**Super awesome Core Data wrapper in Swift (works on iOS, OSX, tvOS)**
 
 >Why do we need yet another one Core Data wrapper? You tell me!  
-Inspired by many different (spoiler alert) **magical** solutions, I needed something which combines complexity and functionality just about right.
-All that boilerplate code for setting up of Core Data stack, passing the right `NSManagedObjectContext` all accross the project, different threads and stuff, and not to mention that boring `NSFetchRequest` boilerplates for any kind of creating or querying the data - should be less complicated now, with **AERecord**.
+Inspired by many different (spoiler alert) **magical** solutions, I wanted something which combines complexity and functionality just about right.
+All that boilerplate code for setting up of Core Data stack, passing the right `NSManagedObjectContext` all accross the project and different threads, not to mention that boring `NSFetchRequest` boilerplates for any kind of creating or querying the data - should be less complicated now, with **AERecord**.
 
 
 ### Features
 - Create default or custom Core Data stack **(or more stacks)** easily accessible from everywhere
-- Have **main and background contexts**, always in sync, but don't worry about it
-- Create, find, count or delete data in many ways with **one liners**
-- Batch updating directly in persistent store by using `NSBatchUpdateRequest` **(new from iOS 8)**
+- Have **[main and background contexts](http://floriankugler.com/2013/04/29/concurrent-core-data-stack-performance-shootout/)**, always **in sync**, but don't worry about it
+- [CRUD](https://en.wikipedia.org/wiki/Create,_read,_update_and_delete) data in many ways with **one liners**
+- **Batch update** directly in persistent store by using `NSBatchUpdateRequest`
+- iCloud Support
 - Covered with **unit tests**
 - Covered with [docs](http://tadija.net/projects/AERecord/docs/)
-- **Swift 2.0** ready
+- **Swift 2.2** ready
 
 ## AECoreDataUI
 **Super awesome Core Data driven UI in Swift (for iOS)**
@@ -45,17 +46,17 @@ I mean, just compare it with the default template and think about that.
 - [AERecord features](#aerecord-features)
 	- [Create Core Data stack](#create-core-data-stack)
 	- [Context operations](#context-operations)
-	- [Easy querying](#easy-querying)
+	- [Easy Queries](#easy-queries)
 		- [General](#general)
-		- [Creating](#creating)
-		- [Finding first](#finding-first)
-		- [Finding all](#finding-all)
-		- [Deleting](#deleting)
+		- [Create](#create)
+		- [Find first](#find-first)
+		- [Find all](#find-all)
+		- [Delete](#delete)
 		- [Count](#count)
 		- [Distinct](#distinct)
 		- [Auto increment](#auto-increment)
 		- [Turn managed object into fault](#turn-managed-object-into-fault)
-		- [Batch updating](#batch-updating)
+		- [Batch update](#batch-update)
 - [AECoreDataUI features](#aecoredataui-features)
 	- [Use Core Data with tableView](#use-core-data-with-tableview)
 	- [Use Core Data with collectionView](#use-core-data-with-collectionview)
@@ -141,9 +142,9 @@ AERecord.refreshObjects(objectIDS: objectIDS, mergeChanges: true) // turn object
 AERecord.refreshAllRegisteredObjects(mergeChanges: true) // turn all registered objects into faults
 ```
 
-### Easy querying
-Easy querying helpers are created as NSManagedObject extension.  
-All queries are called on NSManagedObject (or it's subclass), and defaultContext is used if you don't specify any (all examples below are using defaultContext).  
+### Easy Queries
+Easy querying helpers are created as `NSManagedObject` extension.  
+All queries are called on `NSManagedObject` (or it's subclass), and `defaultContext` is used if you don't specify any (all examples below are using `defaultContext`).  
 All finders have optional parameter for `NSSortDescriptor` which is not used in these examples.
 
 #### General
@@ -165,7 +166,7 @@ let managedObjects = AERecord.executeFetchRequest(request)
 
 Of course, all of the often needed requests for creating, finding, counting or deleting entities are already there, so just keep reading.
 
-#### Creating
+#### Create
 ```swift
 NSManagedObject.create() // create new object
 
@@ -178,7 +179,7 @@ let attributes = ...
 NSManagedObject.firstOrCreateWithAttributes(attributes) // get existing object (or create new if it doesn't already exist) with given attributes
 ```
 
-#### Finding first
+#### Find first
 ```swift
 NSManagedObject.first() // get first object
 
@@ -193,7 +194,7 @@ NSManagedObject.firstWithAttributes(attributes) // get first object with given a
 NSManagedObject.firstOrderedByAttribute("speed", ascending: false) // get first object ordered by given attribute name
 ```
 
-#### Finding all
+#### Find all
 ```swift
 NSManagedObject.all() // get all objects
 
@@ -206,7 +207,7 @@ let attributes = ...
 NSManagedObject.allWithAttributes(attributes) // get all objects with given attributes
 ```
 
-#### Deleting
+#### Delete
 ```swift
 let managedObject = ...
 managedObject.delete() // delete object (call on instance)
@@ -268,8 +269,8 @@ let managedObject = ...
 managedObject.refresh() // turns instance of managed object into fault
 ```
 
-#### Batch updating
-Batch updating is the new feature in iOS 8. It's doing stuff directly in persistent store, so be carefull with this and read the docs first. Btw, `NSPredicate` is also optional parameter here.
+#### Batch update
+Batch updating is the 'new' feature from iOS 8. It's doing stuff directly in persistent store, so be carefull with this and read the docs first. Btw, `NSPredicate` is also optional parameter here.
 
 ```swift
 NSManagedObject.batchUpdate(properties: ["timeStamp" : NSDate()]) // returns NSBatchUpdateResult?
@@ -330,7 +331,7 @@ Same as with the tableView.
 - Xcode 7.0+
 - iOS 8.0+
 - AERecord doesn't require any additional libraries for it to work.
-- AERecord can be used in iOS and OSX too.
+- AERecord can be used for iOS, OSX and tvOS.
 - AECoreDataUI is just for iOS.
 
 

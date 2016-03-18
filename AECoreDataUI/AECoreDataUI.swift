@@ -195,7 +195,8 @@ public class CoreDataTableViewController: UITableViewController, NSFetchedResult
         :returns: The number of sections in tableView.
     */
     public override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
-        return fetchedResultsController?.sections?.count ?? 0
+        let superNumberOfSections = super.numberOfSectionsInTableView(tableView)
+        return fetchedResultsController?.sections?.count ?? superNumberOfSections
     }
     
     /**
@@ -207,7 +208,8 @@ public class CoreDataTableViewController: UITableViewController, NSFetchedResult
         :returns: The number of rows in section.
     */
     public override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return (fetchedResultsController?.sections?[section])?.numberOfObjects ?? 0
+        let superNumberOfRows = super.tableView(tableView, numberOfRowsInSection: section)
+        return (fetchedResultsController?.sections?[section])?.numberOfObjects ?? superNumberOfRows
     }
     
     /**
@@ -219,7 +221,8 @@ public class CoreDataTableViewController: UITableViewController, NSFetchedResult
         :returns: A string to use as the title of the section header.
     */
     public override func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        return (fetchedResultsController?.sections?[section])?.name
+        let superTitleForHeader = super.tableView(tableView, titleForHeaderInSection: section)
+        return (fetchedResultsController?.sections?[section])?.name ?? superTitleForHeader
     }
     
     /**
@@ -468,7 +471,7 @@ public class CoreDataCollectionViewController: UICollectionViewController, NSFet
         :returns: The number of sections in collectionView.
     */
     override public func numberOfSectionsInCollectionView(collectionView: UICollectionView) -> Int {
-        return fetchedResultsController?.sections?.count ?? 0
+        return fetchedResultsController?.sections?.count ?? 1
     }
     
     /**
@@ -480,7 +483,8 @@ public class CoreDataCollectionViewController: UICollectionViewController, NSFet
         :returns: The number of rows in section.
     */
     override public func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return (fetchedResultsController?.sections?[section])?.numberOfObjects ?? 0
+        let superNumberOfItems = super.collectionView(collectionView, numberOfItemsInSection: section)
+        return (fetchedResultsController?.sections?[section])?.numberOfObjects ?? superNumberOfItems
     }
     
 }
