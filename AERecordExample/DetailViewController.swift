@@ -24,7 +24,7 @@ class DetailViewController: CoreDataCollectionViewController {
         navigationItem.leftItemsSupplementBackButton = true
         
         // setup options button
-        let optionsButton = UIBarButtonItem(title: "Options", style: .Plain, target: self, action: "showOptions:")
+        let optionsButton = UIBarButtonItem(title: "Options", style: .Plain, target: self, action: #selector(DetailViewController.showOptions(_:)))
         self.navigationItem.rightBarButtonItem = optionsButton
 
         // setup fetchedResultsController property
@@ -53,7 +53,7 @@ class DetailViewController: CoreDataCollectionViewController {
         }
         
         let updateAllAction = UIAlertAction(title: "Update All", style: .Default) { (action) in
-            if NSProcessInfo.instancesRespondToSelector("isOperatingSystemAtLeastVersion:") {
+            if NSProcessInfo.instancesRespondToSelector(#selector(NSProcessInfo.isOperatingSystemAtLeastVersion(_:))) {
                 // >= iOS 8
                 // batch update all objects (directly in persistent store) then refresh objects in context
                 Event.batchUpdateAndRefreshObjects(properties: ["timeStamp" : NSDate()])

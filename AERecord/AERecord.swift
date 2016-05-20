@@ -364,15 +364,15 @@ private class AEStack {
         let center = NSNotificationCenter.defaultCenter()
         
         // Context Sync
-        center.addObserver(self, selector: "contextDidSave:", name: NSManagedObjectContextDidSaveNotification, object: mainContext)
-        center.addObserver(self, selector: "contextDidSave:", name: NSManagedObjectContextDidSaveNotification, object: backgroundContext)
+        center.addObserver(self, selector: #selector(AEStack.contextDidSave(_:)), name: NSManagedObjectContextDidSaveNotification, object: mainContext)
+        center.addObserver(self, selector: #selector(AEStack.contextDidSave(_:)), name: NSManagedObjectContextDidSaveNotification, object: backgroundContext)
         
         // iCloud Support
-        center.addObserver(self, selector: "storesWillChange:", name: NSPersistentStoreCoordinatorStoresWillChangeNotification, object: persistentStoreCoordinator)
-        center.addObserver(self, selector: "storesDidChange:", name: NSPersistentStoreCoordinatorStoresDidChangeNotification, object: persistentStoreCoordinator)
-        center.addObserver(self, selector: "willRemoveStore:", name: NSPersistentStoreCoordinatorWillRemoveStoreNotification, object: persistentStoreCoordinator)
+        center.addObserver(self, selector: #selector(AEStack.storesWillChange(_:)), name: NSPersistentStoreCoordinatorStoresWillChangeNotification, object: persistentStoreCoordinator)
+        center.addObserver(self, selector: #selector(AEStack.storesDidChange(_:)), name: NSPersistentStoreCoordinatorStoresDidChangeNotification, object: persistentStoreCoordinator)
+        center.addObserver(self, selector: #selector(AEStack.willRemoveStore(_:)), name: NSPersistentStoreCoordinatorWillRemoveStoreNotification, object: persistentStoreCoordinator)
         #if !os(tvOS)
-            center.addObserver(self, selector: "persistentStoreDidImportUbiquitousContentChanges:", name: NSPersistentStoreDidImportUbiquitousContentChangesNotification, object: persistentStoreCoordinator)
+            center.addObserver(self, selector: #selector(AEStack.persistentStoreDidImportUbiquitousContentChanges(_:)), name: NSPersistentStoreDidImportUbiquitousContentChangesNotification, object: persistentStoreCoordinator)
         #endif
     }
     
