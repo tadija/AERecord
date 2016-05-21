@@ -22,7 +22,8 @@
 // SOFTWARE.
 //
 
-#import <UIKit/UIKit.h>
+#import <Foundation/Foundation.h>
+#import <CoreData/CoreData.h>
 
 FOUNDATION_EXPORT double AERecordVersionNumber;
 FOUNDATION_EXPORT const unsigned char AERecordVersionString[];

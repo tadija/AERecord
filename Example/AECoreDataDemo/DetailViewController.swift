@@ -6,8 +6,6 @@
 //  Copyright (c) 2014 ae. All rights reserved.
 //
 
-import UIKit
-import CoreData
 import AERecord
 import AECoreDataUI
 
