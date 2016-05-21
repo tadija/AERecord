@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Scheme
-   LastUpgradeVersion = "0700"
+   LastUpgradeVersion = "0730"
    version = "1.3">
    <BuildAction
       parallelizeBuildables = "YES"
@@ -14,10 +14,10 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "8BC8954A1A07930500778DB0"
-               BuildableName = "AERecordDemoExample.app"
-               BlueprintName = "AERecordDemoExample"
-               ReferencedContainer = "container:AERecordDemo.xcodeproj">
+               BlueprintIdentifier = "8BFD97151CF08CAD008E8C9E"
+               BuildableName = "AECoreDataDemo.app"
+               BlueprintName = "AECoreDataDemo"
+               ReferencedContainer = "container:AECoreDataDemo.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -28,24 +28,14 @@
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
       shouldUseLaunchSchemeArgsEnv = "YES">
       <Testables>
-         <TestableReference
-            skipped = "NO">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "8BC895641A07930500778DB0"
-               BuildableName = "AERecordDemoExample.xctest"
-               BlueprintName = "AERecordDemoTests"
-               ReferencedContainer = "container:AERecordDemo.xcodeproj">
-            </BuildableReference>
-         </TestableReference>
       </Testables>
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "8BC8954A1A07930500778DB0"
-            BuildableName = "AERecordDemoExample.app"
-            BlueprintName = "AERecordDemoExample"
-            ReferencedContainer = "container:AERecordDemo.xcodeproj">
+            BlueprintIdentifier = "8BFD97151CF08CAD008E8C9E"
+            BuildableName = "AECoreDataDemo.app"
+            BlueprintName = "AECoreDataDemo"
+            ReferencedContainer = "container:AECoreDataDemo.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
       <AdditionalOptions>
@@ -65,10 +55,10 @@
          runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "8BC8954A1A07930500778DB0"
-            BuildableName = "AERecordDemoExample.app"
-            BlueprintName = "AERecordDemoExample"
-            ReferencedContainer = "container:AERecordDemo.xcodeproj">
+            BlueprintIdentifier = "8BFD97151CF08CAD008E8C9E"
+            BuildableName = "AECoreDataDemo.app"
+            BlueprintName = "AECoreDataDemo"
+            ReferencedContainer = "container:AECoreDataDemo.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
       <AdditionalOptions>
@@ -84,10 +74,10 @@
          runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "8BC8954A1A07930500778DB0"
-            BuildableName = "AERecordDemoExample.app"
-            BlueprintName = "AERecordDemoExample"
-            ReferencedContainer = "container:AERecordDemo.xcodeproj">
+            BlueprintIdentifier = "8BFD97151CF08CAD008E8C9E"
+            BuildableName = "AECoreDataDemo.app"
+            BlueprintName = "AECoreDataDemo"
+            ReferencedContainer = "container:AECoreDataDemo.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>

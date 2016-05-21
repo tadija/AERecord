@@ -8,6 +8,7 @@
 
 import UIKit
 import CoreData
+import AERecord
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDelegate {
