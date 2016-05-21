@@ -1,13 +1,12 @@
 //
 //  AppDelegate.swift
-//  AERecordExample
+//  AECoreDataDemo
 //
 //  Created by Marko Tadic on 11/3/14.
 //  Copyright (c) 2014 ae. All rights reserved.
 //
 
 import UIKit
-import CoreData
 import AERecord
 
 @UIApplicationMain

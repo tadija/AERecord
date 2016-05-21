@@ -1,6 +1,6 @@
 //
 //  DetailViewController.swift
-//  AERecordExample
+//  AECoreDataDemo
 //
 //  Created by Marko Tadic on 11/3/14.
 //  Copyright (c) 2014 ae. All rights reserved.
@@ -8,6 +8,8 @@
 
 import UIKit
 import CoreData
+import AERecord
+import AECoreDataUI
 
 let yellow = UIColor(red: 0.969, green: 0.984, blue: 0.745, alpha: 1)
 let blue = UIColor(red: 0.918, green: 0.969, blue: 0.984, alpha: 1)
@@ -132,4 +134,3 @@ class DetailViewController: CoreDataCollectionViewController {
     }
 
 }
-
