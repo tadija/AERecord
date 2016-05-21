@@ -118,7 +118,7 @@ class DetailViewController: CoreDataCollectionViewController {
                 if let event = frc.objectAtIndexPath(indexPath) as? Event {
                     cell.backgroundColor = yellow
                     // deselect previous
-                    if let previous = Event.firstWithAttribute("selected", value: true) as? Event {
+                    if let previous = Event.firstWithAttribute("selected", value: true) {
                         previous.selected = false
                         AERecord.saveContextAndWait()
                     }

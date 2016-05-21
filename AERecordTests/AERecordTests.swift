@@ -210,10 +210,10 @@ class AERecordTests: XCTestCase {
     // MARK: Find First or Create
     
     func testFirstOrCreateWithAttribute() {
-        let snoopy = Animal.firstOrCreateWithAttribute("name", value: "Snoopy") as! Animal
+        let snoopy = Animal.firstOrCreateWithAttribute("name", value: "Snoopy")
         XCTAssertEqual(snoopy.name, "Snoopy", "Should be able to create record if it doesn't already exist.")
         
-        let tinna = Animal.firstOrCreateWithAttribute("name", value: "Tinna") as! Animal
+        let tinna = Animal.firstOrCreateWithAttribute("name", value: "Tinna")
         XCTAssertEqual(tinna.color, "lightgray", "Should be able to return the first record with given attribute.")
     }
     
@@ -227,11 +227,11 @@ class AERecordTests: XCTestCase {
     
     func testFirstOrCreateWithAttributes() {
         let snoopyAttributes = ["name" : "Snoopy", "color" : "white"]
-        let snoopy = Animal.firstOrCreateWithAttributes(snoopyAttributes) as! Animal
+        let snoopy = Animal.firstOrCreateWithAttributes(snoopyAttributes)
         XCTAssertEqual(snoopy.color, "white", "Should be able to create record if it doesn't already exist.")
         
         let tinnaAttributes = ["name" : "Tinna", "color" : "lightgray"]
-        let tinna = Animal.firstOrCreateWithAttributes(tinnaAttributes) as! Animal
+        let tinna = Animal.firstOrCreateWithAttributes(tinnaAttributes)
         XCTAssertEqual(tinna.color, "lightgray", "Should be able to return the first record with given attributes.")
     }
     
@@ -249,20 +249,20 @@ class AERecordTests: XCTestCase {
     
     func testFirst() {
         let sortDescriptor = NSSortDescriptor(key: "name", ascending: true)
-        let firstAnimal = Animal.first(sortDescriptors: [sortDescriptor]) as! Animal
-        XCTAssertEqual(firstAnimal.name, "Betty", "Should be able to return the first record sorted by given sort descriptor.")
+        let firstAnimal = Animal.first(sortDescriptors: [sortDescriptor])
+        XCTAssertEqual(firstAnimal?.name, "Betty", "Should be able to return the first record sorted by given sort descriptor.")
     }
     
     func testFirstGeneric() {
         let sortDescriptor = NSSortDescriptor(key: "name", ascending: true)
-        let firstAnimal: Animal = Animal.first(sortDescriptors: [sortDescriptor])!
-        XCTAssertEqual(firstAnimal.name, "Betty", "Should be able to return the first record sorted by given sort descriptor.")
+        let firstAnimal = Animal.first(sortDescriptors: [sortDescriptor])
+        XCTAssertEqual(firstAnimal?.name, "Betty", "Should be able to return the first record sorted by given sort descriptor.")
     }
     
     func testFirstWithPredicate() {
         let predicate = NSPredicate(format: "color == %@", "lightgray")
-        let tinna = Animal.firstWithPredicate(predicate) as! Animal
-        XCTAssertEqual(tinna.name, "Tinna", "Should be able to return the first record for given predicate.")
+        let tinna = Animal.firstWithPredicate(predicate)
+        XCTAssertEqual(tinna?.name, "Tinna", "Should be able to return the first record for given predicate.")
     }
     
     func testFirstWithPredicateGeneric() {
@@ -272,8 +272,8 @@ class AERecordTests: XCTestCase {
     }
     
     func testFirstWithAttribute() {
-        let kika = Animal.firstWithAttribute("color", value: "black") as! Animal
-        XCTAssertEqual(kika.name, "Kika", "Should be able to return the first record for given attribute.")
+        let kika = Animal.firstWithAttribute("color", value: "black")
+        XCTAssertEqual(kika?.name, "Kika", "Should be able to return the first record for given attribute.")
     }
     
     func testFirstWithAttributeGeneric() {
@@ -282,8 +282,8 @@ class AERecordTests: XCTestCase {
     }
     
     func testFirstOrderedByAttribute() {
-        let kika = Animal.firstOrderedByAttribute("color", ascending: true) as! Animal
-        XCTAssertEqual(kika.name, "Kika", "Should be able to return the first record ordered by given attribute.")
+        let kika = Animal.firstOrderedByAttribute("color", ascending: true)
+        XCTAssertEqual(kika?.name, "Kika", "Should be able to return the first record ordered by given attribute.")
     }
     
     func testFirstOrderedByAttributeGeneric() {
@@ -293,8 +293,8 @@ class AERecordTests: XCTestCase {
     
     func testFirstWithAttributes() {
         let tinnaAttributes = ["name" : "Tinna", "color" : "lightgray"]
-        let tinna = Animal.firstWithAttributes(tinnaAttributes) as! Animal
-        XCTAssertEqual(tinna.color, "lightgray", "Should be able to return the first record with given attributes.")
+        let tinna = Animal.firstWithAttributes(tinnaAttributes)
+        XCTAssertEqual(tinna?.color, "lightgray", "Should be able to return the first record with given attributes.")
     }
     
     func testFirstWithAttributesGeneric() {
@@ -363,11 +363,11 @@ class AERecordTests: XCTestCase {
     
     func testDelete() {
         let sortDescriptor = NSSortDescriptor(key: "name", ascending: true)
-        let firstAnimal = Animal.first(sortDescriptors: [sortDescriptor]) as! Animal
-        XCTAssertEqual(firstAnimal.name, "Betty", "Should be able to return the first record sorted by given sort descriptor.")
+        let firstAnimal = Animal.first(sortDescriptors: [sortDescriptor])
+        XCTAssertEqual(firstAnimal?.name, "Betty", "Should be able to return the first record sorted by given sort descriptor.")
         
-        firstAnimal.deleteFromContext()
-        let betty = Animal.firstWithAttribute("name", value: "Betty") as? Animal
+        firstAnimal?.deleteFromContext()
+        let betty = Animal.firstWithAttribute("name", value: "Betty")
         XCTAssertNil(betty, "Should be able to delete record.")
     }
     
@@ -382,9 +382,9 @@ class AERecordTests: XCTestCase {
         Animal.deleteAllWithPredicate(predicate)
         
         let animals = Animal.all()
-        let betty = Animal.firstWithAttribute("name", value: "Betty") as? Animal
+        let betty = Animal.firstWithAttribute("name", value: "Betty")
         
-        XCTAssertEqual(animals!.count, 5, "Should be able to delete all records for given predicate.")
+        XCTAssertEqual(animals?.count, 5, "Should be able to delete all records for given predicate.")
         XCTAssertNil(betty, "Should be able to delete all records for given predicate.")
     }
     
@@ -392,9 +392,9 @@ class AERecordTests: XCTestCase {
         Animal.deleteAllWithAttribute("color", value: "white")
         
         let animals = Animal.all()
-        let villy = Animal.firstWithAttribute("name", value: "Villy") as? Animal
+        let villy = Animal.firstWithAttribute("name", value: "Villy")
         
-        XCTAssertEqual(animals!.count, 5, "Should be able to delete all records for given attribute.")
+        XCTAssertEqual(animals?.count, 5, "Should be able to delete all records for given attribute.")
         XCTAssertNil(villy, "Should be able to delete all records for given attribute.")
     }
     
