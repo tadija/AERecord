@@ -9,6 +9,7 @@
 import UIKit
 import XCTest
 import CoreData
+import AERecord
 
 class AERecordTests: XCTestCase {
     

@@ -176,7 +176,10 @@ private class AEStack {
     // MARK: Default settings
     
     class var bundleIdentifier: String {
-        return NSBundle.mainBundle().bundleIdentifier!
+        if let mainBundleIdentifier = NSBundle.mainBundle().bundleIdentifier {
+            return mainBundleIdentifier
+        }
+        return NSBundle(forClass: AEStack.self).bundleIdentifier!
     }
     class var defaultURL: NSURL {
         return storeURLForName(bundleIdentifier)
