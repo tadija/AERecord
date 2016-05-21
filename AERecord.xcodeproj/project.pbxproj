@@ -31,7 +31,7 @@
 		8BFD96B01CF0709B008E8C9E /* AERecord.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = AERecord.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		8BFD96B31CF0709C008E8C9E /* AERecord.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AERecord.h; sourceTree = "<group>"; };
 		8BFD96B51CF0709C008E8C9E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		8BFD96BA1CF0709C008E8C9E /* AERecordTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = AERecordTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		8BFD96BA1CF0709C008E8C9E /* AERecord iOS Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "AERecord iOS Tests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		8BFD96BF1CF0709C008E8C9E /* AERecordTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AERecordTests.swift; sourceTree = "<group>"; };
 		8BFD96C11CF0709C008E8C9E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		8BFD96CA1CF0712D008E8C9E /* AERecord.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AERecord.swift; sourceTree = "<group>"; };
@@ -79,7 +79,7 @@
 			isa = PBXGroup;
 			children = (
 				8BFD96B01CF0709B008E8C9E /* AERecord.framework */,
-				8BFD96BA1CF0709C008E8C9E /* AERecordTests.xctest */,
+				8BFD96BA1CF0709C008E8C9E /* AERecord iOS Tests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -157,9 +157,9 @@
 /* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
-		8BFD96AF1CF0709B008E8C9E /* AERecord */ = {
+		8BFD96AF1CF0709B008E8C9E /* AERecord iOS */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 8BFD96C41CF0709C008E8C9E /* Build configuration list for PBXNativeTarget "AERecord" */;
+			buildConfigurationList = 8BFD96C41CF0709C008E8C9E /* Build configuration list for PBXNativeTarget "AERecord iOS" */;
 			buildPhases = (
 				8BFD96AB1CF0709B008E8C9E /* Sources */,
 				8BFD96AC1CF0709B008E8C9E /* Frameworks */,
@@ -170,14 +170,14 @@
 			);
 			dependencies = (
 			);
-			name = AERecord;
+			name = "AERecord iOS";
 			productName = AERecord;
 			productReference = 8BFD96B01CF0709B008E8C9E /* AERecord.framework */;
 			productType = "com.apple.product-type.framework";
 		};
-		8BFD96B91CF0709C008E8C9E /* AERecordTests */ = {
+		8BFD96B91CF0709C008E8C9E /* AERecord iOS Tests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 8BFD96C71CF0709C008E8C9E /* Build configuration list for PBXNativeTarget "AERecordTests" */;
+			buildConfigurationList = 8BFD96C71CF0709C008E8C9E /* Build configuration list for PBXNativeTarget "AERecord iOS Tests" */;
 			buildPhases = (
 				8BFD96B61CF0709C008E8C9E /* Sources */,
 				8BFD96B71CF0709C008E8C9E /* Frameworks */,
@@ -188,9 +188,9 @@
 			dependencies = (
 				8BFD96BD1CF0709C008E8C9E /* PBXTargetDependency */,
 			);
-			name = AERecordTests;
+			name = "AERecord iOS Tests";
 			productName = AERecordTests;
-			productReference = 8BFD96BA1CF0709C008E8C9E /* AERecordTests.xctest */;
+			productReference = 8BFD96BA1CF0709C008E8C9E /* AERecord iOS Tests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
 /* End PBXNativeTarget section */
@@ -223,8 +223,8 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				8BFD96AF1CF0709B008E8C9E /* AERecord */,
-				8BFD96B91CF0709C008E8C9E /* AERecordTests */,
+				8BFD96AF1CF0709B008E8C9E /* AERecord iOS */,
+				8BFD96B91CF0709C008E8C9E /* AERecord iOS Tests */,
 			);
 		};
 /* End PBXProject section */
@@ -272,7 +272,7 @@
 /* Begin PBXTargetDependency section */
 		8BFD96BD1CF0709C008E8C9E /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 8BFD96AF1CF0709B008E8C9E /* AERecord */;
+			target = 8BFD96AF1CF0709B008E8C9E /* AERecord iOS */;
 			targetProxy = 8BFD96BC1CF0709C008E8C9E /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
@@ -382,7 +382,7 @@
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = net.tadija.AERecord;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = AERecord;
 				SKIP_INSTALL = YES;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 			};
@@ -401,7 +401,7 @@
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = net.tadija.AERecord;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = AERecord;
 				SKIP_INSTALL = YES;
 			};
 			name = Release;
@@ -411,7 +411,7 @@
 			buildSettings = {
 				INFOPLIST_FILE = Tests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = net.tadija.AERecordTests;
+				PRODUCT_BUNDLE_IDENTIFIER = "net.tadija.AERecord-iOS-Tests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Debug;
@@ -421,7 +421,7 @@
 			buildSettings = {
 				INFOPLIST_FILE = Tests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = net.tadija.AERecordTests;
+				PRODUCT_BUNDLE_IDENTIFIER = "net.tadija.AERecord-iOS-Tests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Release;
@@ -438,7 +438,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		8BFD96C41CF0709C008E8C9E /* Build configuration list for PBXNativeTarget "AERecord" */ = {
+		8BFD96C41CF0709C008E8C9E /* Build configuration list for PBXNativeTarget "AERecord iOS" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				8BFD96C51CF0709C008E8C9E /* Debug */,
@@ -447,7 +447,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		8BFD96C71CF0709C008E8C9E /* Build configuration list for PBXNativeTarget "AERecordTests" */ = {
+		8BFD96C71CF0709C008E8C9E /* Build configuration list for PBXNativeTarget "AERecord iOS Tests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				8BFD96C81CF0709C008E8C9E /* Debug */,
