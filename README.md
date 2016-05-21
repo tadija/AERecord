@@ -1,5 +1,5 @@
 # AERecord
-**Super awesome Core Data wrapper in Swift (works on iOS, OSX, tvOS)**
+**Super awesome Core Data wrapper written in Swift (iOS, watchOS, OSX, tvOS)**
 
 [![Language Swift 2.2](https://img.shields.io/badge/Language-Swift%202.2-orange.svg?style=flat)](https://swift.org)
 [![Platforms iOS | watchOS | tvOS | OSX](https://img.shields.io/badge/Platforms-iOS%20%7C%20watchOS%20%7C%20tvOS%20%7C%20OS%20X-lightgray.svg?style=flat)](http://www.apple.com)
@@ -39,11 +39,9 @@ All that boilerplate code for setting up of Core Data stack, passing the right `
 - Create default or custom Core Data stack **(or more stacks)** easily accessible from everywhere
 - Have **[main and background contexts](http://floriankugler.com/2013/04/29/concurrent-core-data-stack-performance-shootout/)**, always **in sync**, but don't worry about it
 - [CRUD](https://en.wikipedia.org/wiki/Create,_read,_update_and_delete) data in many ways with **one liners**
-- **Batch update** directly in persistent store by using `NSBatchUpdateRequest`
 - iCloud Support
 - Covered with **unit tests**
-- Covered with [docs](http://tadija.net/projects/AERecord/docs/)
-- **Swift 2.2** ready
+- Covered with [docs](http://cocoadocs.org/docsets/AERecord)
 
 ## Usage
 
