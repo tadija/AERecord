@@ -1,0 +1,3 @@
+[submodule "Example/AECoreDataUI"]
+	path = Example/AECoreDataUI
+	url = https://github.com/tadija/AECoreDataUI.git

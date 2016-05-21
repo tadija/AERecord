@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="10174" systemVersion="15E65" minimumToolsVersion="Xcode 7.0">
+    <entity name="Animal" representedClassName=".Animal" syncable="YES">
+        <attribute name="color" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="customID" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="breed" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Breed" inverseName="animals" inverseEntity="Breed" syncable="YES"/>
+    </entity>
+    <entity name="Breed" representedClassName=".Breed" syncable="YES">
+        <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="animals" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Animal" inverseName="breed" inverseEntity="Animal" syncable="YES"/>
+        <relationship name="species" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Species" inverseName="breeds" inverseEntity="Species" syncable="YES"/>
+    </entity>
+    <entity name="Species" representedClassName=".Species" syncable="YES">
+        <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="breeds" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Breed" inverseName="species" inverseEntity="Breed" syncable="YES"/>
+    </entity>
+    <elements>
+        <element name="Animal" positionX="-63" positionY="-18" width="128" height="103"/>
+        <element name="Breed" positionX="-243" positionY="81" width="128" height="88"/>
+        <element name="Species" positionX="-270" positionY="-45" width="128" height="73"/>
+    </elements>
+</model>
