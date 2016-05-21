@@ -374,7 +374,7 @@ private class AEStack {
         center.addObserver(self, selector: #selector(AEStack.storesWillChange(_:)), name: NSPersistentStoreCoordinatorStoresWillChangeNotification, object: persistentStoreCoordinator)
         center.addObserver(self, selector: #selector(AEStack.storesDidChange(_:)), name: NSPersistentStoreCoordinatorStoresDidChangeNotification, object: persistentStoreCoordinator)
         center.addObserver(self, selector: #selector(AEStack.willRemoveStore(_:)), name: NSPersistentStoreCoordinatorWillRemoveStoreNotification, object: persistentStoreCoordinator)
-        #if !os(tvOS)
+        #if !(os(tvOS) || os(watchOS))
             center.addObserver(self, selector: #selector(AEStack.persistentStoreDidImportUbiquitousContentChanges(_:)), name: NSPersistentStoreDidImportUbiquitousContentChangesNotification, object: persistentStoreCoordinator)
         #endif
     }

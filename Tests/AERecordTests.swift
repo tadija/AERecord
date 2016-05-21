@@ -22,7 +22,6 @@
 // SOFTWARE.
 //
 
-import UIKit
 import XCTest
 import CoreData
 import AERecord
@@ -208,7 +207,9 @@ class AERecordTests: XCTestCase {
     func testCreatePredicateForAttributes() {
         let attributes = ["name" : "Tinna", "color" : "lightgray"]
         let predicate = Animal.createPredicateForAttributes(attributes)
-        XCTAssertEqual(predicate.predicateFormat, "color == \"lightgray\" AND name == \"Tinna\"", "Should be able to create compound predicate.")
+        XCTAssertTrue(predicate.predicateFormat.containsString("name == \"Tinna\""), "Created predicate should contain condition for 'name'.")
+        XCTAssertTrue(predicate.predicateFormat.containsString(" AND "), "Created predicate should contain AND.")
+        XCTAssertTrue(predicate.predicateFormat.containsString("color == \"lightgray\""), "Created predicate should contain condition for 'color'.")
     }
     
     // MARK: Create

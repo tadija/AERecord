@@ -15,6 +15,24 @@
 		8BFD96D41CF07195008E8C9E /* Animal.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BFD96D01CF07195008E8C9E /* Animal.swift */; };
 		8BFD96D51CF07195008E8C9E /* Breed.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BFD96D11CF07195008E8C9E /* Breed.swift */; };
 		8BFD96D61CF07195008E8C9E /* Species.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BFD96D21CF07195008E8C9E /* Species.swift */; };
+		8BFD97BE1CF0E852008E8C9E /* AERecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BFD96CA1CF0712D008E8C9E /* AERecord.swift */; };
+		8BFD97BF1CF0E85E008E8C9E /* AERecord.h in Headers */ = {isa = PBXBuildFile; fileRef = 8BFD96B31CF0709C008E8C9E /* AERecord.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		8BFD97CD1CF0E89F008E8C9E /* AERecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BFD96CA1CF0712D008E8C9E /* AERecord.swift */; };
+		8BFD97CE1CF0E8A3008E8C9E /* AERecord.h in Headers */ = {isa = PBXBuildFile; fileRef = 8BFD96B31CF0709C008E8C9E /* AERecord.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		8BFD97DC1CF0E8D6008E8C9E /* AERecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BFD96CA1CF0712D008E8C9E /* AERecord.swift */; };
+		8BFD97DD1CF0E8E2008E8C9E /* AERecord.h in Headers */ = {isa = PBXBuildFile; fileRef = 8BFD96B31CF0709C008E8C9E /* AERecord.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		8BFD97E71CF0E976008E8C9E /* AERecord.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8BFD97B61CF0E79E008E8C9E /* AERecord.framework */; };
+		8BFD97ED1CF0E9B6008E8C9E /* AERecordTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BFD96BF1CF0709C008E8C9E /* AERecordTests.swift */; };
+		8BFD97EE1CF0E9CF008E8C9E /* AERecordTest.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 8BFD96CE1CF07195008E8C9E /* AERecordTest.xcdatamodeld */; };
+		8BFD97EF1CF0E9CF008E8C9E /* Animal.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BFD96D01CF07195008E8C9E /* Animal.swift */; };
+		8BFD97F01CF0E9CF008E8C9E /* Breed.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BFD96D11CF07195008E8C9E /* Breed.swift */; };
+		8BFD97F11CF0E9CF008E8C9E /* Species.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BFD96D21CF07195008E8C9E /* Species.swift */; };
+		8BFD97FB1CF0EA36008E8C9E /* AERecord.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8BFD97C51CF0E883008E8C9E /* AERecord.framework */; };
+		8BFD98011CF0EA46008E8C9E /* AERecordTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BFD96BF1CF0709C008E8C9E /* AERecordTests.swift */; };
+		8BFD98021CF0EA46008E8C9E /* AERecordTest.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 8BFD96CE1CF07195008E8C9E /* AERecordTest.xcdatamodeld */; };
+		8BFD98031CF0EA46008E8C9E /* Animal.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BFD96D01CF07195008E8C9E /* Animal.swift */; };
+		8BFD98041CF0EA46008E8C9E /* Breed.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BFD96D11CF07195008E8C9E /* Breed.swift */; };
+		8BFD98051CF0EA46008E8C9E /* Species.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BFD96D21CF07195008E8C9E /* Species.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -24,6 +42,20 @@
 			proxyType = 1;
 			remoteGlobalIDString = 8BFD96AF1CF0709B008E8C9E;
 			remoteInfo = AERecord;
+		};
+		8BFD97E81CF0E976008E8C9E /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 8BFD96A71CF0709B008E8C9E /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 8BFD97B51CF0E79E008E8C9E;
+			remoteInfo = "AERecord tvOS";
+		};
+		8BFD97FC1CF0EA36008E8C9E /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 8BFD96A71CF0709B008E8C9E /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 8BFD97C41CF0E883008E8C9E;
+			remoteInfo = "AERecord OSX";
 		};
 /* End PBXContainerItemProxy section */
 
@@ -44,6 +76,11 @@
 		8BFD97091CF080EF008E8C9E /* LICENSE */ = {isa = PBXFileReference; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
 		8BFD970A1CF080EF008E8C9E /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		8BFD970B1CF080F7008E8C9E /* Package.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Package.swift; sourceTree = "<group>"; };
+		8BFD97B61CF0E79E008E8C9E /* AERecord.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = AERecord.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		8BFD97C51CF0E883008E8C9E /* AERecord.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = AERecord.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		8BFD97D41CF0E8C2008E8C9E /* AERecord.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = AERecord.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		8BFD97E21CF0E976008E8C9E /* AERecord tvOS Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "AERecord tvOS Tests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		8BFD97F61CF0EA36008E8C9E /* AERecord OSX Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "AERecord OSX Tests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -59,6 +96,43 @@
 			buildActionMask = 2147483647;
 			files = (
 				8BFD96BB1CF0709C008E8C9E /* AERecord.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		8BFD97B21CF0E79E008E8C9E /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		8BFD97C11CF0E883008E8C9E /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		8BFD97D01CF0E8C2008E8C9E /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		8BFD97DF1CF0E976008E8C9E /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8BFD97E71CF0E976008E8C9E /* AERecord.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		8BFD97F31CF0EA36008E8C9E /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8BFD97FB1CF0EA36008E8C9E /* AERecord.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -80,6 +154,11 @@
 			children = (
 				8BFD96B01CF0709B008E8C9E /* AERecord.framework */,
 				8BFD96BA1CF0709C008E8C9E /* AERecord iOS Tests.xctest */,
+				8BFD97B61CF0E79E008E8C9E /* AERecord.framework */,
+				8BFD97C51CF0E883008E8C9E /* AERecord.framework */,
+				8BFD97D41CF0E8C2008E8C9E /* AERecord.framework */,
+				8BFD97E21CF0E976008E8C9E /* AERecord tvOS Tests.xctest */,
+				8BFD97F61CF0EA36008E8C9E /* AERecord OSX Tests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -154,6 +233,30 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		8BFD97B31CF0E79E008E8C9E /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8BFD97BF1CF0E85E008E8C9E /* AERecord.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		8BFD97C21CF0E883008E8C9E /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8BFD97CE1CF0E8A3008E8C9E /* AERecord.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		8BFD97D11CF0E8C2008E8C9E /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8BFD97DD1CF0E8E2008E8C9E /* AERecord.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
@@ -193,6 +296,96 @@
 			productReference = 8BFD96BA1CF0709C008E8C9E /* AERecord iOS Tests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
+		8BFD97B51CF0E79E008E8C9E /* AERecord tvOS */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 8BFD97BB1CF0E79E008E8C9E /* Build configuration list for PBXNativeTarget "AERecord tvOS" */;
+			buildPhases = (
+				8BFD97B11CF0E79E008E8C9E /* Sources */,
+				8BFD97B21CF0E79E008E8C9E /* Frameworks */,
+				8BFD97B31CF0E79E008E8C9E /* Headers */,
+				8BFD97B41CF0E79E008E8C9E /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "AERecord tvOS";
+			productName = "AERecord tvOS";
+			productReference = 8BFD97B61CF0E79E008E8C9E /* AERecord.framework */;
+			productType = "com.apple.product-type.framework";
+		};
+		8BFD97C41CF0E883008E8C9E /* AERecord OSX */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 8BFD97CA1CF0E883008E8C9E /* Build configuration list for PBXNativeTarget "AERecord OSX" */;
+			buildPhases = (
+				8BFD97C01CF0E883008E8C9E /* Sources */,
+				8BFD97C11CF0E883008E8C9E /* Frameworks */,
+				8BFD97C21CF0E883008E8C9E /* Headers */,
+				8BFD97C31CF0E883008E8C9E /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "AERecord OSX";
+			productName = "AERecord OSX";
+			productReference = 8BFD97C51CF0E883008E8C9E /* AERecord.framework */;
+			productType = "com.apple.product-type.framework";
+		};
+		8BFD97D31CF0E8C2008E8C9E /* AERecord watchOS */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 8BFD97D91CF0E8C2008E8C9E /* Build configuration list for PBXNativeTarget "AERecord watchOS" */;
+			buildPhases = (
+				8BFD97CF1CF0E8C2008E8C9E /* Sources */,
+				8BFD97D01CF0E8C2008E8C9E /* Frameworks */,
+				8BFD97D11CF0E8C2008E8C9E /* Headers */,
+				8BFD97D21CF0E8C2008E8C9E /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "AERecord watchOS";
+			productName = "AERecord watchOS";
+			productReference = 8BFD97D41CF0E8C2008E8C9E /* AERecord.framework */;
+			productType = "com.apple.product-type.framework";
+		};
+		8BFD97E11CF0E976008E8C9E /* AERecord tvOS Tests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 8BFD97EA1CF0E976008E8C9E /* Build configuration list for PBXNativeTarget "AERecord tvOS Tests" */;
+			buildPhases = (
+				8BFD97DE1CF0E976008E8C9E /* Sources */,
+				8BFD97DF1CF0E976008E8C9E /* Frameworks */,
+				8BFD97E01CF0E976008E8C9E /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				8BFD97E91CF0E976008E8C9E /* PBXTargetDependency */,
+			);
+			name = "AERecord tvOS Tests";
+			productName = "AERecord tvOS Tests";
+			productReference = 8BFD97E21CF0E976008E8C9E /* AERecord tvOS Tests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		8BFD97F51CF0EA36008E8C9E /* AERecord OSX Tests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 8BFD97FE1CF0EA36008E8C9E /* Build configuration list for PBXNativeTarget "AERecord OSX Tests" */;
+			buildPhases = (
+				8BFD97F21CF0EA36008E8C9E /* Sources */,
+				8BFD97F31CF0EA36008E8C9E /* Frameworks */,
+				8BFD97F41CF0EA36008E8C9E /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				8BFD97FD1CF0EA36008E8C9E /* PBXTargetDependency */,
+			);
+			name = "AERecord OSX Tests";
+			productName = "AERecord OSX Tests";
+			productReference = 8BFD97F61CF0EA36008E8C9E /* AERecord OSX Tests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -207,6 +400,21 @@
 						CreatedOnToolsVersion = 7.3.1;
 					};
 					8BFD96B91CF0709C008E8C9E = {
+						CreatedOnToolsVersion = 7.3.1;
+					};
+					8BFD97B51CF0E79E008E8C9E = {
+						CreatedOnToolsVersion = 7.3.1;
+					};
+					8BFD97C41CF0E883008E8C9E = {
+						CreatedOnToolsVersion = 7.3.1;
+					};
+					8BFD97D31CF0E8C2008E8C9E = {
+						CreatedOnToolsVersion = 7.3.1;
+					};
+					8BFD97E11CF0E976008E8C9E = {
+						CreatedOnToolsVersion = 7.3.1;
+					};
+					8BFD97F51CF0EA36008E8C9E = {
 						CreatedOnToolsVersion = 7.3.1;
 					};
 				};
@@ -225,6 +433,11 @@
 			targets = (
 				8BFD96AF1CF0709B008E8C9E /* AERecord iOS */,
 				8BFD96B91CF0709C008E8C9E /* AERecord iOS Tests */,
+				8BFD97D31CF0E8C2008E8C9E /* AERecord watchOS */,
+				8BFD97B51CF0E79E008E8C9E /* AERecord tvOS */,
+				8BFD97E11CF0E976008E8C9E /* AERecord tvOS Tests */,
+				8BFD97C41CF0E883008E8C9E /* AERecord OSX */,
+				8BFD97F51CF0EA36008E8C9E /* AERecord OSX Tests */,
 			);
 		};
 /* End PBXProject section */
@@ -238,6 +451,41 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 		8BFD96B81CF0709C008E8C9E /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		8BFD97B41CF0E79E008E8C9E /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		8BFD97C31CF0E883008E8C9E /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		8BFD97D21CF0E8C2008E8C9E /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		8BFD97E01CF0E976008E8C9E /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		8BFD97F41CF0EA36008E8C9E /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -267,6 +515,54 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		8BFD97B11CF0E79E008E8C9E /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8BFD97BE1CF0E852008E8C9E /* AERecord.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		8BFD97C01CF0E883008E8C9E /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8BFD97CD1CF0E89F008E8C9E /* AERecord.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		8BFD97CF1CF0E8C2008E8C9E /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8BFD97DC1CF0E8D6008E8C9E /* AERecord.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		8BFD97DE1CF0E976008E8C9E /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8BFD97EE1CF0E9CF008E8C9E /* AERecordTest.xcdatamodeld in Sources */,
+				8BFD97EF1CF0E9CF008E8C9E /* Animal.swift in Sources */,
+				8BFD97F01CF0E9CF008E8C9E /* Breed.swift in Sources */,
+				8BFD97F11CF0E9CF008E8C9E /* Species.swift in Sources */,
+				8BFD97ED1CF0E9B6008E8C9E /* AERecordTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		8BFD97F21CF0EA36008E8C9E /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8BFD98011CF0EA46008E8C9E /* AERecordTests.swift in Sources */,
+				8BFD98021CF0EA46008E8C9E /* AERecordTest.xcdatamodeld in Sources */,
+				8BFD98031CF0EA46008E8C9E /* Animal.swift in Sources */,
+				8BFD98041CF0EA46008E8C9E /* Breed.swift in Sources */,
+				8BFD98051CF0EA46008E8C9E /* Species.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
@@ -274,6 +570,16 @@
 			isa = PBXTargetDependency;
 			target = 8BFD96AF1CF0709B008E8C9E /* AERecord iOS */;
 			targetProxy = 8BFD96BC1CF0709C008E8C9E /* PBXContainerItemProxy */;
+		};
+		8BFD97E91CF0E976008E8C9E /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 8BFD97B51CF0E79E008E8C9E /* AERecord tvOS */;
+			targetProxy = 8BFD97E81CF0E976008E8C9E /* PBXContainerItemProxy */;
+		};
+		8BFD97FD1CF0EA36008E8C9E /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 8BFD97C41CF0E883008E8C9E /* AERecord OSX */;
+			targetProxy = 8BFD97FC1CF0EA36008E8C9E /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -426,6 +732,178 @@
 			};
 			name = Release;
 		};
+		8BFD97BC1CF0E79E008E8C9E /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				INFOPLIST_FILE = Sources/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "net.tadija.AERecord-tvOS";
+				PRODUCT_NAME = AERecord;
+				SDKROOT = appletvos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = 3;
+				TVOS_DEPLOYMENT_TARGET = 9.2;
+			};
+			name = Debug;
+		};
+		8BFD97BD1CF0E79E008E8C9E /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				INFOPLIST_FILE = Sources/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "net.tadija.AERecord-tvOS";
+				PRODUCT_NAME = AERecord;
+				SDKROOT = appletvos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = 3;
+				TVOS_DEPLOYMENT_TARGET = 9.2;
+			};
+			name = Release;
+		};
+		8BFD97CB1CF0E883008E8C9E /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "-";
+				COMBINE_HIDPI_IMAGES = YES;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				FRAMEWORK_VERSION = A;
+				INFOPLIST_FILE = Sources/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
+				MACOSX_DEPLOYMENT_TARGET = 10.11;
+				PRODUCT_BUNDLE_IDENTIFIER = "net.tadija.AERecord-OSX";
+				PRODUCT_NAME = AERecord;
+				SDKROOT = macosx;
+				SKIP_INSTALL = YES;
+			};
+			name = Debug;
+		};
+		8BFD97CC1CF0E883008E8C9E /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "-";
+				COMBINE_HIDPI_IMAGES = YES;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				FRAMEWORK_VERSION = A;
+				INFOPLIST_FILE = Sources/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
+				MACOSX_DEPLOYMENT_TARGET = 10.11;
+				PRODUCT_BUNDLE_IDENTIFIER = "net.tadija.AERecord-OSX";
+				PRODUCT_NAME = AERecord;
+				SDKROOT = macosx;
+				SKIP_INSTALL = YES;
+			};
+			name = Release;
+		};
+		8BFD97DA1CF0E8C2008E8C9E /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				APPLICATION_EXTENSION_API_ONLY = YES;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				INFOPLIST_FILE = Sources/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "net.tadija.AERecord-watchOS";
+				PRODUCT_NAME = AERecord;
+				SDKROOT = watchos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = 4;
+				WATCHOS_DEPLOYMENT_TARGET = 2.2;
+			};
+			name = Debug;
+		};
+		8BFD97DB1CF0E8C2008E8C9E /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				APPLICATION_EXTENSION_API_ONLY = YES;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				INFOPLIST_FILE = Sources/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "net.tadija.AERecord-watchOS";
+				PRODUCT_NAME = AERecord;
+				SDKROOT = watchos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = 4;
+				WATCHOS_DEPLOYMENT_TARGET = 2.2;
+			};
+			name = Release;
+		};
+		8BFD97EB1CF0E976008E8C9E /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				INFOPLIST_FILE = Tests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "net.tadija.AERecord-tvOS-Tests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = appletvos;
+				TVOS_DEPLOYMENT_TARGET = 9.2;
+			};
+			name = Debug;
+		};
+		8BFD97EC1CF0E976008E8C9E /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				INFOPLIST_FILE = Tests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "net.tadija.AERecord-tvOS-Tests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = appletvos;
+				TVOS_DEPLOYMENT_TARGET = 9.2;
+			};
+			name = Release;
+		};
+		8BFD97FF1CF0EA36008E8C9E /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "-";
+				COMBINE_HIDPI_IMAGES = YES;
+				INFOPLIST_FILE = Tests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
+				MACOSX_DEPLOYMENT_TARGET = 10.11;
+				PRODUCT_BUNDLE_IDENTIFIER = "net.tadija.AERecord-OSX-Tests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+			};
+			name = Debug;
+		};
+		8BFD98001CF0EA36008E8C9E /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "-";
+				COMBINE_HIDPI_IMAGES = YES;
+				INFOPLIST_FILE = Tests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
+				MACOSX_DEPLOYMENT_TARGET = 10.11;
+				PRODUCT_BUNDLE_IDENTIFIER = "net.tadija.AERecord-OSX-Tests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -455,6 +933,46 @@
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
+		};
+		8BFD97BB1CF0E79E008E8C9E /* Build configuration list for PBXNativeTarget "AERecord tvOS" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				8BFD97BC1CF0E79E008E8C9E /* Debug */,
+				8BFD97BD1CF0E79E008E8C9E /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+		8BFD97CA1CF0E883008E8C9E /* Build configuration list for PBXNativeTarget "AERecord OSX" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				8BFD97CB1CF0E883008E8C9E /* Debug */,
+				8BFD97CC1CF0E883008E8C9E /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+		8BFD97D91CF0E8C2008E8C9E /* Build configuration list for PBXNativeTarget "AERecord watchOS" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				8BFD97DA1CF0E8C2008E8C9E /* Debug */,
+				8BFD97DB1CF0E8C2008E8C9E /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+		8BFD97EA1CF0E976008E8C9E /* Build configuration list for PBXNativeTarget "AERecord tvOS Tests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				8BFD97EB1CF0E976008E8C9E /* Debug */,
+				8BFD97EC1CF0E976008E8C9E /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+		8BFD97FE1CF0EA36008E8C9E /* Build configuration list for PBXNativeTarget "AERecord OSX Tests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				8BFD97FF1CF0EA36008E8C9E /* Debug */,
+				8BFD98001CF0EA36008E8C9E /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
 		};
 /* End XCConfigurationList section */
 
