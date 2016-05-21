@@ -1,7 +1,7 @@
 //
-// AERecord.h
+// Package.swift
 //
-// Copyright (c) 2014-2016 Marko Tadić <tadija@me.com> http://tadija.net
+// Copyright (c) 2016 Marko Tadić <tadija@me.com> http://tadija.net
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -22,7 +22,8 @@
 // SOFTWARE.
 //
 
-#import <UIKit/UIKit.h>
+import PackageDescription
 
-FOUNDATION_EXPORT double AERecordVersionNumber;
-FOUNDATION_EXPORT const unsigned char AERecordVersionString[];
+let package = Package(
+    name: "AERecord"
+)

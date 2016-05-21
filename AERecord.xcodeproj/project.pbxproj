@@ -39,6 +39,11 @@
 		8BFD96D01CF07195008E8C9E /* Animal.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Animal.swift; sourceTree = "<group>"; };
 		8BFD96D11CF07195008E8C9E /* Breed.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Breed.swift; sourceTree = "<group>"; };
 		8BFD96D21CF07195008E8C9E /* Species.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Species.swift; sourceTree = "<group>"; };
+		8BFD97071CF080EF008E8C9E /* AERecord.podspec */ = {isa = PBXFileReference; lastKnownFileType = text; path = AERecord.podspec; sourceTree = "<group>"; };
+		8BFD97081CF080EF008E8C9E /* CHANGELOG.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = CHANGELOG.md; sourceTree = "<group>"; };
+		8BFD97091CF080EF008E8C9E /* LICENSE */ = {isa = PBXFileReference; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
+		8BFD970A1CF080EF008E8C9E /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
+		8BFD970B1CF080F7008E8C9E /* Package.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Package.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -63,9 +68,10 @@
 		8BFD96A61CF0709B008E8C9E = {
 			isa = PBXGroup;
 			children = (
-				8BFD96B21CF0709C008E8C9E /* AERecord */,
+				8BFD96B21CF0709C008E8C9E /* Sources */,
 				8BFD96BE1CF0709C008E8C9E /* Tests */,
 				8BFD96B11CF0709B008E8C9E /* Products */,
+				8BFD970C1CF08112008E8C9E /* Supporting Files */,
 			);
 			sourceTree = "<group>";
 		};
@@ -78,13 +84,12 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
-		8BFD96B21CF0709C008E8C9E /* AERecord */ = {
+		8BFD96B21CF0709C008E8C9E /* Sources */ = {
 			isa = PBXGroup;
 			children = (
 				8BFD96CA1CF0712D008E8C9E /* AERecord.swift */,
 				8BFD96CC1CF0715E008E8C9E /* Supporting Files */,
 			);
-			name = AERecord;
 			path = Sources;
 			sourceTree = "<group>";
 		};
@@ -124,6 +129,18 @@
 				8BFD96D21CF07195008E8C9E /* Species.swift */,
 			);
 			name = Resources;
+			sourceTree = "<group>";
+		};
+		8BFD970C1CF08112008E8C9E /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				8BFD97091CF080EF008E8C9E /* LICENSE */,
+				8BFD970A1CF080EF008E8C9E /* README.md */,
+				8BFD97081CF080EF008E8C9E /* CHANGELOG.md */,
+				8BFD97071CF080EF008E8C9E /* AERecord.podspec */,
+				8BFD970B1CF080F7008E8C9E /* Package.swift */,
+			);
+			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
