@@ -1,18 +1,41 @@
-# General
-
-**AERecord** is a [minion](http://tadija.net/public/minion.png) which consists of two pods:  
-- [AERecord](https://cocoapods.org/pods/AERecord) - Super awesome Core Data wrapper in Swift (works on iOS, OSX, tvOS)  
-- [AECoreDataUI](https://cocoapods.org/pods/AECoreDataUI) - Super awesome Core Data driven UI in Swift (for iOS only)  
-
-## AERecord
+# AERecord
 **Super awesome Core Data wrapper in Swift (works on iOS, OSX, tvOS)**
+
+[![Language Swift 2.2](https://img.shields.io/badge/Language-Swift%202.2-orange.svg?style=flat)](https://swift.org)
+[![Platforms iOS | watchOS | tvOS | OSX](https://img.shields.io/badge/Platforms-iOS%20%7C%20watchOS%20%7C%20tvOS%20%7C%20OS%20X-lightgray.svg?style=flat)](http://www.apple.com)
+[![License MIT](https://img.shields.io/badge/License-MIT-lightgrey.svg?style=flat)](https://github.com/tadija/AERecord/blob/master/LICENSE)
+
+[![CocoaPods Version](https://img.shields.io/cocoapods/v/AERecord.svg?style=flat)](https://cocoapods.org/pods/AERecord)
+[![Carthage compatible](https://img.shields.io/badge/Carthage-compatible-brightgreen.svg?style=flat)](https://github.com/Carthage/Carthage)
+[![Swift Package Manager compatible](https://img.shields.io/badge/Swift%20Package%20Manager-compatible-brightgreen.svg)](https://github.com/apple/swift-package-manager)
+
+[AECoreDataUI](https://github.com/tadija/AECoreDataUI) was previously part of **AERecord**, so you may want to check that also.
 
 >Why do we need yet another one Core Data wrapper? You tell me!  
 Inspired by many different (spoiler alert) **magical** solutions, I wanted something which combines complexity and functionality just about right.
 All that boilerplate code for setting up of Core Data stack, passing the right `NSManagedObjectContext` all accross the project and different threads, not to mention that boring `NSFetchRequest` boilerplates for any kind of creating or querying the data - should be less complicated now, with **AERecord**.
 
+## Index
+- [Features](#features)
+- [Usage](#usage)
+    - [Create Core Data stack](#create-core-data-stack)
+    - [Context operations](#context-operations)
+    - [Easy Queries](#easy-queries)
+        - [General](#general)
+        - [Create](#create)
+        - [Find first](#find-first)
+        - [Find all](#find-all)
+        - [Delete](#delete)
+        - [Count](#count)
+        - [Distinct](#distinct)
+        - [Auto increment](#auto-increment)
+        - [Turn managed object into fault](#turn-managed-object-into-fault)
+        - [Batch update](#batch-update)
+- [Requirements](#requirements)
+- [Installation](#installation)
+- [License](#license)
 
-### Features
+## Features
 - Create default or custom Core Data stack **(or more stacks)** easily accessible from everywhere
 - Have **[main and background contexts](http://floriankugler.com/2013/04/29/concurrent-core-data-stack-performance-shootout/)**, always **in sync**, but don't worry about it
 - [CRUD](https://en.wikipedia.org/wiki/Create,_read,_update_and_delete) data in many ways with **one liners**
@@ -22,50 +45,7 @@ All that boilerplate code for setting up of Core Data stack, passing the right `
 - Covered with [docs](http://tadija.net/projects/AERecord/docs/)
 - **Swift 2.2** ready
 
-## AECoreDataUI
-**Super awesome Core Data driven UI in Swift (for iOS)**
-
->Finally when it comes to connecting your data with the UI, the best approach is to use `NSFetchedResultsController`.
-`CoreDataTableViewController` wrapper from [Stanford's CS193p](http://www.stanford.edu/class/cs193p/cgi-bin/drupal/downloads-2013-winter) is so great at it, that I've written it in Swift and made `CoreDataCollectionViewController` too in the same fashion.  
-
-
-### Features
-- Core Data driven **UITableViewController** (UI automatically reflects data in Core Data model)
-- Core Data driven **UICollectionViewController** (UI automatically reflects data in Core Data model)
-- Covered with [docs](http://tadija.net/projects/AERecord/docs/)
-
-
-## Index
-
-### About AERecordExample project
-This project is made of default Master-Detail Application template with Core Data enabled,
-but modified to show off some of the **AERecord** as well as **AECoreDataUI** features such as creating of Core Data stack,
-using data driven tableView and collectionView, along with few simple querying.
-I mean, just compare it with the default template and think about that.
-
-- [AERecord features](#aerecord-features)
-	- [Create Core Data stack](#create-core-data-stack)
-	- [Context operations](#context-operations)
-	- [Easy Queries](#easy-queries)
-		- [General](#general)
-		- [Create](#create)
-		- [Find first](#find-first)
-		- [Find all](#find-all)
-		- [Delete](#delete)
-		- [Count](#count)
-		- [Distinct](#distinct)
-		- [Auto increment](#auto-increment)
-		- [Turn managed object into fault](#turn-managed-object-into-fault)
-		- [Batch update](#batch-update)
-- [AECoreDataUI features](#aecoredataui-features)
-	- [Use Core Data with tableView](#use-core-data-with-tableview)
-	- [Use Core Data with collectionView](#use-core-data-with-collectionview)
-- [Requirements](#requirements)
-- [Installation](#installation)
-- [License](#license)
-
-
-## AERecord features
+## Usage
 
 ### Create Core Data stack
 Almost everything in `AERecord` is made with 'optional' parameters (which have default values if you don't specify anything).
@@ -280,75 +260,27 @@ NSManagedObject.objectsCountForBatchUpdate(properties: ["timeStamp" : NSDate()])
 NSManagedObject.batchUpdateAndRefreshObjects(properties: ["timeStamp" : NSDate()]) // turns updated objects into faults after updating them in persistent store
 ```
 
-## AECoreDataUI features
-
-### Use Core Data with tableView
-`CoreDataTableViewController` mostly just copies the code from `NSFetchedResultsController`
-documentation page into a subclass of `UITableViewController`.
-
-Just subclass it and set it's `fetchedResultsController` property.
-
-After that you'll only have to implement `tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell` and `fetchedResultsController` will take care of other required data source methods.
-It will also update `UITableView` whenever the underlying data changes (insert, delete, update, move).
-
-#### CoreDataTableViewController Example
-```swift
-import UIKit
-import CoreData
-
-class MyTableViewController: CoreDataTableViewController {
-
-	override func viewDidLoad() {
-	    super.viewDidLoad()
-	    
-	    refreshData()
-	}
-
-	func refreshData() {
-	    let sortDescriptors = [NSSortDescriptor(key: "timeStamp", ascending: true)]
-	    let request = Event.createFetchRequest(sortDescriptors: sortDescriptors)
-	    fetchedResultsController = NSFetchedResultsController(fetchRequest: request, managedObjectContext: AERecord.defaultContext, sectionNameKeyPath: nil, cacheName: nil)
-	}
-
-	override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-	    let cell = tableView.dequeueReusableCellWithIdentifier("Cell", forIndexPath: indexPath) as UITableViewCell
-	    if let frc = fetchedResultsController {
-	        if let object = frc.objectAtIndexPath(indexPath) as? Event {
-	            cell.textLabel.text = object.timeStamp.description
-	        }
-	    }
-	    return cell
-	}
-
-}
-```
-
-### Use Core Data with collectionView
-Same as with the tableView.
-
-
 ## Requirements
-- Xcode 7.0+
+- Xcode 7.3+
 - iOS 8.0+
-- AERecord doesn't require any additional libraries for it to work.
-- AERecord can be used for iOS, OSX and tvOS.
-- AECoreDataUI is just for iOS.
-
 
 ## Installation
 
 - Using [CocoaPods](http://cocoapods.org/):
 
-  ```ruby
-  use_frameworks!
-  pod 'AERecord'
-  pod 'AECoreDataUI'
-  ```
+    ```ruby
+    pod 'AERecord'
+    ```
+
+- [Carthage](https://github.com/Carthage/Carthage):
+
+    ```ogdl
+    github "tadija/AERecord"
+    ```
 
 - Manually:
 
-  Just drag **AERecord.swift** and/or **AECoreDataUI.swift** into your project and start using it.
-
+  Just drag **AERecord.swift** into your project and start using it.
 
 ## License
 AERecord is released under the MIT license. See [LICENSE](LICENSE) for details.

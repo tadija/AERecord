@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Scheme
-   LastUpgradeVersion = "0700"
+   LastUpgradeVersion = "0730"
    version = "1.3">
    <BuildAction
       parallelizeBuildables = "YES"
@@ -14,9 +14,9 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "8BC8954A1A07930500778DB0"
-               BuildableName = "AERecordExample.app"
-               BlueprintName = "AERecordExample"
+               BlueprintIdentifier = "8BFD96AF1CF0709B008E8C9E"
+               BuildableName = "AERecord.framework"
+               BlueprintName = "AERecord"
                ReferencedContainer = "container:AERecord.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -32,7 +32,7 @@
             skipped = "NO">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "8BC895641A07930500778DB0"
+               BlueprintIdentifier = "8BFD96B91CF0709C008E8C9E"
                BuildableName = "AERecordTests.xctest"
                BlueprintName = "AERecordTests"
                ReferencedContainer = "container:AERecord.xcodeproj">
@@ -42,9 +42,9 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "8BC8954A1A07930500778DB0"
-            BuildableName = "AERecordExample.app"
-            BlueprintName = "AERecordExample"
+            BlueprintIdentifier = "8BFD96AF1CF0709B008E8C9E"
+            BuildableName = "AERecord.framework"
+            BlueprintName = "AERecord"
             ReferencedContainer = "container:AERecord.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
@@ -61,16 +61,15 @@
       debugDocumentVersioning = "YES"
       debugServiceExtension = "internal"
       allowLocationSimulation = "YES">
-      <BuildableProductRunnable
-         runnableDebuggingMode = "0">
+      <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "8BC8954A1A07930500778DB0"
-            BuildableName = "AERecordExample.app"
-            BlueprintName = "AERecordExample"
+            BlueprintIdentifier = "8BFD96AF1CF0709B008E8C9E"
+            BuildableName = "AERecord.framework"
+            BlueprintName = "AERecord"
             ReferencedContainer = "container:AERecord.xcodeproj">
          </BuildableReference>
-      </BuildableProductRunnable>
+      </MacroExpansion>
       <AdditionalOptions>
       </AdditionalOptions>
    </LaunchAction>
@@ -80,16 +79,15 @@
       savedToolIdentifier = ""
       useCustomWorkingDirectory = "NO"
       debugDocumentVersioning = "YES">
-      <BuildableProductRunnable
-         runnableDebuggingMode = "0">
+      <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "8BC8954A1A07930500778DB0"
-            BuildableName = "AERecordExample.app"
-            BlueprintName = "AERecordExample"
+            BlueprintIdentifier = "8BFD96AF1CF0709B008E8C9E"
+            BuildableName = "AERecord.framework"
+            BlueprintName = "AERecord"
             ReferencedContainer = "container:AERecord.xcodeproj">
          </BuildableReference>
-      </BuildableProductRunnable>
+      </MacroExpansion>
    </ProfileAction>
    <AnalyzeAction
       buildConfiguration = "Debug">

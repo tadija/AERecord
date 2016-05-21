@@ -1,7 +1,7 @@
 //
 // AERecord.swift
 //
-// Copyright (c) 2014 Marko Tadić <tadija@me.com> http://tadija.net
+// Copyright (c) 2014-2016 Marko Tadić <tadija@me.com> http://tadija.net
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -176,7 +176,10 @@ private class AEStack {
     // MARK: Default settings
     
     class var bundleIdentifier: String {
-        return NSBundle.mainBundle().bundleIdentifier!
+        if let mainBundleIdentifier = NSBundle.mainBundle().bundleIdentifier {
+            return mainBundleIdentifier
+        }
+        return NSBundle(forClass: AEStack.self).bundleIdentifier!
     }
     class var defaultURL: NSURL {
         return storeURLForName(bundleIdentifier)
