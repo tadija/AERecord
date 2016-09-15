@@ -195,7 +195,7 @@ class AERecordTests: XCTestCase {
     }
     
     func testEntity() {
-        let animalAttributesCount = Animal.entity?.attributesByName.count
+        let animalAttributesCount = Animal.entityDescription?.attributesByName.count
         XCTAssertEqual(animalAttributesCount!, 3, "Should be able to get NSEntityDescription of the entity.")
     }
     

@@ -216,7 +216,7 @@ private class AEStack {
         let fileManager = NSFileManager.defaultManager()
         let directoryURL = fileManager.URLsForDirectory(defaultSearchPath, inDomains: .UserDomainMask).last!
         let storeName = "\(name).sqlite"
-        return directoryURL.URLByAppendingPathComponent(storeName)
+        return directoryURL.URLByAppendingPathComponent(storeName)!
     }
     
     class func modelFromBundle(forClass forClass: AnyClass) -> NSManagedObjectModel {
@@ -435,10 +435,19 @@ public extension NSManagedObject {
         return name
     }
     
-    /// An `NSEntityDescription` object describes an entity in Core Data.
+    
+    /// This parameter were renamed to `entityDescription` because it collided with iOS 10 SDK under Objective-C.
+    @objc(nonobjc)
+    @available(*, unavailable, renamed="entityDescription")
     class var entity: NSEntityDescription? {
         return NSEntityDescription.entityForName(entityName, inManagedObjectContext: AERecord.defaultContext)
     }
+    
+    /// An `NSEntityDescription` object describes an entity in Core Data.
+    class var entityDescription: NSEntityDescription? {
+        return NSEntityDescription.entityForName(entityName, inManagedObjectContext: AERecord.defaultContext)
+    }
+    
     
     /**
         Creates fetch request **(for any entity type)** for given predicate and sort descriptors *(which are optional)*.
@@ -881,11 +890,13 @@ public extension NSManagedObject {
         let request = createFetchRequest(predicate: predicate)
         request.includesSubentities = false
         
-        var error: NSError?
-        let count = context.countForFetchRequest(request, error: &error)
+        var count = 0
         
-        if let err = error {
-            print(err)
+        do {
+            count = try context.countForFetchRequest(request)
+        }
+        catch let error {
+            print(error)
         }
         
         return count
