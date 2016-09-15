@@ -188,7 +188,7 @@ NSManagedObject.allWithAttributes(attributes) // get all objects with given attr
 #### Delete
 ```swift
 let managedObject = ...
-managedObject.delete() // delete object (call on instance)
+managedObject.deleteFromContext() // delete object (call on instance)
 
 NSManagedObject.deleteAll() // delete all objects
 
