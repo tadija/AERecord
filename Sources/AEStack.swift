@@ -217,15 +217,6 @@ class AEStack {
         }
     }
     
-    @objc func contextDidSave(_ notification: Notification) {
-        guard
-            let context = notification.object as? NSManagedObjectContext,
-            let contextToRefresh = context == mainContext ? backgroundContext : mainContext
-        else { return }
-        
-        mergeChanges(inContext: contextToRefresh, fromNotification: notification)
-    }
-    
     private func mergeChanges(inContext context: NSManagedObjectContext, fromNotification notification: Notification) {
         context.perform {
             context.mergeChanges(fromContextDidSave: notification)
@@ -238,18 +229,28 @@ class AEStack {
         let center = NotificationCenter.default
         
         // Contexts Sync
-        let contextDidSave = #selector(AEStack.contextDidSave(_:))
-        center.addObserver(self, selector: contextDidSave, name: .NSManagedObjectContextDidSave, object: mainContext)
-        center.addObserver(self, selector: contextDidSave, name: .NSManagedObjectContextDidSave, object: backgroundContext)
+        let didSave = #selector(AEStack.contextDidSave(_:))
+        let didSaveName = NSNotification.Name.NSManagedObjectContextDidSave
+        center.addObserver(self, selector: didSave, name: didSaveName, object: mainContext)
+        center.addObserver(self, selector: didSave, name: didSaveName, object: backgroundContext)
         
         // iCloud Support
-        center.addObserver(self, selector: #selector(AEStack.storesWillChange(_:)), name: .NSPersistentStoreCoordinatorStoresWillChange, object: coordinator)
-        center.addObserver(self, selector: #selector(AEStack.storesDidChange(_:)), name: .NSPersistentStoreCoordinatorStoresDidChange, object: coordinator)
-        center.addObserver(self, selector: #selector(AEStack.willRemoveStore(_:)), name: .NSPersistentStoreCoordinatorWillRemoveStore, object: coordinator)
+        let willChange = #selector(AEStack.storesWillChange(_:))
+        let willChangeName = NSNotification.Name.NSPersistentStoreCoordinatorStoresWillChange
+        center.addObserver(self, selector: willChange, name: willChangeName, object: coordinator)
+
+        let didChange = #selector(AEStack.storesDidChange(_:))
+        let didChangeName = NSNotification.Name.NSPersistentStoreCoordinatorStoresDidChange
+        center.addObserver(self, selector: didChange, name: didChangeName, object: coordinator)
+
+        let willRemove = #selector(AEStack.willRemoveStore(_:))
+        let willRemoveName = NSNotification.Name.NSPersistentStoreCoordinatorWillRemoveStore
+        center.addObserver(self, selector: willRemove, name: willRemoveName, object: coordinator)
         
         #if !(os(tvOS) || os(watchOS))
             let didImport = #selector(AEStack.persistentStoreDidImportUbiquitousContentChanges(_:))
-            center.addObserver(self, selector: didImport, name: .NSPersistentStoreDidImportUbiquitousContentChanges, object: coordinator)
+            let didImportName = NSNotification.Name.NSPersistentStoreDidImportUbiquitousContentChanges
+            center.addObserver(self, selector: didImport, name: didImportName, object: coordinator)
         #endif
     }
     
@@ -258,7 +259,18 @@ class AEStack {
         center.removeObserver(self)
     }
     
-    // MARK: - iCloud Support
+    // MARK: - Sync
+    
+    @objc func contextDidSave(_ notification: Notification) {
+        guard
+            let context = notification.object as? NSManagedObjectContext,
+            let contextToRefresh = context == mainContext ? backgroundContext : mainContext
+        else { return }
+        
+        mergeChanges(inContext: contextToRefresh, fromNotification: notification)
+    }
+    
+    // MARK: - iCloud
     
     @objc func storesWillChange(_ notification: Notification) {
         saveAndWait(context: defaultContext)
