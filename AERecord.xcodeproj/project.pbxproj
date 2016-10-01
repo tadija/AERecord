@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		8B5258731D9FFD0400C4A604 /* AEStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B5258721D9FFD0400C4A604 /* AEStack.swift */; };
+		8B5258751D9FFDA300C4A604 /* AEQuery.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B5258741D9FFDA300C4A604 /* AEQuery.swift */; };
 		8BFD96B41CF0709C008E8C9E /* AERecord.h in Headers */ = {isa = PBXBuildFile; fileRef = 8BFD96B31CF0709C008E8C9E /* AERecord.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		8BFD96BB1CF0709C008E8C9E /* AERecord.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8BFD96B01CF0709B008E8C9E /* AERecord.framework */; };
 		8BFD96C01CF0709C008E8C9E /* AERecordTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BFD96BF1CF0709C008E8C9E /* AERecordTests.swift */; };
@@ -60,6 +62,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		8B5258721D9FFD0400C4A604 /* AEStack.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AEStack.swift; sourceTree = "<group>"; };
+		8B5258741D9FFDA300C4A604 /* AEQuery.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AEQuery.swift; sourceTree = "<group>"; };
 		8BFD96B01CF0709B008E8C9E /* AERecord.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = AERecord.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		8BFD96B31CF0709C008E8C9E /* AERecord.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AERecord.h; sourceTree = "<group>"; };
 		8BFD96B51CF0709C008E8C9E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -167,6 +171,8 @@
 			isa = PBXGroup;
 			children = (
 				8BFD96CA1CF0712D008E8C9E /* AERecord.swift */,
+				8B5258721D9FFD0400C4A604 /* AEStack.swift */,
+				8B5258741D9FFDA300C4A604 /* AEQuery.swift */,
 				8BFD96CC1CF0715E008E8C9E /* Supporting Files */,
 			);
 			path = Sources;
@@ -501,6 +507,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8B5258731D9FFD0400C4A604 /* AEStack.swift in Sources */,
+				8B5258751D9FFDA300C4A604 /* AEQuery.swift in Sources */,
 				8BFD96CB1CF0712D008E8C9E /* AERecord.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
