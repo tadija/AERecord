@@ -134,7 +134,7 @@ class AEStack {
         managedObjectModel = nil
     }
     
-    func truncateAllData(context: NSManagedObjectContext) {
+    func truncateAllData(inContext context: NSManagedObjectContext) {
         if let mom = managedObjectModel {
             for entity in mom.entities {
                 if let entityType = NSClassFromString(entity.managedObjectClassName) as? NSManagedObject.Type {
@@ -194,8 +194,10 @@ class AEStack {
         }
     }
     
-    class func refreshObjects(objectIDS: [NSManagedObjectID], mergeChanges: Bool, context: NSManagedObjectContext = AERecord.Context.default) {
-        for objectID in objectIDS {
+    class func refreshObjects(inContext context: NSManagedObjectContext = AERecord.Context.default,
+                              objectIDs: [NSManagedObjectID], mergeChanges: Bool) {
+        
+        for objectID in objectIDs {
             context.performAndWait {
                 do {
                     let managedObject = try context.existingObject(with: objectID)
@@ -209,12 +211,12 @@ class AEStack {
         }
     }
     
-    class func refreshRegisteredObjects(mergeChanges: Bool, context: NSManagedObjectContext = AERecord.Context.default) {
-        var registeredObjectIDS = [NSManagedObjectID]()
+    class func refreshRegisteredObjects(inContext context: NSManagedObjectContext, mergeChanges: Bool) {
+        var registeredObjectIDs = [NSManagedObjectID]()
         for object in context.registeredObjects {
-            registeredObjectIDS.append(object.objectID)
+            registeredObjectIDs.append(object.objectID)
         }
-        refreshObjects(objectIDS: registeredObjectIDS, mergeChanges: mergeChanges)
+        refreshObjects(objectIDs: registeredObjectIDs, mergeChanges: mergeChanges)
     }
     
     // MARK: - Notifications

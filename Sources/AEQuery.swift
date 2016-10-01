@@ -609,7 +609,7 @@ public extension NSManagedObject {
         - parameter context: If not specified, `defaultContext` will be used.
     */
     func refresh(_ mergeChanges: Bool = true, context: NSManagedObjectContext = AERecord.Context.default) {
-        AERecord.refreshObjects(objectIDS: [objectID], mergeChanges: mergeChanges, context: context)
+        AERecord.refreshObjects(inContext: context, objectIDs: [objectID], mergeChanges: mergeChanges)
     }
     
     // MARK: - Batch Update
@@ -677,8 +677,8 @@ public extension NSManagedObject {
     */
     class func batchUpdateAndRefreshObjects(_ predicate: NSPredicate? = nil, properties: [AnyHashable : Any]? = nil, context: NSManagedObjectContext = AERecord.Context.default) {
         if let result = batchUpdate(predicate: predicate, properties: properties, resultType: .updatedObjectIDsResultType, context: context) {
-            if let objectIDS = result.result as? [NSManagedObjectID] {
-                AERecord.refreshObjects(objectIDS: objectIDS, mergeChanges: true, context: context)
+            if let objectIDs = result.result as? [NSManagedObjectID] {
+                AERecord.refreshObjects(inContext: context, objectIDs: objectIDs, mergeChanges: true)
             }
         }
     }

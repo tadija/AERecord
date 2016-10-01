@@ -152,10 +152,10 @@ open class AERecord {
         - parameter mergeChanges: A Boolean value.
         - parameter context: If not specified, `defaultContext` will be used.
     */
-    open class func refreshObjects(objectIDS: [NSManagedObjectID], mergeChanges: Bool,
-                                   context: NSManagedObjectContext = Context.default) {
+    open class func refreshObjects(inContext context: NSManagedObjectContext = Context.default,
+                                   objectIDs: [NSManagedObjectID], mergeChanges: Bool) {
         
-        AEStack.refreshObjects(objectIDS: objectIDS, mergeChanges: mergeChanges, context: context)
+        AEStack.refreshObjects(inContext: context, objectIDs: objectIDs, mergeChanges: mergeChanges)
     }
     
     /**
@@ -164,8 +164,10 @@ open class AERecord {
         - parameter mergeChanges: A Boolean value.
         - parameter context: If not specified, `defaultContext` will be used.
     */
-    open class func refreshRegisteredObjects(mergeChanges: Bool, context: NSManagedObjectContext = Context.default) {
-        AEStack.refreshRegisteredObjects(mergeChanges: mergeChanges, context: context)
+    open class func refreshRegisteredObjects(inContext context: NSManagedObjectContext = Context.default,
+                                             mergeChanges: Bool) {
+        
+        AEStack.refreshRegisteredObjects(inContext: context, mergeChanges: mergeChanges)
     }
     
     /**
@@ -173,8 +175,8 @@ open class AERecord {
 
         - parameter context: If not specified, `defaultContext` will be used.
     */
-    open class func truncateAllData(context: NSManagedObjectContext = Context.default) {
-        AEStack.shared.truncateAllData(context: context)
+    open class func truncateAllData(inContext context: NSManagedObjectContext = Context.default) {
+        AEStack.shared.truncateAllData(inContext: context)
     }
     
 }
