@@ -29,17 +29,20 @@ open class AERecord {
     
     // MARK: - Properties
     
-    /// Managed object context for current thread.
-    open class var defaultContext: NSManagedObjectContext { return AEStack.shared.defaultContext }
-    
-    /// Managed object context for main thread.
-    open class var mainContext: NSManagedObjectContext { return AEStack.shared.mainContext }
-    
-    /// Managed object context for background thread.
-    open class var backgroundContext: NSManagedObjectContext { return AEStack.shared.backgroundContext }
+    /// Struct that holds different instances of managed object context.
+    public struct Context {
+        /// Managed object context for current thread.
+        public static var `default`: NSManagedObjectContext { return AEStack.shared.defaultContext }
+        
+        /// Managed object context for main thread.
+        public static var main: NSManagedObjectContext { return AEStack.shared.mainContext }
+        
+        /// Managed object context for background thread.
+        public static var background: NSManagedObjectContext { return AEStack.shared.backgroundContext }
+    }
     
     /// Persistent Store Coordinator for current stack.
-    open class var persistentStoreCoordinator: NSPersistentStoreCoordinator? { return AEStack.shared.persistentStoreCoordinator }
+    open class var storeCoordinator: NSPersistentStoreCoordinator? { return AEStack.shared.coordinator }
     
     // MARK: - Stack
     
@@ -93,28 +96,19 @@ open class AERecord {
          
          - returns: File URL for the store with given name.
     */
-    open class func storeURLForName(_ name: String) -> URL {
-        return AEStack.storeURLForName(name)
+    open class func storeURL(forName name: String) -> URL {
+        return AEStack.storeURL(forName: name)
     }
     
     /**
          Returns merged model from the bundle for given class.
          
-         - parameter forClass: Class inside bundle with data model.
+         - parameter aClass: Class inside bundle with data model.
          
          - returns: Merged model from the bundle for given class.
     */
-    open class func modelFromBundle(forClass: AnyClass) -> NSManagedObjectModel {
-        return AEStack.modelFromBundle(forClass: forClass)
-    }
-    
-    /**
-        Deletes all records from all entities contained in the model.
-    
-        - parameter context: If not specified, `defaultContext` will be used.
-    */
-    open class func truncateAllData(context: NSManagedObjectContext? = nil) {
-        AEStack.shared.truncateAllData(context: context)
+    open class func modelFromBundle(for aClass: AnyClass) -> NSManagedObjectModel {
+        return AEStack.modelFromBundle(for: aClass)
     }
     
     // MARK: - Context
@@ -123,51 +117,66 @@ open class AERecord {
         Executes given fetch request.
     
         - parameter request: Fetch request to execute.
-        - parameter context: If not specified, `defaultContext` will be used.
+        - parameter context: If not specified, `Context.default` will be used.
      
         - returns: Result of executed fetch request.
     */
-    open class func executeFetchRequest<T: NSManagedObject>(_ request: NSFetchRequest<T>, context: NSManagedObjectContext? = nil) -> [T] {
-        return AEStack.shared.executeFetchRequest(request, context: context)
+    open class func execute<T: NSManagedObject>(fetchRequest request: NSFetchRequest<T>,
+                            inContext context: NSManagedObjectContext = Context.default) -> [T] {
+        
+        return AEStack.shared.execute(fetchRequest: request, inContext: context)
     }
     
     /**
         Saves context asynchronously.
     
-        - parameter context: If not specified, `defaultContext` will be used.
+        - parameter context: If not specified, `Context.default` will be used.
     */
-    open class func saveContext(_ context: NSManagedObjectContext? = nil) {
-        AEStack.shared.saveContext(context)
+    open class func save(context: NSManagedObjectContext = Context.default) {
+        AEStack.shared.save(context: context)
     }
     
     /**
         Saves context synchronously.
         
-        - parameter context: If not specified, `defaultContext` will be used.
+        - parameter context: If not specified, `Context.default` will be used.
     */
-    open class func saveContextAndWait(_ context: NSManagedObjectContext? = nil) {
-        AEStack.shared.saveContextAndWait(context)
+    open class func saveAndWait(context: NSManagedObjectContext = Context.default) {
+        AEStack.shared.saveAndWait(context: context)
     }
     
     /**
         Turns objects into faults for given Array of `NSManagedObjectID`.
     
+        - parameter context: If not specified, `Context.default` will be used.
         - parameter objectIDS: Array of `NSManagedObjectID` objects to turn into fault.
         - parameter mergeChanges: A Boolean value.
-        - parameter context: If not specified, `defaultContext` will be used.
     */
-    open class func refreshObjects(objectIDS: [NSManagedObjectID], mergeChanges: Bool, context: NSManagedObjectContext = AERecord.defaultContext) {
-        AEStack.refreshObjects(objectIDS: objectIDS, mergeChanges: mergeChanges, context: context)
+    open class func refreshObjects(inContext context: NSManagedObjectContext = Context.default,
+                                   objectIDs: [NSManagedObjectID], mergeChanges: Bool) {
+        
+        AEStack.refreshObjects(inContext: context, objectIDs: objectIDs, mergeChanges: mergeChanges)
     }
     
     /**
         Turns all registered objects into faults.
         
+        - parameter context: If not specified, `Context.default` will be used.
         - parameter mergeChanges: A Boolean value.
-        - parameter context: If not specified, `defaultContext` will be used.
     */
-    open class func refreshAllRegisteredObjects(mergeChanges: Bool, context: NSManagedObjectContext = AERecord.defaultContext) {
-        AEStack.refreshAllRegisteredObjects(mergeChanges: mergeChanges, context: context)
+    open class func refreshRegisteredObjects(inContext context: NSManagedObjectContext = Context.default,
+                                             mergeChanges: Bool) {
+        
+        AEStack.refreshRegisteredObjects(inContext: context, mergeChanges: mergeChanges)
+    }
+    
+    /**
+        Deletes all records from all entities contained in the model.
+
+        - parameter context: If not specified, `Context.default` will be used.
+    */
+    open class func truncateAllData(inContext context: NSManagedObjectContext = Context.default) {
+        AEStack.shared.truncateAllData(inContext: context)
     }
     
 }

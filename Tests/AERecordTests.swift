@@ -35,7 +35,7 @@ class AERecordTests: XCTestCase {
         
         /* create Core Data stack */
         
-        let model = AERecord.modelFromBundle(forClass: AERecordTests.self)
+        let model = AERecord.modelFromBundle(for: AERecordTests.self)
         do {
             try AERecord.loadCoreDataStack(managedObjectModel: model, storeType: NSInMemoryStoreType)
         }
@@ -79,33 +79,32 @@ class AERecordTests: XCTestCase {
         let qualityOfServiceClass = DispatchQoS.QoSClass.background
         let backgroundQueue = DispatchQueue.global(qos: qualityOfServiceClass)
         backgroundQueue.async(execute: {
-            let context = AERecord.defaultContext
+            let context = AERecord.Context.default
             XCTAssertEqual(context.concurrencyType, NSManagedObjectContextConcurrencyType.privateQueueConcurrencyType, "Should be able to return background context as default context when called from the background queue.")
             
             DispatchQueue.main.async(execute: { () -> Void in
-                let context = AERecord.defaultContext
+                let context = AERecord.Context.default
                 XCTAssertEqual(context.concurrencyType, NSManagedObjectContextConcurrencyType.mainQueueConcurrencyType, "Should be able to return main context as default context when called from the main queue.")
             })
         })
     }
     
     func testMainContext() {
-        let context = AERecord.mainContext
+        let context = AERecord.Context.main
         XCTAssertEqual(context.concurrencyType, NSManagedObjectContextConcurrencyType.mainQueueConcurrencyType, "Should be able to create main context with .MainQueueConcurrencyType")
     }
     
     func testBackgroundContext() {
-        let context = AERecord.backgroundContext
+        let context = AERecord.Context.background
         XCTAssertEqual(context.concurrencyType, NSManagedObjectContextConcurrencyType.privateQueueConcurrencyType, "Should be able to create background context with .PrivateQueueConcurrencyType")
     }
     
     func testPersistentStoreCoordinator() {
-        let coordinator = AERecord.persistentStoreCoordinator
-        XCTAssertNotNil(coordinator, "Should be able to create persistent store coordinator.")
+        XCTAssertNotNil(AERecord.storeCoordinator, "Should be able to create persistent store coordinator.")
     }
     
     func testStoreURLForName() {
-        let storeURL = AERecord.storeURLForName("test")
+        let storeURL = AERecord.storeURL(forName: "test")
         let directoryURL = FileManager.default.urls(for: defaultSearchPath, in: .userDomainMask).last!
         let expectedStoreURL = directoryURL.appendingPathComponent("test.sqlite")
         XCTAssertEqual(storeURL, expectedStoreURL, "")
@@ -120,7 +119,7 @@ class AERecordTests: XCTestCase {
     }
     
     func testModelFromBundle() {
-        let model = AERecord.modelFromBundle(forClass: AERecordTests.self)
+        let model = AERecord.modelFromBundle(for: AERecordTests.self)
         let entityNames = Array(model.entitiesByName.keys).sorted()
         let expectedEntityNames = ["Animal", "Breed", "Species"]
         XCTAssertEqual(entityNames, expectedEntityNames, "Should be able to load merged model from bundle for given class.")
@@ -143,17 +142,17 @@ class AERecordTests: XCTestCase {
     func testExecuteFetchRequest() {
         let predicate = Animal.createPredicateForAttributes(["color" : "lightgray"])
         let request = Animal.createFetchRequest(predicate: predicate)
-        let tinna = AERecord.executeFetchRequest(request).first as? Animal
+        let tinna = AERecord.execute(fetchRequest: request).first as? Animal
         XCTAssertEqual(tinna!.name, "Tinna", "Should be able to execute given fetch request.")
     }
     
     func testSaveContext() {
-        let hasChanges = AERecord.defaultContext.hasChanges
+        let hasChanges = AERecord.Context.default.hasChanges
         XCTAssertEqual(hasChanges, true, "Should have changes before saving.")
         
-        AERecord.saveContext()
+        AERecord.save()
         
-        let hasChangesAfterSaving = AERecord.defaultContext.hasChanges
+        let hasChangesAfterSaving = AERecord.Context.default.hasChanges
         XCTAssertEqual(hasChangesAfterSaving, true, "Should still have changes after saving context without waiting.")
         
         let expectation = self.expectation(description: "Context Saving")
@@ -163,18 +162,18 @@ class AERecordTests: XCTestCase {
         })
         
         self.waitForExpectations(timeout: 1.0, handler: { (error) -> Void in
-            let hasChangesAfterWaiting = AERecord.defaultContext.hasChanges
+            let hasChangesAfterWaiting = AERecord.Context.default.hasChanges
             XCTAssertEqual(hasChangesAfterWaiting, false, "Should not have changes after waiting a bit, because context is now saved.")
         })
     }
     
     func testSaveContextAndWait() {
-        let hasChanges = AERecord.defaultContext.hasChanges
+        let hasChanges = AERecord.Context.default.hasChanges
         XCTAssertEqual(hasChanges, true, "Should have changes before saving.")
         
-        AERecord.saveContextAndWait()
+        AERecord.saveAndWait()
         
-        let hasChangesAfterSaving = AERecord.defaultContext.hasChanges
+        let hasChangesAfterSaving = AERecord.Context.default.hasChanges
         XCTAssertEqual(hasChangesAfterSaving, false, "Should not have changes after saving context with waiting.")
     }
     

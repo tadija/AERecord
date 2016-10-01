@@ -27,33 +27,34 @@ import CoreData
 /// This internal class is core of AERecord as it configures and accesses Core Data Stack.
 class AEStack {
     
-    // MARK: - Shared Instance
+    // MARK: - Singleton
     
     static let shared = AEStack()
     
-    // MARK: - Default settings
-    
-    class var bundleIdentifier: String {
-        if let mainBundleIdentifier = Bundle.main.bundleIdentifier {
-            return mainBundleIdentifier
-        }
-        return Bundle(for: AEStack.self).bundleIdentifier!
-    }
-    
-    class var defaultURL: URL {
-        return storeURLForName(bundleIdentifier)
-    }
+    // MARK: - Defaults
     
     class var defaultModel: NSManagedObjectModel {
         return NSManagedObjectModel.mergedModel(from: nil)!
     }
     
-    // MARK: - Properties
+    class var defaultName: String {
+        guard let identifier = Bundle.main.bundleIdentifier
+        else { return Bundle(for: AEStack.self).bundleIdentifier! }
+        return identifier
+    }
     
-    var managedObjectModel: NSManagedObjectModel?
-    var persistentStoreCoordinator: NSPersistentStoreCoordinator?
-    var mainContext: NSManagedObjectContext!
-    var backgroundContext: NSManagedObjectContext!
+    class var defaultURL: URL {
+        return storeURL(forName: defaultName)
+    }
+    
+    class var defaultDirectory: FileManager.SearchPathDirectory {
+        #if os(tvOS)
+            return .CachesDirectory
+        #else
+            return .documentDirectory
+        #endif
+    }
+    
     var defaultContext: NSManagedObjectContext {
         if Thread.isMainThread {
             return mainContext
@@ -62,25 +63,25 @@ class AEStack {
         }
     }
     
-    // MARK: - Configure Stack
+    // MARK: - Properties
     
-    class var defaultSearchPath: FileManager.SearchPathDirectory {
-        #if os(tvOS)
-            return .CachesDirectory
-        #else
-            return .documentDirectory
-        #endif
-    }
+    var model: NSManagedObjectModel?
+    var coordinator: NSPersistentStoreCoordinator?
     
-    class func storeURLForName(_ name: String) -> URL {
+    var mainContext: NSManagedObjectContext!
+    var backgroundContext: NSManagedObjectContext!
+    
+    // MARK: - Stack
+    
+    class func storeURL(forName name: String) -> URL {
         let fileManager = FileManager.default
-        let directoryURL = fileManager.urls(for: defaultSearchPath, in: .userDomainMask).last!
+        let directoryURL = fileManager.urls(for: defaultDirectory, in: .userDomainMask).last!
         let storeName = "\(name).sqlite"
         return directoryURL.appendingPathComponent(storeName)
     }
     
-    class func modelFromBundle(forClass: AnyClass) -> NSManagedObjectModel {
-        let bundle = Bundle(for: forClass)
+    class func modelFromBundle(for aClass: AnyClass) -> NSManagedObjectModel {
+        let bundle = Bundle(for: aClass)
         return NSManagedObjectModel.mergedModel(from: [bundle])!
     }
     
@@ -91,132 +92,135 @@ class AEStack {
         storeURL: URL = defaultURL,
         options: [AnyHashable : Any]? = nil) throws {
         
-        self.managedObjectModel = managedObjectModel
-        
-        // setup main and background contexts
+        model = managedObjectModel
+        configureManagedObjectContexts()
+        try configureStoreCoordinator(model: managedObjectModel, type: storeType,
+                                      configuration: configuration, url: storeURL, options: options)
+        startReceivingContextNotifications()
+    }
+    
+    private func configureManagedObjectContexts() {
         mainContext = NSManagedObjectContext(concurrencyType: .mainQueueConcurrencyType)
         backgroundContext = NSManagedObjectContext(concurrencyType: .privateQueueConcurrencyType)
+    }
+    
+    private func configureStoreCoordinator(model: NSManagedObjectModel, type: String,
+                                           configuration: String?, url: URL, options: [AnyHashable : Any]?) throws {
         
-        // create the coordinator and store
-        persistentStoreCoordinator = NSPersistentStoreCoordinator(managedObjectModel: managedObjectModel)
-        if let coordinator = persistentStoreCoordinator {
-            try coordinator.addPersistentStore(ofType: storeType, configurationName: configuration, at: storeURL, options: options)
-            mainContext.persistentStoreCoordinator = coordinator
-            backgroundContext.persistentStoreCoordinator = coordinator
-            startReceivingContextNotifications()
-        }
+        coordinator = NSPersistentStoreCoordinator(managedObjectModel: model)
+        try coordinator?.addPersistentStore(ofType: type, configurationName: configuration, at: url, options: options)
+        mainContext.persistentStoreCoordinator = coordinator
+        backgroundContext.persistentStoreCoordinator = coordinator
     }
     
     func destroyCoreDataStack(storeURL: URL = defaultURL) throws {
-        // must load this core data stack first
-        do {
-            try loadCoreDataStack(storeURL: storeURL) // because there is no persistentStoreCoordinator if destroyCoreDataStack is called before loadCoreDataStack
-            // also if we're in other stack currently that persistentStoreCoordinator doesn't know about this storeURL
-        } catch {
-            throw error
-        }
-        stopReceivingContextNotifications() // stop receiving notifications for these contexts
+        /// - NOTE: must load this core data stack first
+        /// because there is no `storeCoordinator` if `destroyCoreDataStack` is called before `loadCoreDataStack`
+        /// also if we're in other stack currently that `storeCoordinator` doesn't know about this `storeURL`
+        try loadCoreDataStack(storeURL: storeURL)
         
-        // reset contexts
-        mainContext.reset()
-        backgroundContext.reset()
-        
-        // finally, remove persistent store
-        if let coordinator = persistentStoreCoordinator {
-            if let store = coordinator.persistentStore(for: storeURL) {
-                try coordinator.remove(store)
-                try FileManager.default.removeItem(at: storeURL)
-            }
-        }
-        
-        // reset coordinator and model
-        persistentStoreCoordinator = nil
-        managedObjectModel = nil
+        stopReceivingContextNotifications()
+        resetManagedObjectContexts()
+        try removePersistentStore(storeURL: storeURL)
+        resetCoordinatorAndModel()
     }
     
-    func truncateAllData(context: NSManagedObjectContext? = nil) {
-        let moc = context ?? defaultContext
-        if let mom = managedObjectModel {
-            for entity in mom.entities {
-                if let entityType = NSClassFromString(entity.managedObjectClassName) as? NSManagedObject.Type {
-                    entityType.deleteAll(context: moc)
-                }
-            }
+    private func resetManagedObjectContexts() {
+        mainContext.reset()
+        backgroundContext.reset()
+    }
+    
+    private func removePersistentStore(storeURL: URL) throws {
+        if let store = coordinator?.persistentStore(for: storeURL) {
+            try coordinator?.remove(store)
+            try FileManager.default.removeItem(at: storeURL)
         }
+    }
+    
+    private func resetCoordinatorAndModel() {
+        coordinator = nil
+        model = nil
     }
     
     deinit {
         stopReceivingContextNotifications()
     }
     
-    // MARK: - Context Operations
+    // MARK: - Context
     
-    func executeFetchRequest<T: NSManagedObject>(_ request: NSFetchRequest<T>, context: NSManagedObjectContext? = nil) -> [T] {
+    func execute<T: NSManagedObject>(fetchRequest request: NSFetchRequest<T>,
+                 inContext context: NSManagedObjectContext) -> [T] {
+        
         var fetchedObjects = [T]()
-        let moc = context ?? defaultContext
-        moc.performAndWait {
+        context.performAndWait {
             do {
-                fetchedObjects = try moc.fetch(request)
+                fetchedObjects = try context.fetch(request)
             } catch {
-                print(error)
+                debugPrint(error)
             }
         }
         return fetchedObjects
     }
     
-    func saveContext(_ context: NSManagedObjectContext? = nil) {
-        let moc = context ?? defaultContext
-        moc.perform {
-            if moc.hasChanges {
-                do {
-                    try moc.save()
-                } catch {
-                    print(error)
-                }
-            }
-        }
-    }
-    
-    func saveContextAndWait(_ context: NSManagedObjectContext? = nil) {
-        let moc = context ?? defaultContext
-        moc.performAndWait {
-            if moc.hasChanges {
-                do {
-                    try moc.save()
-                } catch {
-                    print(error)
-                }
-            }
-        }
-    }
-    
-    func mergeChangesFromNotification(_ notification: Notification, inContext context: NSManagedObjectContext) {
+    func save(context: NSManagedObjectContext) {
         context.perform {
-            context.mergeChanges(fromContextDidSave: notification)
+            if context.hasChanges {
+                do {
+                    try context.save()
+                } catch {
+                    debugPrint(error)
+                }
+            }
         }
     }
     
-    class func refreshObjects(objectIDS: [NSManagedObjectID], mergeChanges: Bool, context: NSManagedObjectContext = AERecord.defaultContext) {
-        for objectID in objectIDS {
+    func saveAndWait(context: NSManagedObjectContext) {
+        context.performAndWait {
+            if context.hasChanges {
+                do {
+                    try context.save()
+                } catch {
+                    debugPrint(error)
+                }
+            }
+        }
+    }
+    
+    class func refreshObjects(inContext context: NSManagedObjectContext = AERecord.Context.default,
+                              objectIDs: [NSManagedObjectID], mergeChanges: Bool) {
+        
+        for objectID in objectIDs {
             context.performAndWait {
                 do {
                     let managedObject = try context.existingObject(with: objectID)
                     // turn managed object into fault
                     context.refresh(managedObject, mergeChanges: mergeChanges)
-                }
-                catch {
+                } catch {
                     print(error)
                 }
             }
         }
     }
     
-    class func refreshAllRegisteredObjects(mergeChanges: Bool, context: NSManagedObjectContext = AERecord.defaultContext) {
-        var registeredObjectIDS = [NSManagedObjectID]()
-        for object in context.registeredObjects {
-            registeredObjectIDS.append(object.objectID)
+    class func refreshRegisteredObjects(inContext context: NSManagedObjectContext, mergeChanges: Bool) {
+        let registeredObjectIDs = context.registeredObjects.map { return $0.objectID }
+        refreshObjects(objectIDs: registeredObjectIDs, mergeChanges: mergeChanges)
+    }
+    
+    func truncateAllData(inContext context: NSManagedObjectContext) {
+        if let mom = model {
+            for entity in mom.entities {
+                if let entityType = NSClassFromString(entity.managedObjectClassName) as? NSManagedObject.Type {
+                    entityType.deleteAll(context: context)
+                }
+            }
         }
-        refreshObjects(objectIDS: registeredObjectIDS, mergeChanges: mergeChanges)
+    }
+    
+    private func mergeChanges(inContext context: NSManagedObjectContext, fromNotification notification: Notification) {
+        context.perform {
+            context.mergeChanges(fromContextDidSave: notification)
+        }
     }
     
     // MARK: - Notifications
@@ -224,16 +228,29 @@ class AEStack {
     func startReceivingContextNotifications() {
         let center = NotificationCenter.default
         
-        // Context Sync
-        center.addObserver(self, selector: #selector(AEStack.contextDidSave(_:)), name: .NSManagedObjectContextDidSave, object: mainContext)
-        center.addObserver(self, selector: #selector(AEStack.contextDidSave(_:)), name: .NSManagedObjectContextDidSave, object: backgroundContext)
+        // Contexts Sync
+        let didSave = #selector(AEStack.contextDidSave(_:))
+        let didSaveName = NSNotification.Name.NSManagedObjectContextDidSave
+        center.addObserver(self, selector: didSave, name: didSaveName, object: mainContext)
+        center.addObserver(self, selector: didSave, name: didSaveName, object: backgroundContext)
         
         // iCloud Support
-        center.addObserver(self, selector: #selector(AEStack.storesWillChange(_:)), name: .NSPersistentStoreCoordinatorStoresWillChange, object: persistentStoreCoordinator)
-        center.addObserver(self, selector: #selector(AEStack.storesDidChange(_:)), name: .NSPersistentStoreCoordinatorStoresDidChange, object: persistentStoreCoordinator)
-        center.addObserver(self, selector: #selector(AEStack.willRemoveStore(_:)), name: .NSPersistentStoreCoordinatorWillRemoveStore, object: persistentStoreCoordinator)
+        let willChange = #selector(AEStack.storesWillChange(_:))
+        let willChangeName = NSNotification.Name.NSPersistentStoreCoordinatorStoresWillChange
+        center.addObserver(self, selector: willChange, name: willChangeName, object: coordinator)
+
+        let didChange = #selector(AEStack.storesDidChange(_:))
+        let didChangeName = NSNotification.Name.NSPersistentStoreCoordinatorStoresDidChange
+        center.addObserver(self, selector: didChange, name: didChangeName, object: coordinator)
+
+        let willRemove = #selector(AEStack.willRemoveStore(_:))
+        let willRemoveName = NSNotification.Name.NSPersistentStoreCoordinatorWillRemoveStore
+        center.addObserver(self, selector: willRemove, name: willRemoveName, object: coordinator)
+        
         #if !(os(tvOS) || os(watchOS))
-            center.addObserver(self, selector: #selector(AEStack.persistentStoreDidImportUbiquitousContentChanges(_:)), name: .NSPersistentStoreDidImportUbiquitousContentChanges, object: persistentStoreCoordinator)
+            let didImport = #selector(AEStack.persistentStoreDidImportUbiquitousContentChanges(_:))
+            let didImportName = NSNotification.Name.NSPersistentStoreDidImportUbiquitousContentChanges
+            center.addObserver(self, selector: didImport, name: didImportName, object: coordinator)
         #endif
     }
     
@@ -242,17 +259,21 @@ class AEStack {
         center.removeObserver(self)
     }
     
+    // MARK: - Sync
+    
     @objc func contextDidSave(_ notification: Notification) {
-        if let context = notification.object as? NSManagedObjectContext {
+        guard
+            let context = notification.object as? NSManagedObjectContext,
             let contextToRefresh = context == mainContext ? backgroundContext : mainContext
-            mergeChangesFromNotification(notification, inContext: contextToRefresh!)
-        }
+        else { return }
+        
+        mergeChanges(inContext: contextToRefresh, fromNotification: notification)
     }
     
-    // MARK: - iCloud Support
+    // MARK: - iCloud
     
     @objc func storesWillChange(_ notification: Notification) {
-        saveContextAndWait()
+        saveAndWait(context: defaultContext)
     }
     
     @objc func storesDidChange(_ notification: Notification) {
@@ -264,7 +285,7 @@ class AEStack {
     }
     
     @objc func persistentStoreDidImportUbiquitousContentChanges(_ changeNotification: Notification) {
-        mergeChangesFromNotification(changeNotification, inContext: defaultContext)
+        mergeChanges(inContext: defaultContext, fromNotification: changeNotification)
     }
     
 }
