@@ -151,7 +151,7 @@ class AERecordTests: XCTestCase {
         let hasChanges = AERecord.Context.default.hasChanges
         XCTAssertEqual(hasChanges, true, "Should have changes before saving.")
         
-        AERecord.saveContext()
+        AERecord.save()
         
         let hasChangesAfterSaving = AERecord.Context.default.hasChanges
         XCTAssertEqual(hasChangesAfterSaving, true, "Should still have changes after saving context without waiting.")
@@ -172,7 +172,7 @@ class AERecordTests: XCTestCase {
         let hasChanges = AERecord.Context.default.hasChanges
         XCTAssertEqual(hasChanges, true, "Should have changes before saving.")
         
-        AERecord.saveContextAndWait()
+        AERecord.saveAndWait()
         
         let hasChangesAfterSaving = AERecord.Context.default.hasChanges
         XCTAssertEqual(hasChangesAfterSaving, false, "Should not have changes after saving context with waiting.")

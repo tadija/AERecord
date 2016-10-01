@@ -41,7 +41,7 @@ class AEStack {
     }
     
     class var defaultURL: URL {
-        return storeURLForName(bundleIdentifier)
+        return storeURL(forName: bundleIdentifier)
     }
     
     class var defaultModel: NSManagedObjectModel {
@@ -72,15 +72,15 @@ class AEStack {
         #endif
     }
     
-    class func storeURLForName(_ name: String) -> URL {
+    class func storeURL(forName name: String) -> URL {
         let fileManager = FileManager.default
         let directoryURL = fileManager.urls(for: defaultSearchPath, in: .userDomainMask).last!
         let storeName = "\(name).sqlite"
         return directoryURL.appendingPathComponent(storeName)
     }
     
-    class func modelFromBundle(forClass: AnyClass) -> NSManagedObjectModel {
-        let bundle = Bundle(for: forClass)
+    class func modelFromBundle(for aClass: AnyClass) -> NSManagedObjectModel {
+        let bundle = Bundle(for: aClass)
         return NSManagedObjectModel.mergedModel(from: [bundle])!
     }
     
@@ -150,12 +150,11 @@ class AEStack {
     
     // MARK: - Context Operations
     
-    func executeFetchRequest<T: NSManagedObject>(_ request: NSFetchRequest<T>, context: NSManagedObjectContext? = nil) -> [T] {
+    func executeFetchRequest<T: NSManagedObject>(_ request: NSFetchRequest<T>, context: NSManagedObjectContext) -> [T] {
         var fetchedObjects = [T]()
-        let moc = context ?? defaultContext
-        moc.performAndWait {
+        context.performAndWait {
             do {
-                fetchedObjects = try moc.fetch(request)
+                fetchedObjects = try context.fetch(request)
             } catch {
                 print(error)
             }
@@ -163,12 +162,11 @@ class AEStack {
         return fetchedObjects
     }
     
-    func saveContext(_ context: NSManagedObjectContext? = nil) {
-        let moc = context ?? defaultContext
-        moc.perform {
-            if moc.hasChanges {
+    func save(context: NSManagedObjectContext) {
+        context.perform {
+            if context.hasChanges {
                 do {
-                    try moc.save()
+                    try context.save()
                 } catch {
                     print(error)
                 }
@@ -176,12 +174,11 @@ class AEStack {
         }
     }
     
-    func saveContextAndWait(_ context: NSManagedObjectContext? = nil) {
-        let moc = context ?? defaultContext
-        moc.performAndWait {
-            if moc.hasChanges {
+    func saveAndWait(context: NSManagedObjectContext) {
+        context.performAndWait {
+            if context.hasChanges {
                 do {
-                    try moc.save()
+                    try context.save()
                 } catch {
                     print(error)
                 }
@@ -251,7 +248,7 @@ class AEStack {
     // MARK: - iCloud Support
     
     @objc func storesWillChange(_ notification: Notification) {
-        saveContextAndWait()
+        saveAndWait(context: defaultContext)
     }
     
     @objc func storesDidChange(_ notification: Notification) {

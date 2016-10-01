@@ -97,7 +97,7 @@ open class AERecord {
          - returns: File URL for the store with given name.
     */
     open class func storeURL(forName name: String) -> URL {
-        return AEStack.storeURLForName(name)
+        return AEStack.storeURL(forName: name)
     }
     
     /**
@@ -108,16 +108,7 @@ open class AERecord {
          - returns: Merged model from the bundle for given class.
     */
     open class func modelFromBundle(for aClass: AnyClass) -> NSManagedObjectModel {
-        return AEStack.modelFromBundle(forClass: aClass)
-    }
-    
-    /**
-        Deletes all records from all entities contained in the model.
-    
-        - parameter context: If not specified, `defaultContext` will be used.
-    */
-    open class func truncateAllData(context: NSManagedObjectContext = Context.default) {
-        AEStack.shared.truncateAllData(context: context)
+        return AEStack.modelFromBundle(for: aClass)
     }
     
     // MARK: - Context
@@ -130,7 +121,7 @@ open class AERecord {
      
         - returns: Result of executed fetch request.
     */
-    open class func executeFetchRequest<T: NSManagedObject>(_ request: NSFetchRequest<T>, context: NSManagedObjectContext? = nil) -> [T] {
+    open class func executeFetchRequest<T: NSManagedObject>(_ request: NSFetchRequest<T>, context: NSManagedObjectContext = Context.default) -> [T] {
         return AEStack.shared.executeFetchRequest(request, context: context)
     }
     
@@ -139,8 +130,8 @@ open class AERecord {
     
         - parameter context: If not specified, `defaultContext` will be used.
     */
-    open class func saveContext(_ context: NSManagedObjectContext? = nil) {
-        AEStack.shared.saveContext(context)
+    open class func save(context: NSManagedObjectContext = Context.default) {
+        AEStack.shared.save(context: context)
     }
     
     /**
@@ -148,8 +139,8 @@ open class AERecord {
         
         - parameter context: If not specified, `defaultContext` will be used.
     */
-    open class func saveContextAndWait(_ context: NSManagedObjectContext? = nil) {
-        AEStack.shared.saveContextAndWait(context)
+    open class func saveAndWait(context: NSManagedObjectContext = Context.default) {
+        AEStack.shared.saveAndWait(context: context)
     }
     
     /**
@@ -171,6 +162,15 @@ open class AERecord {
     */
     open class func refreshAllRegisteredObjects(mergeChanges: Bool, context: NSManagedObjectContext = Context.default) {
         AEStack.refreshAllRegisteredObjects(mergeChanges: mergeChanges, context: context)
+    }
+    
+    /**
+        Deletes all records from all entities contained in the model.
+
+        - parameter context: If not specified, `defaultContext` will be used.
+    */
+    open class func truncateAllData(context: NSManagedObjectContext = Context.default) {
+        AEStack.shared.truncateAllData(context: context)
     }
     
 }
