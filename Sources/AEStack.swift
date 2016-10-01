@@ -51,7 +51,7 @@ class AEStack {
     // MARK: - Properties
     
     var managedObjectModel: NSManagedObjectModel?
-    var persistentStoreCoordinator: NSPersistentStoreCoordinator?
+    var storeCoordinator: NSPersistentStoreCoordinator?
     var mainContext: NSManagedObjectContext!
     var backgroundContext: NSManagedObjectContext!
     var defaultContext: NSManagedObjectContext {
@@ -98,8 +98,8 @@ class AEStack {
         backgroundContext = NSManagedObjectContext(concurrencyType: .privateQueueConcurrencyType)
         
         // create the coordinator and store
-        persistentStoreCoordinator = NSPersistentStoreCoordinator(managedObjectModel: managedObjectModel)
-        if let coordinator = persistentStoreCoordinator {
+        storeCoordinator = NSPersistentStoreCoordinator(managedObjectModel: managedObjectModel)
+        if let coordinator = storeCoordinator {
             try coordinator.addPersistentStore(ofType: storeType, configurationName: configuration, at: storeURL, options: options)
             mainContext.persistentStoreCoordinator = coordinator
             backgroundContext.persistentStoreCoordinator = coordinator
@@ -122,7 +122,7 @@ class AEStack {
         backgroundContext.reset()
         
         // finally, remove persistent store
-        if let coordinator = persistentStoreCoordinator {
+        if let coordinator = storeCoordinator {
             if let store = coordinator.persistentStore(for: storeURL) {
                 try coordinator.remove(store)
                 try FileManager.default.removeItem(at: storeURL)
@@ -130,7 +130,7 @@ class AEStack {
         }
         
         // reset coordinator and model
-        persistentStoreCoordinator = nil
+        storeCoordinator = nil
         managedObjectModel = nil
     }
     
@@ -150,7 +150,9 @@ class AEStack {
     
     // MARK: - Context Operations
     
-    func executeFetchRequest<T: NSManagedObject>(_ request: NSFetchRequest<T>, context: NSManagedObjectContext) -> [T] {
+    func execute<T: NSManagedObject>(fetchRequest request: NSFetchRequest<T>,
+                 inContext context: NSManagedObjectContext) -> [T] {
+        
         var fetchedObjects = [T]()
         context.performAndWait {
             do {
@@ -207,7 +209,7 @@ class AEStack {
         }
     }
     
-    class func refreshAllRegisteredObjects(mergeChanges: Bool, context: NSManagedObjectContext = AERecord.Context.default) {
+    class func refreshRegisteredObjects(mergeChanges: Bool, context: NSManagedObjectContext = AERecord.Context.default) {
         var registeredObjectIDS = [NSManagedObjectID]()
         for object in context.registeredObjects {
             registeredObjectIDS.append(object.objectID)
@@ -225,11 +227,11 @@ class AEStack {
         center.addObserver(self, selector: #selector(AEStack.contextDidSave(_:)), name: .NSManagedObjectContextDidSave, object: backgroundContext)
         
         // iCloud Support
-        center.addObserver(self, selector: #selector(AEStack.storesWillChange(_:)), name: .NSPersistentStoreCoordinatorStoresWillChange, object: persistentStoreCoordinator)
-        center.addObserver(self, selector: #selector(AEStack.storesDidChange(_:)), name: .NSPersistentStoreCoordinatorStoresDidChange, object: persistentStoreCoordinator)
-        center.addObserver(self, selector: #selector(AEStack.willRemoveStore(_:)), name: .NSPersistentStoreCoordinatorWillRemoveStore, object: persistentStoreCoordinator)
+        center.addObserver(self, selector: #selector(AEStack.storesWillChange(_:)), name: .NSPersistentStoreCoordinatorStoresWillChange, object: storeCoordinator)
+        center.addObserver(self, selector: #selector(AEStack.storesDidChange(_:)), name: .NSPersistentStoreCoordinatorStoresDidChange, object: storeCoordinator)
+        center.addObserver(self, selector: #selector(AEStack.willRemoveStore(_:)), name: .NSPersistentStoreCoordinatorWillRemoveStore, object: storeCoordinator)
         #if !(os(tvOS) || os(watchOS))
-            center.addObserver(self, selector: #selector(AEStack.persistentStoreDidImportUbiquitousContentChanges(_:)), name: .NSPersistentStoreDidImportUbiquitousContentChanges, object: persistentStoreCoordinator)
+            center.addObserver(self, selector: #selector(AEStack.persistentStoreDidImportUbiquitousContentChanges(_:)), name: .NSPersistentStoreDidImportUbiquitousContentChanges, object: storeCoordinator)
         #endif
     }
     

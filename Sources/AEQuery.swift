@@ -172,7 +172,7 @@ public extension NSManagedObject {
         let predicate = createPredicateForAttributes(attributes, predicateType: predicateType)
         let request = createFetchRequest(predicate: predicate)
         request.fetchLimit = 1
-        let objects = AERecord.executeFetchRequest(request, context: context)
+        let objects = AERecord.execute(fetchRequest: request, inContext: context)
         
         return (objects.first ?? createWithAttributes(attributes, context: context)) as! T
     }
@@ -202,7 +202,7 @@ public extension NSManagedObject {
     private class func _first<T>(sortDescriptors: [NSSortDescriptor]? = nil, context: NSManagedObjectContext = AERecord.Context.default) -> T? {
         let request = createFetchRequest(sortDescriptors: sortDescriptors)
         request.fetchLimit = 1
-        let objects = AERecord.executeFetchRequest(request, context: context)
+        let objects = AERecord.execute(fetchRequest: request, inContext: context)
         
         return objects.first as? T
     }
@@ -232,7 +232,7 @@ public extension NSManagedObject {
     private class func _firstWithPredicate<T>(_ predicate: NSPredicate, sortDescriptors: [NSSortDescriptor]? = nil, context: NSManagedObjectContext = AERecord.Context.default) -> T? {
         let request = createFetchRequest(predicate: predicate, sortDescriptors: sortDescriptors)
         request.fetchLimit = 1
-        let objects = AERecord.executeFetchRequest(request, context: context)
+        let objects = AERecord.execute(fetchRequest: request, inContext: context)
         
         return objects.first as? T
     }
@@ -293,7 +293,7 @@ public extension NSManagedObject {
     */
     class func all(_ sortDescriptors: [NSSortDescriptor]? = nil, context: NSManagedObjectContext = AERecord.Context.default) -> [NSManagedObject]? {
         let request = createFetchRequest(sortDescriptors: sortDescriptors)
-        let objects = AERecord.executeFetchRequest(request, context: context)
+        let objects = AERecord.execute(fetchRequest: request, inContext: context)
         return objects.count > 0 ? objects : nil
     }
     
@@ -321,7 +321,7 @@ public extension NSManagedObject {
     */
     class func allWithPredicate(_ predicate: NSPredicate, sortDescriptors: [NSSortDescriptor]? = nil, context: NSManagedObjectContext = AERecord.Context.default) -> [NSManagedObject]? {
         let request = createFetchRequest(predicate: predicate, sortDescriptors: sortDescriptors)
-        let objects = AERecord.executeFetchRequest(request, context: context)
+        let objects = AERecord.execute(fetchRequest: request, inContext: context)
         return objects.count > 0 ? objects : nil
     }
     

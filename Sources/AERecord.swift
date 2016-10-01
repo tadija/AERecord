@@ -42,7 +42,7 @@ open class AERecord {
     }
     
     /// Persistent Store Coordinator for current stack.
-    open class var storeCoordinator: NSPersistentStoreCoordinator? { return AEStack.shared.persistentStoreCoordinator }
+    open class var storeCoordinator: NSPersistentStoreCoordinator? { return AEStack.shared.storeCoordinator }
     
     // MARK: - Stack
     
@@ -121,8 +121,10 @@ open class AERecord {
      
         - returns: Result of executed fetch request.
     */
-    open class func executeFetchRequest<T: NSManagedObject>(_ request: NSFetchRequest<T>, context: NSManagedObjectContext = Context.default) -> [T] {
-        return AEStack.shared.executeFetchRequest(request, context: context)
+    open class func execute<T: NSManagedObject>(fetchRequest request: NSFetchRequest<T>,
+                            inContext context: NSManagedObjectContext = Context.default) -> [T] {
+        
+        return AEStack.shared.execute(fetchRequest: request, inContext: context)
     }
     
     /**
@@ -150,7 +152,9 @@ open class AERecord {
         - parameter mergeChanges: A Boolean value.
         - parameter context: If not specified, `defaultContext` will be used.
     */
-    open class func refreshObjects(objectIDS: [NSManagedObjectID], mergeChanges: Bool, context: NSManagedObjectContext = Context.default) {
+    open class func refreshObjects(objectIDS: [NSManagedObjectID], mergeChanges: Bool,
+                                   context: NSManagedObjectContext = Context.default) {
+        
         AEStack.refreshObjects(objectIDS: objectIDS, mergeChanges: mergeChanges, context: context)
     }
     
@@ -160,8 +164,8 @@ open class AERecord {
         - parameter mergeChanges: A Boolean value.
         - parameter context: If not specified, `defaultContext` will be used.
     */
-    open class func refreshAllRegisteredObjects(mergeChanges: Bool, context: NSManagedObjectContext = Context.default) {
-        AEStack.refreshAllRegisteredObjects(mergeChanges: mergeChanges, context: context)
+    open class func refreshRegisteredObjects(mergeChanges: Bool, context: NSManagedObjectContext = Context.default) {
+        AEStack.refreshRegisteredObjects(mergeChanges: mergeChanges, context: context)
     }
     
     /**

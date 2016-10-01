@@ -143,7 +143,7 @@ class AERecordTests: XCTestCase {
     func testExecuteFetchRequest() {
         let predicate = Animal.createPredicateForAttributes(["color" : "lightgray"])
         let request = Animal.createFetchRequest(predicate: predicate)
-        let tinna = AERecord.executeFetchRequest(request).first as? Animal
+        let tinna = AERecord.execute(fetchRequest: request).first as? Animal
         XCTAssertEqual(tinna!.name, "Tinna", "Should be able to execute given fetch request.")
     }
     
