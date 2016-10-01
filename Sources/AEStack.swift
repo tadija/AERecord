@@ -1,21 +1,37 @@
 //
-//  AEStack.swift
-//  AERecord
+// AEStack.swift
 //
-//  Created by Marko Tadić on 10/1/16.
-//  Copyright © 2016 AE. All rights reserved.
+// Copyright (c) 2014-2016 Marko Tadić <tadija@me.com> http://tadija.net
+//
+// Permission is hereby granted, free of charge, to any person obtaining a copy
+// of this software and associated documentation files (the "Software"), to deal
+// in the Software without restriction, including without limitation the rights
+// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+// copies of the Software, and to permit persons to whom the Software is
+// furnished to do so, subject to the following conditions:
+//
+// The above copyright notice and this permission notice shall be included in all
+// copies or substantial portions of the Software.
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+// SOFTWARE.
 //
 
 import CoreData
 
-// MARK: - CoreData Stack (AERecord heart:)
+/// This internal class is core of AERecord as it configures and accesses Core Data Stack.
 class AEStack {
     
-    // MARK: Shared Instance
+    // MARK: - Shared Instance
     
     static let shared = AEStack()
     
-    // MARK: Default settings
+    // MARK: - Default settings
     
     class var bundleIdentifier: String {
         if let mainBundleIdentifier = Bundle.main.bundleIdentifier {
@@ -23,14 +39,16 @@ class AEStack {
         }
         return Bundle(for: AEStack.self).bundleIdentifier!
     }
+    
     class var defaultURL: URL {
         return storeURLForName(bundleIdentifier)
     }
+    
     class var defaultModel: NSManagedObjectModel {
         return NSManagedObjectModel.mergedModel(from: nil)!
     }
     
-    // MARK: Properties
+    // MARK: - Properties
     
     var managedObjectModel: NSManagedObjectModel?
     var persistentStoreCoordinator: NSPersistentStoreCoordinator?
@@ -44,7 +62,7 @@ class AEStack {
         }
     }
     
-    // MARK: Setup Stack
+    // MARK: - Configure Stack
     
     class var defaultSearchPath: FileManager.SearchPathDirectory {
         #if os(tvOS)
@@ -131,7 +149,7 @@ class AEStack {
         stopReceivingContextNotifications()
     }
     
-    // MARK: Context Operations
+    // MARK: - Context Operations
     
     func executeFetchRequest<T: NSManagedObject>(_ request: NSFetchRequest<T>, context: NSManagedObjectContext? = nil) -> [T] {
         var fetchedObjects = [T]()
@@ -201,7 +219,7 @@ class AEStack {
         refreshObjects(objectIDS: registeredObjectIDS, mergeChanges: mergeChanges)
     }
     
-    // MARK: Notifications
+    // MARK: - Notifications
     
     func startReceivingContextNotifications() {
         let center = NotificationCenter.default
@@ -224,8 +242,6 @@ class AEStack {
         center.removeObserver(self)
     }
     
-    // MARK: Context Sync
-    
     @objc func contextDidSave(_ notification: Notification) {
         if let context = notification.object as? NSManagedObjectContext {
             let contextToRefresh = context == mainContext ? backgroundContext : mainContext
@@ -233,7 +249,7 @@ class AEStack {
         }
     }
     
-    // MARK: iCloud Support
+    // MARK: - iCloud Support
     
     @objc func storesWillChange(_ notification: Notification) {
         saveContextAndWait()

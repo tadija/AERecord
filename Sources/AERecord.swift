@@ -24,14 +24,10 @@
 
 import CoreData
 
-// MARK: - AERecord (facade for shared instance of AEStack)
-
-/**
-    This class is facade for accessing shared instance of `AEStack` (private class which is all about the Core Data Stack).
-*/
+/// This class is facade for accessing shared instance of `AEStack` (internal class which provides Core Data Stack).
 open class AERecord {
     
-    // MARK: Properties
+    // MARK: - Properties
     
     /// Managed object context for current thread.
     open class var defaultContext: NSManagedObjectContext { return AEStack.shared.defaultContext }
@@ -45,40 +41,27 @@ open class AERecord {
     /// Persistent Store Coordinator for current stack.
     open class var persistentStoreCoordinator: NSPersistentStoreCoordinator? { return AEStack.shared.persistentStoreCoordinator }
     
-    // MARK: Setup Stack
+    // MARK: - Stack
     
     /**
-        Returns the final URL for the store with given name.
+        Loads Core Data Stack (creates new if it doesn't already exist) with given options (all options are optional).
     
-        :param: name Filename for the store.
-    */
-    open class func storeURLForName(_ name: String) -> URL {
-        return AEStack.storeURLForName(name)
-    }
-    
-    /**
-        Returns merged model from the bundle for given class.
+        - NOTE:
+        Default option for `managedObjectModel` is `NSManagedObjectModel.mergedModelFromBundles(nil)!`,
+        custom may be provided by using `modelFromBundle:` method.
         
-        :param: forClass Class inside bundle with data model.
-    */
-    open class func modelFromBundle(forClass: AnyClass) -> NSManagedObjectModel {
-        return AEStack.modelFromBundle(forClass: forClass)
-    }
+        Default option for `storeType` is `NSSQLiteStoreType`
+     
+        Default option for `storeURL` is `bundleIdentifier + ".sqlite"` inside `applicationDocumentsDirectory`,
+        custom may be provided by using `storeURLForName:` method.
     
-    /**
-        Loads Core Data Stack *(creates new if it doesn't already exist)* with given options **(all options are optional)**.
+        - parameter managedObjectModel: Managed object model for Core Data Stack.
+        - parameter storeType: Store type for Persistent Store creation.
+        - parameter configuration: Configuration for Persistent Store creation.
+        - parameter storeURL: File URL for Persistent Store creation.
+        - parameter options: Options for Persistent Store creation.
     
-        - Default option for `managedObjectModel` is `NSManagedObjectModel.mergedModelFromBundles(nil)!`.
-        - Default option for `storeType` is `NSSQLiteStoreType`.
-        - Default option for `storeURL` is `bundleIdentifier + ".sqlite"` inside `applicationDocumentsDirectory`.
-    
-        :param: managedObjectModel Managed object model for Core Data Stack.
-        :param: storeType Store type for Persistent Store creation.
-        :param: configuration Configuration for Persistent Store creation.
-        :param: storeURL URL for Persistent Store creation.
-        :param: options Options for Persistent Store creation.
-    
-        :returns: Throws error if something went wrong.
+        - returns: Throws error if something went wrong.
     */
     open class func loadCoreDataStack(
         managedObjectModel: NSManagedObjectModel = AEStack.defaultModel,
@@ -86,69 +69,92 @@ open class AERecord {
         configuration: String? = nil,
         storeURL: URL = AEStack.defaultURL,
         options: [AnyHashable : Any]? = nil) throws {
-        try AEStack.shared.loadCoreDataStack(managedObjectModel: managedObjectModel, storeType: storeType, configuration: configuration, storeURL: storeURL, options: options)
+        
+        try AEStack.shared.loadCoreDataStack(managedObjectModel: managedObjectModel, storeType: storeType,
+                                             configuration: configuration, storeURL: storeURL, options: options)
     }
     
     /**
-        Destroys Core Data Stack for given store URL *(stop notifications, reset contexts, remove persistent store and delete .sqlite file)*. **This action can't be undone.**
+        Destroys Core Data Stack for the given store URL (stop notifications, reset contexts,
+        remove persistent store and delete .sqlite file). This action can't be undone.
     
-        :param: storeURL Store URL for stack to destroy.
+        - parameter storeURL: Store URL for stack to destroy.
     
-        :returns: Throws error if something went wrong.
+        - returns: Throws error if something went wrong.
     */
     open class func destroyCoreDataStack(storeURL: URL = AEStack.defaultURL) throws {
         try AEStack.shared.destroyCoreDataStack(storeURL: storeURL)
     }
     
     /**
+         Returns the final URL for the store with given name.
+         
+         - parameter name: Filename for the store.
+         
+         - returns: File URL for the store with given name.
+    */
+    open class func storeURLForName(_ name: String) -> URL {
+        return AEStack.storeURLForName(name)
+    }
+    
+    /**
+         Returns merged model from the bundle for given class.
+         
+         - parameter forClass: Class inside bundle with data model.
+         
+         - returns: Merged model from the bundle for given class.
+    */
+    open class func modelFromBundle(forClass: AnyClass) -> NSManagedObjectModel {
+        return AEStack.modelFromBundle(forClass: forClass)
+    }
+    
+    /**
         Deletes all records from all entities contained in the model.
     
-        :param: context If not specified, `defaultContext` will be used.
+        - parameter context: If not specified, `defaultContext` will be used.
     */
     open class func truncateAllData(context: NSManagedObjectContext? = nil) {
         AEStack.shared.truncateAllData(context: context)
     }
     
-    // MARK: Context Execute
+    // MARK: - Context
     
     /**
         Executes given fetch request.
     
-        :param: request Fetch request to execute.
-        :param: context If not specified, `defaultContext` will be used.
+        - parameter request: Fetch request to execute.
+        - parameter context: If not specified, `defaultContext` will be used.
+     
+        - returns: Result of executed fetch request.
     */
     open class func executeFetchRequest<T: NSManagedObject>(_ request: NSFetchRequest<T>, context: NSManagedObjectContext? = nil) -> [T] {
         return AEStack.shared.executeFetchRequest(request, context: context)
     }
     
-    // MARK: Context Save
-    
     /**
-        Saves context *(without waiting - returns immediately)*.
+        Saves context asynchronously.
     
-        :param: context If not specified, `defaultContext` will be used.
+        - parameter context: If not specified, `defaultContext` will be used.
     */
     open class func saveContext(_ context: NSManagedObjectContext? = nil) {
         AEStack.shared.saveContext(context)
     }
     
     /**
-        Saves context with waiting *(returns when context is saved)*.
+        Saves context synchronously.
         
-        :param: context If not specified, `defaultContext` will be used.
+        - parameter context: If not specified, `defaultContext` will be used.
     */
     open class func saveContextAndWait(_ context: NSManagedObjectContext? = nil) {
         AEStack.shared.saveContextAndWait(context)
     }
     
-    // MARK: Context Faulting Objects
-    
     /**
         Turns objects into faults for given Array of `NSManagedObjectID`.
     
-        :param: objectIDS Array of `NSManagedObjectID` objects to turn into fault.
-        :param: mergeChanges A Boolean value.
-        :param: context If not specified, `defaultContext` will be used.
+        - parameter objectIDS: Array of `NSManagedObjectID` objects to turn into fault.
+        - parameter mergeChanges: A Boolean value.
+        - parameter context: If not specified, `defaultContext` will be used.
     */
     open class func refreshObjects(objectIDS: [NSManagedObjectID], mergeChanges: Bool, context: NSManagedObjectContext = AERecord.defaultContext) {
         AEStack.refreshObjects(objectIDS: objectIDS, mergeChanges: mergeChanges, context: context)
@@ -157,8 +163,8 @@ open class AERecord {
     /**
         Turns all registered objects into faults.
         
-        :param: mergeChanges A Boolean value.
-        :param: context If not specified, `defaultContext` will be used.
+        - parameter mergeChanges: A Boolean value.
+        - parameter context: If not specified, `defaultContext` will be used.
     */
     open class func refreshAllRegisteredObjects(mergeChanges: Bool, context: NSManagedObjectContext = AERecord.defaultContext) {
         AEStack.refreshAllRegisteredObjects(mergeChanges: mergeChanges, context: context)
