@@ -29,14 +29,17 @@ open class AERecord {
     
     // MARK: - Properties
     
-    /// Managed object context for current thread.
-    open class var defaultContext: NSManagedObjectContext { return AEStack.shared.defaultContext }
-    
-    /// Managed object context for main thread.
-    open class var mainContext: NSManagedObjectContext { return AEStack.shared.mainContext }
-    
-    /// Managed object context for background thread.
-    open class var backgroundContext: NSManagedObjectContext { return AEStack.shared.backgroundContext }
+    /// Struct that holds different instances of managed object context.
+    public struct Context {
+        /// Managed object context for current thread.
+        public static var `default`: NSManagedObjectContext { return AEStack.shared.defaultContext }
+        
+        /// Managed object context for main thread.
+        public static var main: NSManagedObjectContext { return AEStack.shared.mainContext }
+        
+        /// Managed object context for background thread.
+        public static var background: NSManagedObjectContext { return AEStack.shared.backgroundContext }
+    }
     
     /// Persistent Store Coordinator for current stack.
     open class var persistentStoreCoordinator: NSPersistentStoreCoordinator? { return AEStack.shared.persistentStoreCoordinator }
@@ -156,7 +159,7 @@ open class AERecord {
         - parameter mergeChanges: A Boolean value.
         - parameter context: If not specified, `defaultContext` will be used.
     */
-    open class func refreshObjects(objectIDS: [NSManagedObjectID], mergeChanges: Bool, context: NSManagedObjectContext = AERecord.defaultContext) {
+    open class func refreshObjects(objectIDS: [NSManagedObjectID], mergeChanges: Bool, context: NSManagedObjectContext = Context.default) {
         AEStack.refreshObjects(objectIDS: objectIDS, mergeChanges: mergeChanges, context: context)
     }
     
@@ -166,7 +169,7 @@ open class AERecord {
         - parameter mergeChanges: A Boolean value.
         - parameter context: If not specified, `defaultContext` will be used.
     */
-    open class func refreshAllRegisteredObjects(mergeChanges: Bool, context: NSManagedObjectContext = AERecord.defaultContext) {
+    open class func refreshAllRegisteredObjects(mergeChanges: Bool, context: NSManagedObjectContext = Context.default) {
         AEStack.refreshAllRegisteredObjects(mergeChanges: mergeChanges, context: context)
     }
     

@@ -196,7 +196,7 @@ class AEStack {
         }
     }
     
-    class func refreshObjects(objectIDS: [NSManagedObjectID], mergeChanges: Bool, context: NSManagedObjectContext = AERecord.defaultContext) {
+    class func refreshObjects(objectIDS: [NSManagedObjectID], mergeChanges: Bool, context: NSManagedObjectContext = AERecord.Context.default) {
         for objectID in objectIDS {
             context.performAndWait {
                 do {
@@ -211,7 +211,7 @@ class AEStack {
         }
     }
     
-    class func refreshAllRegisteredObjects(mergeChanges: Bool, context: NSManagedObjectContext = AERecord.defaultContext) {
+    class func refreshAllRegisteredObjects(mergeChanges: Bool, context: NSManagedObjectContext = AERecord.Context.default) {
         var registeredObjectIDS = [NSManagedObjectID]()
         for object in context.registeredObjects {
             registeredObjectIDS.append(object.objectID)
