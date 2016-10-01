@@ -42,7 +42,7 @@ open class AERecord {
     }
     
     /// Persistent Store Coordinator for current stack.
-    open class var storeCoordinator: NSPersistentStoreCoordinator? { return AEStack.shared.storeCoordinator }
+    open class var storeCoordinator: NSPersistentStoreCoordinator? { return AEStack.shared.coordinator }
     
     // MARK: - Stack
     

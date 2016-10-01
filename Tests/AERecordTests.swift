@@ -100,8 +100,7 @@ class AERecordTests: XCTestCase {
     }
     
     func testPersistentStoreCoordinator() {
-        let coordinator = AERecord.storeCoordinator
-        XCTAssertNotNil(coordinator, "Should be able to create persistent store coordinator.")
+        XCTAssertNotNil(AERecord.storeCoordinator, "Should be able to create persistent store coordinator.")
     }
     
     func testStoreURLForName() {
