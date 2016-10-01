@@ -35,7 +35,7 @@ class AERecordTests: XCTestCase {
         
         /* create Core Data stack */
         
-        let model = AERecord.modelFromBundle(forClass: AERecordTests.self)
+        let model = AERecord.modelFromBundle(for: AERecordTests.self)
         do {
             try AERecord.loadCoreDataStack(managedObjectModel: model, storeType: NSInMemoryStoreType)
         }
@@ -100,12 +100,12 @@ class AERecordTests: XCTestCase {
     }
     
     func testPersistentStoreCoordinator() {
-        let coordinator = AERecord.persistentStoreCoordinator
+        let coordinator = AERecord.storeCoordinator
         XCTAssertNotNil(coordinator, "Should be able to create persistent store coordinator.")
     }
     
     func testStoreURLForName() {
-        let storeURL = AERecord.storeURLForName("test")
+        let storeURL = AERecord.storeURL(forName: "test")
         let directoryURL = FileManager.default.urls(for: defaultSearchPath, in: .userDomainMask).last!
         let expectedStoreURL = directoryURL.appendingPathComponent("test.sqlite")
         XCTAssertEqual(storeURL, expectedStoreURL, "")
@@ -120,7 +120,7 @@ class AERecordTests: XCTestCase {
     }
     
     func testModelFromBundle() {
-        let model = AERecord.modelFromBundle(forClass: AERecordTests.self)
+        let model = AERecord.modelFromBundle(for: AERecordTests.self)
         let entityNames = Array(model.entitiesByName.keys).sorted()
         let expectedEntityNames = ["Animal", "Breed", "Species"]
         XCTAssertEqual(entityNames, expectedEntityNames, "Should be able to load merged model from bundle for given class.")

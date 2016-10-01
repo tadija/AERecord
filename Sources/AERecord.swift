@@ -42,7 +42,7 @@ open class AERecord {
     }
     
     /// Persistent Store Coordinator for current stack.
-    open class var persistentStoreCoordinator: NSPersistentStoreCoordinator? { return AEStack.shared.persistentStoreCoordinator }
+    open class var storeCoordinator: NSPersistentStoreCoordinator? { return AEStack.shared.persistentStoreCoordinator }
     
     // MARK: - Stack
     
@@ -96,7 +96,7 @@ open class AERecord {
          
          - returns: File URL for the store with given name.
     */
-    open class func storeURLForName(_ name: String) -> URL {
+    open class func storeURL(forName name: String) -> URL {
         return AEStack.storeURLForName(name)
     }
     
@@ -107,8 +107,8 @@ open class AERecord {
          
          - returns: Merged model from the bundle for given class.
     */
-    open class func modelFromBundle(forClass: AnyClass) -> NSManagedObjectModel {
-        return AEStack.modelFromBundle(forClass: forClass)
+    open class func modelFromBundle(for aClass: AnyClass) -> NSManagedObjectModel {
+        return AEStack.modelFromBundle(forClass: aClass)
     }
     
     /**
@@ -116,7 +116,7 @@ open class AERecord {
     
         - parameter context: If not specified, `defaultContext` will be used.
     */
-    open class func truncateAllData(context: NSManagedObjectContext? = nil) {
+    open class func truncateAllData(context: NSManagedObjectContext = Context.default) {
         AEStack.shared.truncateAllData(context: context)
     }
     

@@ -134,12 +134,11 @@ class AEStack {
         managedObjectModel = nil
     }
     
-    func truncateAllData(context: NSManagedObjectContext? = nil) {
-        let moc = context ?? defaultContext
+    func truncateAllData(context: NSManagedObjectContext) {
         if let mom = managedObjectModel {
             for entity in mom.entities {
                 if let entityType = NSClassFromString(entity.managedObjectClassName) as? NSManagedObject.Type {
-                    entityType.deleteAll(context: moc)
+                    entityType.deleteAll(context: context)
                 }
             }
         }
