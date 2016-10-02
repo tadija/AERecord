@@ -1,5 +1,5 @@
 //
-// AEStack.swift
+// Stack.swift
 //
 // Copyright (c) 2014-2016 Marko Tadić <tadija@me.com> http://tadija.net
 //
@@ -25,11 +25,11 @@
 import CoreData
 
 /// This internal class is core of AERecord as it configures and accesses Core Data Stack.
-class AEStack {
+class Stack {
     
     // MARK: - Singleton
     
-    static let shared = AEStack()
+    static let shared = Stack()
     
     // MARK: - Defaults
     
@@ -39,7 +39,7 @@ class AEStack {
     
     class var defaultName: String {
         guard let identifier = Bundle.main.bundleIdentifier
-        else { return Bundle(for: AEStack.self).bundleIdentifier! }
+        else { return Bundle(for: Stack.self).bundleIdentifier! }
         return identifier
     }
     
@@ -228,26 +228,26 @@ class AEStack {
         let center = NotificationCenter.default
         
         // Contexts Sync
-        let didSave = #selector(AEStack.contextDidSave(_:))
+        let didSave = #selector(Stack.contextDidSave(_:))
         let didSaveName = NSNotification.Name.NSManagedObjectContextDidSave
         center.addObserver(self, selector: didSave, name: didSaveName, object: mainContext)
         center.addObserver(self, selector: didSave, name: didSaveName, object: backgroundContext)
         
         // iCloud Support
-        let willChange = #selector(AEStack.storesWillChange(_:))
+        let willChange = #selector(Stack.storesWillChange(_:))
         let willChangeName = NSNotification.Name.NSPersistentStoreCoordinatorStoresWillChange
         center.addObserver(self, selector: willChange, name: willChangeName, object: coordinator)
 
-        let didChange = #selector(AEStack.storesDidChange(_:))
+        let didChange = #selector(Stack.storesDidChange(_:))
         let didChangeName = NSNotification.Name.NSPersistentStoreCoordinatorStoresDidChange
         center.addObserver(self, selector: didChange, name: didChangeName, object: coordinator)
 
-        let willRemove = #selector(AEStack.willRemoveStore(_:))
+        let willRemove = #selector(Stack.willRemoveStore(_:))
         let willRemoveName = NSNotification.Name.NSPersistentStoreCoordinatorWillRemoveStore
         center.addObserver(self, selector: willRemove, name: willRemoveName, object: coordinator)
         
         #if !(os(tvOS) || os(watchOS))
-            let didImport = #selector(AEStack.persistentStoreDidImportUbiquitousContentChanges(_:))
+            let didImport = #selector(Stack.persistentStoreDidImportUbiquitousContentChanges(_:))
             let didImportName = NSNotification.Name.NSPersistentStoreDidImportUbiquitousContentChanges
             center.addObserver(self, selector: didImport, name: didImportName, object: coordinator)
         #endif

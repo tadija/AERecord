@@ -1,5 +1,5 @@
 //
-// AEQuery.swift
+// Query.swift
 //
 // Copyright (c) 2014-2016 Marko Tadić <tadija@me.com> http://tadija.net
 //
@@ -99,7 +99,7 @@ public extension NSManagedObject {
 
         - returns: New instance of `Self`.
     */
-    class func create(in context: NSManagedObjectContext = AERecord.Context.default) -> Self {
+    @discardableResult class func create(in context: NSManagedObjectContext = AERecord.Context.default) -> Self {
         let entityDescription = NSEntityDescription.entity(forEntityName: entityName, in: context)!
         let object = self.init(entity: entityDescription, insertInto: context)
         return object
@@ -113,8 +113,8 @@ public extension NSManagedObject {
 
         - returns: New instance of `Self` with set attributes.
     */
-    class func create(with attributes: [String : Any],
-                      in context: NSManagedObjectContext = AERecord.Context.default) -> Self {
+    @discardableResult class func create(with attributes: [String : Any],
+                                         in context: NSManagedObjectContext = AERecord.Context.default) -> Self {
         
         let object = create(in: context)
         if attributes.count > 0 {

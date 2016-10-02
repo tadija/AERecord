@@ -24,7 +24,7 @@
 
 import CoreData
 
-/// This class is facade for accessing shared instance of `AEStack` (internal class which provides Core Data Stack).
+/// This class is facade for accessing shared instance of `Stack` (internal class which provides Core Data Stack).
 open class AERecord {
     
     // MARK: - Properties
@@ -32,17 +32,17 @@ open class AERecord {
     /// Struct that holds different instances of managed object context.
     public struct Context {
         /// Managed object context for current thread.
-        public static var `default`: NSManagedObjectContext { return AEStack.shared.defaultContext }
+        public static var `default`: NSManagedObjectContext { return Stack.shared.defaultContext }
         
         /// Managed object context for main thread.
-        public static var main: NSManagedObjectContext { return AEStack.shared.mainContext }
+        public static var main: NSManagedObjectContext { return Stack.shared.mainContext }
         
         /// Managed object context for background thread.
-        public static var background: NSManagedObjectContext { return AEStack.shared.backgroundContext }
+        public static var background: NSManagedObjectContext { return Stack.shared.backgroundContext }
     }
     
     /// Persistent Store Coordinator for current stack.
-    open class var storeCoordinator: NSPersistentStoreCoordinator? { return AEStack.shared.coordinator }
+    open class var storeCoordinator: NSPersistentStoreCoordinator? { return Stack.shared.coordinator }
     
     // MARK: - Stack
     
@@ -66,13 +66,13 @@ open class AERecord {
     
         - returns: Throws error if something went wrong.
     */
-    open class func loadCoreDataStack(managedObjectModel: NSManagedObjectModel = AEStack.defaultModel,
+    open class func loadCoreDataStack(managedObjectModel: NSManagedObjectModel = Stack.defaultModel,
                                       storeType: String = NSSQLiteStoreType,
                                       configuration: String? = nil,
-                                      storeURL: URL = AEStack.defaultURL,
+                                      storeURL: URL = Stack.defaultURL,
                                       options: [AnyHashable : Any]? = nil) throws {
         
-        try AEStack.shared.loadCoreDataStack(managedObjectModel: managedObjectModel, storeType: storeType,
+        try Stack.shared.loadCoreDataStack(managedObjectModel: managedObjectModel, storeType: storeType,
                                              configuration: configuration, storeURL: storeURL, options: options)
     }
     
@@ -84,8 +84,8 @@ open class AERecord {
     
         - returns: Throws error if something went wrong.
     */
-    open class func destroyCoreDataStack(storeURL: URL = AEStack.defaultURL) throws {
-        try AEStack.shared.destroyCoreDataStack(storeURL: storeURL)
+    open class func destroyCoreDataStack(storeURL: URL = Stack.defaultURL) throws {
+        try Stack.shared.destroyCoreDataStack(storeURL: storeURL)
     }
     
     /**
@@ -96,7 +96,7 @@ open class AERecord {
          - returns: File URL for the store with given name.
     */
     open class func storeURL(for name: String) -> URL {
-        return AEStack.storeURL(for: name)
+        return Stack.storeURL(for: name)
     }
     
     /**
@@ -107,7 +107,7 @@ open class AERecord {
          - returns: Merged model from the bundle for given class.
     */
     open class func modelFromBundle(for aClass: AnyClass) -> NSManagedObjectModel {
-        return AEStack.modelFromBundle(for: aClass)
+        return Stack.modelFromBundle(for: aClass)
     }
     
     // MARK: - Context
@@ -123,7 +123,7 @@ open class AERecord {
     open class func execute<T: NSManagedObject>(fetchRequest request: NSFetchRequest<T>,
                             in context: NSManagedObjectContext = Context.default) -> [T] {
         
-        return AEStack.shared.execute(fetchRequest: request, in: context)
+        return Stack.shared.execute(fetchRequest: request, in: context)
     }
     
     /**
@@ -132,7 +132,7 @@ open class AERecord {
         - parameter context: If not specified, `Context.default` will be used.
     */
     open class func save(context: NSManagedObjectContext = Context.default) {
-        AEStack.shared.save(context: context)
+        Stack.shared.save(context: context)
     }
     
     /**
@@ -141,7 +141,7 @@ open class AERecord {
         - parameter context: If not specified, `Context.default` will be used.
     */
     open class func saveAndWait(context: NSManagedObjectContext = Context.default) {
-        AEStack.shared.saveAndWait(context: context)
+        Stack.shared.saveAndWait(context: context)
     }
     
     /**
@@ -154,7 +154,7 @@ open class AERecord {
     open class func refreshObjects(with objectIDs: [NSManagedObjectID], mergeChanges: Bool,
                                    in context: NSManagedObjectContext = Context.default) {
         
-        AEStack.refreshObjects(with: objectIDs, mergeChanges: mergeChanges, in: context)
+        Stack.refreshObjects(with: objectIDs, mergeChanges: mergeChanges, in: context)
     }
     
     /**
@@ -166,7 +166,7 @@ open class AERecord {
     open class func refreshRegisteredObjects(mergeChanges: Bool,
                                              in context: NSManagedObjectContext = Context.default) {
         
-        AEStack.refreshRegisteredObjects(mergeChanges: mergeChanges, in: context)
+        Stack.refreshRegisteredObjects(mergeChanges: mergeChanges, in: context)
     }
     
     /**
@@ -175,7 +175,7 @@ open class AERecord {
         - parameter context: If not specified, `Context.default` will be used.
     */
     open class func truncateAllData(in context: NSManagedObjectContext = Context.default) {
-        AEStack.shared.truncateAllData(in: context)
+        Stack.shared.truncateAllData(in: context)
     }
     
 }
