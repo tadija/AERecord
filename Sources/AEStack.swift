@@ -44,7 +44,7 @@ class AEStack {
     }
     
     class var defaultURL: URL {
-        return storeURL(forName: defaultName)
+        return storeURL(for: defaultName)
     }
     
     class var defaultDirectory: FileManager.SearchPathDirectory {
@@ -73,7 +73,7 @@ class AEStack {
     
     // MARK: - Stack
     
-    class func storeURL(forName name: String) -> URL {
+    class func storeURL(for name: String) -> URL {
         let fileManager = FileManager.default
         let directoryURL = fileManager.urls(for: defaultDirectory, in: .userDomainMask).last!
         let storeName = "\(name).sqlite"
@@ -85,12 +85,11 @@ class AEStack {
         return NSManagedObjectModel.mergedModel(from: [bundle])!
     }
     
-    func loadCoreDataStack(
-        managedObjectModel: NSManagedObjectModel = defaultModel,
-        storeType: String = NSSQLiteStoreType,
-        configuration: String? = nil,
-        storeURL: URL = defaultURL,
-        options: [AnyHashable : Any]? = nil) throws {
+    func loadCoreDataStack(managedObjectModel: NSManagedObjectModel = defaultModel,
+                           storeType: String = NSSQLiteStoreType,
+                           configuration: String? = nil,
+                           storeURL: URL = defaultURL,
+                           options: [AnyHashable : Any]? = nil) throws {
         
         model = managedObjectModel
         configureManagedObjectContexts()
@@ -186,8 +185,8 @@ class AEStack {
         }
     }
     
-    class func refreshObjects(in context: NSManagedObjectContext = AERecord.Context.default,
-                              objectIDs: [NSManagedObjectID], mergeChanges: Bool) {
+    class func refreshObjects(with objectIDs: [NSManagedObjectID], mergeChanges: Bool,
+                              in context: NSManagedObjectContext = AERecord.Context.default) {
         
         for objectID in objectIDs {
             context.performAndWait {
@@ -202,22 +201,22 @@ class AEStack {
         }
     }
     
-    class func refreshRegisteredObjects(in context: NSManagedObjectContext, mergeChanges: Bool) {
+    class func refreshRegisteredObjects(mergeChanges: Bool, in context: NSManagedObjectContext) {
         let registeredObjectIDs = context.registeredObjects.map { return $0.objectID }
-        refreshObjects(objectIDs: registeredObjectIDs, mergeChanges: mergeChanges)
+        refreshObjects(with: registeredObjectIDs, mergeChanges: mergeChanges, in: context)
     }
     
     func truncateAllData(in context: NSManagedObjectContext) {
         if let mom = model {
             for entity in mom.entities {
                 if let entityType = NSClassFromString(entity.managedObjectClassName) as? NSManagedObject.Type {
-                    entityType.deleteAll(in: context)
+                    entityType.deleteAll(from: context)
                 }
             }
         }
     }
     
-    private func mergeChanges(in context: NSManagedObjectContext, fromNotification notification: Notification) {
+    private func mergeChanges(from notification: Notification, in context: NSManagedObjectContext) {
         context.perform {
             context.mergeChanges(fromContextDidSave: notification)
         }
@@ -267,7 +266,7 @@ class AEStack {
             let contextToRefresh = context == mainContext ? backgroundContext : mainContext
         else { return }
         
-        mergeChanges(in: contextToRefresh, fromNotification: notification)
+        mergeChanges(from: notification, in: contextToRefresh)
     }
     
     // MARK: - iCloud
@@ -285,7 +284,7 @@ class AEStack {
     }
     
     @objc func persistentStoreDidImportUbiquitousContentChanges(_ changeNotification: Notification) {
-        mergeChanges(in: defaultContext, fromNotification: changeNotification)
+        mergeChanges(from: changeNotification, in: defaultContext)
     }
     
 }

@@ -46,24 +46,24 @@ class AERecordTests: XCTestCase {
         /* add dummy data */
         
         // species
-        let dogs = Species.create(withAttributes: ["name" : "dog" as AnyObject])
-        let cats = Species.create(withAttributes: ["name" : "cat" as AnyObject])
+        let dogs = Species.create(with: ["name" : "dog" as AnyObject])
+        let cats = Species.create(with: ["name" : "cat" as AnyObject])
         
         // breeds
-        let siberian = Breed.create(withAttributes: ["name" : "Siberian" as AnyObject, "species" : cats])
-        let domestic = Breed.create(withAttributes: ["name" : "Domestic" as AnyObject, "species" : cats])
-        let bullTerrier = Breed.create(withAttributes: ["name" : "Bull Terrier" as AnyObject, "species" : dogs])
-        let goldenRetriever = Breed.create(withAttributes: ["name" : "Golden Retriever" as AnyObject, "species" : dogs])
-        let miniatureSchnauzer = Breed.create(withAttributes: ["name" : "Miniature Schnauzer" as AnyObject, "species" : dogs])
+        let siberian = Breed.create(with: ["name" : "Siberian" as AnyObject, "species" : cats])
+        let domestic = Breed.create(with: ["name" : "Domestic" as AnyObject, "species" : cats])
+        let bullTerrier = Breed.create(with: ["name" : "Bull Terrier" as AnyObject, "species" : dogs])
+        let goldenRetriever = Breed.create(with: ["name" : "Golden Retriever" as AnyObject, "species" : dogs])
+        let miniatureSchnauzer = Breed.create(with: ["name" : "Miniature Schnauzer" as AnyObject, "species" : dogs])
         
         // animals
-        let _ = Animal.create(withAttributes: ["name" : "Tinna" as AnyObject, "color" : "lightgray" as AnyObject, "breed" : siberian])
-        let _ = Animal.create(withAttributes: ["name" : "Rose" as AnyObject, "color" : "darkgray" as AnyObject, "breed" : domestic])
-        let _ = Animal.create(withAttributes: ["name" : "Caesar" as AnyObject, "color" : "yellow" as AnyObject, "breed" : domestic])
-        let _ = Animal.create(withAttributes: ["name" : "Villy" as AnyObject, "color" : "white" as AnyObject, "breed" : bullTerrier])
-        let _ = Animal.create(withAttributes: ["name" : "Spot" as AnyObject, "color" : "white" as AnyObject, "breed" : bullTerrier])
-        let _ = Animal.create(withAttributes: ["name" : "Betty" as AnyObject, "color" : "yellow" as AnyObject, "breed" : goldenRetriever])
-        let _ = Animal.create(withAttributes: ["name" : "Kika" as AnyObject, "color" : "black" as AnyObject, "breed" : miniatureSchnauzer])
+        let _ = Animal.create(with: ["name" : "Tinna" as AnyObject, "color" : "lightgray" as AnyObject, "breed" : siberian])
+        let _ = Animal.create(with: ["name" : "Rose" as AnyObject, "color" : "darkgray" as AnyObject, "breed" : domestic])
+        let _ = Animal.create(with: ["name" : "Caesar" as AnyObject, "color" : "yellow" as AnyObject, "breed" : domestic])
+        let _ = Animal.create(with: ["name" : "Villy" as AnyObject, "color" : "white" as AnyObject, "breed" : bullTerrier])
+        let _ = Animal.create(with: ["name" : "Spot" as AnyObject, "color" : "white" as AnyObject, "breed" : bullTerrier])
+        let _ = Animal.create(with: ["name" : "Betty" as AnyObject, "color" : "yellow" as AnyObject, "breed" : goldenRetriever])
+        let _ = Animal.create(with: ["name" : "Kika" as AnyObject, "color" : "black" as AnyObject, "breed" : miniatureSchnauzer])
     }
     
     override func tearDown() {
@@ -104,7 +104,7 @@ class AERecordTests: XCTestCase {
     }
     
     func testStoreURLForName() {
-        let storeURL = AERecord.storeURL(forName: "test")
+        let storeURL = AERecord.storeURL(for: "test")
         let directoryURL = FileManager.default.urls(for: defaultSearchPath, in: .userDomainMask).last!
         let expectedStoreURL = directoryURL.appendingPathComponent("test.sqlite")
         XCTAssertEqual(storeURL, expectedStoreURL, "")
@@ -140,7 +140,7 @@ class AERecordTests: XCTestCase {
     }
     
     func testExecuteFetchRequest() {
-        let predicate = Animal.createPredicate(forAttributes: ["color" : "lightgray"])
+        let predicate = Animal.createPredicate(with: ["color" : "lightgray"])
         let request = Animal.createFetchRequest(predicate: predicate)
         let tinna = AERecord.execute(fetchRequest: request).first as? Animal
         XCTAssertEqual(tinna!.name, "Tinna", "Should be able to execute given fetch request.")
@@ -205,7 +205,7 @@ class AERecordTests: XCTestCase {
     
     func testCreatePredicateForAttributes() {
         let attributes = ["name" : "Tinna", "color" : "lightgray"]
-        let predicate = Animal.createPredicate(forAttributes: attributes)
+        let predicate = Animal.createPredicate(with: attributes)
         XCTAssertTrue(predicate.predicateFormat.contains("name == \"Tinna\""), "Created predicate should contain condition for 'name'.")
         XCTAssertTrue(predicate.predicateFormat.contains(" AND "), "Created predicate should contain AND.")
         XCTAssertTrue(predicate.predicateFormat.contains("color == \"lightgray\""), "Created predicate should contain condition for 'color'.")
@@ -220,45 +220,45 @@ class AERecordTests: XCTestCase {
     
     func testCreateWithAttributes() {
         let attributes = ["name" : "Tinna", "color" : "lightgray"]
-        let tinna = Animal.create(withAttributes: attributes as [String : AnyObject])
+        let tinna = Animal.create(with: attributes as [String : AnyObject])
         XCTAssertEqual(tinna.color, "lightgray", "Should be able to create instance of entity with attributes.")
     }
     
     // MARK: Find First or Create
     
     func testFirstOrCreateWithAttribute() {
-        let snoopy = Animal.firstOrCreate(withAttribute: "name", value: "Snoopy" as AnyObject)
+        let snoopy = Animal.firstOrCreate(with: "name", value: "Snoopy" as AnyObject)
         XCTAssertEqual(snoopy.name, "Snoopy", "Should be able to create record if it doesn't already exist.")
         
-        let tinna = Animal.firstOrCreate(withAttribute: "name", value: "Tinna" as AnyObject)
+        let tinna = Animal.firstOrCreate(with: "name", value: "Tinna" as AnyObject)
         XCTAssertEqual(tinna.color, "lightgray", "Should be able to return the first record with given attribute.")
     }
     
     func testFirstOrCreateWithAttributeGeneric() {
-        let snoopy: Animal = Animal.firstOrCreate(withAttribute: "name", value: "Snoopy" as AnyObject)
+        let snoopy: Animal = Animal.firstOrCreate(with: "name", value: "Snoopy" as AnyObject)
         XCTAssertEqual(snoopy.name, "Snoopy", "Should be able to create record if it doesn't already exist.")
         
-        let tinna: Animal = Animal.firstOrCreate(withAttribute: "name", value: "Tinna" as AnyObject)
+        let tinna: Animal = Animal.firstOrCreate(with: "name", value: "Tinna" as AnyObject)
         XCTAssertEqual(tinna.color, "lightgray", "Should be able to return the first record with given attribute.")
     }
     
     func testFirstOrCreateWithAttributes() {
         let snoopyAttributes = ["name" : "Snoopy", "color" : "white"]
-        let snoopy = Animal.firstOrCreate(withAttributes: snoopyAttributes as [String : AnyObject])
+        let snoopy = Animal.firstOrCreate(with: snoopyAttributes as [String : AnyObject])
         XCTAssertEqual(snoopy.color, "white", "Should be able to create record if it doesn't already exist.")
         
         let tinnaAttributes = ["name" : "Tinna", "color" : "lightgray"]
-        let tinna = Animal.firstOrCreate(withAttributes: tinnaAttributes as [String : AnyObject])
+        let tinna = Animal.firstOrCreate(with: tinnaAttributes as [String : AnyObject])
         XCTAssertEqual(tinna.color, "lightgray", "Should be able to return the first record with given attributes.")
     }
     
     func testFirstOrCreateWithAttributesGeneric() {
         let snoopyAttributes = ["name" : "Snoopy", "color" : "white"]
-        let snoopy: Animal = Animal.firstOrCreate(withAttributes: snoopyAttributes as [String : AnyObject])
+        let snoopy: Animal = Animal.firstOrCreate(with: snoopyAttributes as [String : AnyObject])
         XCTAssertEqual(snoopy.color, "white", "Should be able to create record if it doesn't already exist.")
         
         let tinnaAttributes = ["name" : "Tinna", "color" : "lightgray"]
-        let tinna: Animal = Animal.firstOrCreate(withAttributes: tinnaAttributes as [String : AnyObject])
+        let tinna: Animal = Animal.firstOrCreate(with: tinnaAttributes as [String : AnyObject])
         XCTAssertEqual(tinna.color, "lightgray", "Should be able to return the first record with given attributes.")
     }
     
@@ -266,57 +266,57 @@ class AERecordTests: XCTestCase {
     
     func testFirst() {
         let sortDescriptor = NSSortDescriptor(key: "name", ascending: true)
-        let firstAnimal = Animal.first(sortDescriptors: [sortDescriptor])
+        let firstAnimal = Animal.first(orderedBy: [sortDescriptor])
         XCTAssertEqual(firstAnimal?.name, "Betty", "Should be able to return the first record sorted by given sort descriptor.")
     }
     
     func testFirstGeneric() {
         let sortDescriptor = NSSortDescriptor(key: "name", ascending: true)
-        let firstAnimal = Animal.first(sortDescriptors: [sortDescriptor])
-        XCTAssertEqual(firstAnimal?.name, "Betty", "Should be able to return the first record sorted by given sort descriptor.")
+        let firstAnimal: Animal = Animal.first(orderedBy: [sortDescriptor])!
+        XCTAssertEqual(firstAnimal.name, "Betty", "Should be able to return the first record sorted by given sort descriptor.")
     }
     
     func testFirstWithPredicate() {
         let predicate = NSPredicate(format: "color == %@", "lightgray")
-        let tinna = Animal.first(withPredicate: predicate)
+        let tinna = Animal.first(with: predicate)
         XCTAssertEqual(tinna?.name, "Tinna", "Should be able to return the first record for given predicate.")
     }
     
     func testFirstWithPredicateGeneric() {
         let predicate = NSPredicate(format: "color == %@", "lightgray")
-        let tinna: Animal = Animal.first(withPredicate: predicate)!
+        let tinna: Animal = Animal.first(with: predicate)!
         XCTAssertEqual(tinna.name, "Tinna", "Should be able to return the first record for given predicate.")
     }
     
     func testFirstWithAttribute() {
-        let kika = Animal.first(withAttribute: "color", value: "black" as AnyObject)
+        let kika = Animal.first(with: "color", value: "black" as AnyObject)
         XCTAssertEqual(kika?.name, "Kika", "Should be able to return the first record for given attribute.")
     }
     
     func testFirstWithAttributeGeneric() {
-        let kika: Animal = Animal.first(withAttribute: "color", value: "black" as AnyObject)!
+        let kika: Animal = Animal.first(with: "color", value: "black" as AnyObject)!
         XCTAssertEqual(kika.name, "Kika", "Should be able to return the first record for given attribute.")
     }
     
     func testFirstOrderedByAttribute() {
-        let kika = Animal.first(orderedByAttribute: "color", ascending: true)
+        let kika = Animal.first(orderedBy: "color", ascending: true)
         XCTAssertEqual(kika?.name, "Kika", "Should be able to return the first record ordered by given attribute.")
     }
     
     func testFirstOrderedByAttributeGeneric() {
-        let kika: Animal = Animal.first(orderedByAttribute: "color", ascending: true)!
+        let kika: Animal = Animal.first(orderedBy: "color", ascending: true)!
         XCTAssertEqual(kika.name, "Kika", "Should be able to return the first record ordered by given attribute.")
     }
     
     func testFirstWithAttributes() {
         let tinnaAttributes = ["name" : "Tinna", "color" : "lightgray"]
-        let tinna = Animal.first(withAttributes: tinnaAttributes)
+        let tinna = Animal.first(with: tinnaAttributes)
         XCTAssertEqual(tinna?.color, "lightgray", "Should be able to return the first record with given attributes.")
     }
     
     func testFirstWithAttributesGeneric() {
         let tinnaAttributes = ["name" : "Tinna", "color" : "lightgray"]
-        let tinna: Animal = Animal.first(withAttributes: tinnaAttributes)!
+        let tinna: Animal = Animal.first(with: tinnaAttributes)!
         XCTAssertEqual(tinna.color, "lightgray", "Should be able to return the first record with given attributes.")
     }
     
@@ -334,45 +334,45 @@ class AERecordTests: XCTestCase {
     
     func testAllWithPredicate() {
         let predicate = NSPredicate(format: "color == %@", "yellow")
-        let yellowAnimals = Animal.all(withPredicate: predicate)
+        let yellowAnimals = Animal.all(with: predicate)
         XCTAssertEqual(yellowAnimals!.count, 2, "Should be able to return all records for given predicate.")
     }
     
     func testAllWithPredicateGeneric() {
         let predicate = NSPredicate(format: "color == %@", "yellow")
-        let yellowAnimals: [Animal] = Animal.all(withPredicate: predicate)!
+        let yellowAnimals: [Animal] = Animal.all(with: predicate)!
         XCTAssertEqual(yellowAnimals.count, 2, "Should be able to return all records for given predicate.")
     }
     
     func testAllWithAttribute() {
-        let whiteAnimals = Animal.all(withAttribute: "color", value: "white" as AnyObject)
+        let whiteAnimals = Animal.all(with: "color", value: "white" as AnyObject)
         XCTAssertEqual(whiteAnimals!.count, 2, "Should be able to return all records for given attribute.")
     }
     
     func testAllWithAttributeGeneric() {
-        let whiteAnimals: [Animal] = Animal.all(withAttribute: "color", value: "white" as AnyObject)!
+        let whiteAnimals: [Animal] = Animal.all(with: "color", value: "white" as AnyObject)!
         XCTAssertEqual(whiteAnimals.count, 2, "Should be able to return all records for given attribute.")
     }
     
     func testAllWithAttributes() {
         let whiteAttributes = ["name" : "Villy", "color" : "white"]
         
-        let villy = Animal.all(withAttributes: whiteAttributes) as! [Animal]
+        let villy = Animal.all(with: whiteAttributes) as! [Animal]
         XCTAssertEqual(villy.count, 1, "Should be able to return all records for given attributes.")
         XCTAssertEqual(villy.first!.name, "Villy", "Should be able to return all records for given attributes.")
         
-        let whiteAnimals = Animal.all(withAttributes: whiteAttributes, predicateType: .or)
+        let whiteAnimals = Animal.all(with: whiteAttributes, predicateType: .or)
         XCTAssertEqual(whiteAnimals!.count, 2, "Should be able to return all records for given attributes and OR predicate type.")
     }
     
     func testAllWithAttributesGeneric() {
         let whiteAttributes = ["name" : "Villy", "color" : "white"]
         
-        let villy: [Animal] = Animal.all(withAttributes: whiteAttributes)!
+        let villy: [Animal] = Animal.all(with: whiteAttributes)!
         XCTAssertEqual(villy.count, 1, "Should be able to return all records for given attributes.")
         XCTAssertEqual(villy.first!.name, "Villy", "Should be able to return all records for given attributes.")
         
-        let whiteAnimals: [Animal] = Animal.all(withAttributes: whiteAttributes, predicateType: .or)!
+        let whiteAnimals: [Animal] = Animal.all(with: whiteAttributes, predicateType: .or)!
         XCTAssertEqual(whiteAnimals.count, 2, "Should be able to return all records for given attributes and OR predicate type.")
     }
     
@@ -380,11 +380,11 @@ class AERecordTests: XCTestCase {
     
     func testDelete() {
         let sortDescriptor = NSSortDescriptor(key: "name", ascending: true)
-        let firstAnimal = Animal.first(sortDescriptors: [sortDescriptor])
+        let firstAnimal = Animal.first(orderedBy: [sortDescriptor])
         XCTAssertEqual(firstAnimal?.name, "Betty", "Should be able to return the first record sorted by given sort descriptor.")
         
         firstAnimal?.delete()
-        let betty = Animal.first(withAttribute: "name", value: "Betty" as AnyObject)
+        let betty = Animal.first(with: "name", value: "Betty" as AnyObject)
         XCTAssertNil(betty, "Should be able to delete record.")
     }
     
@@ -396,20 +396,20 @@ class AERecordTests: XCTestCase {
     
     func deleteAllWithPredicate() {
         let predicate = NSPredicate(format: "color == %@", "yellow")
-        Animal.deleteAll(withPredicate: predicate)
+        Animal.deleteAll(with: predicate)
         
         let animals = Animal.all()
-        let betty = Animal.first(withAttribute: "name", value: "Betty" as AnyObject)
+        let betty = Animal.first(with: "name", value: "Betty" as AnyObject)
         
         XCTAssertEqual(animals?.count, 5, "Should be able to delete all records for given predicate.")
         XCTAssertNil(betty, "Should be able to delete all records for given predicate.")
     }
     
     func deleteAllWithAttribute() {
-        Animal.deleteAll(withAttribute: "color", value: "white" as AnyObject)
+        Animal.deleteAll(with: "color", value: "white" as AnyObject)
         
         let animals = Animal.all()
-        let villy = Animal.first(withAttribute: "name", value: "Villy" as AnyObject)
+        let villy = Animal.first(with: "name", value: "Villy" as AnyObject)
         
         XCTAssertEqual(animals?.count, 5, "Should be able to delete all records for given attribute.")
         XCTAssertNil(villy, "Should be able to delete all records for given attribute.")
@@ -417,7 +417,7 @@ class AERecordTests: XCTestCase {
     
     func testDeleteAllWithAttributes() {
         let attributes = ["color" : "white", "name" : "Caesar"]
-        Animal.deleteAll(withAttributes: attributes, predicateType: .or)
+        Animal.deleteAll(with: attributes, predicateType: .or)
         
         let animals = Animal.all()
         XCTAssertEqual(animals!.count, 4, "Should be able to delete all records for given attributes.")
@@ -432,18 +432,18 @@ class AERecordTests: XCTestCase {
     
     func testCountWithPredicate() {
         let predicate = NSPredicate(format: "color == %@", "white")
-        let whiteCount = Animal.count(withPredicate: predicate)
+        let whiteCount = Animal.count(with: predicate)
         XCTAssertEqual(whiteCount, 2, "Should be able to count all records for given predicate.")
     }
     
     func testCountWithAttribute() {
-        let yellowCount = Animal.count(withAttribute: "color", value: "yellow" as AnyObject)
+        let yellowCount = Animal.count(with: "color", value: "yellow" as AnyObject)
         XCTAssertEqual(yellowCount, 2, "Should be able to count all records for given attribute.")
     }
     
     func testCountWithAttributes() {
         let attributes = ["breed.species.name" : "cat"]
-        let catsCount = Animal.count(withAttributes: attributes)
+        let catsCount = Animal.count(with: attributes)
         XCTAssertEqual(catsCount, 3, "Should be able to count all records for given attributes.")
     }
     
@@ -463,9 +463,9 @@ class AERecordTests: XCTestCase {
     
     func testAutoIncrementedIntegerAttribute() {
         for animal in Animal.all() as! [Animal] {
-            animal.customID = Animal.autoIncrementedInteger(forAttribute: "customID")
+            animal.customID = Animal.autoIncrementedInteger(for: "customID")
         }
-        let newCustomID = Animal.autoIncrementedInteger(forAttribute: "customID")
+        let newCustomID = Animal.autoIncrementedInteger(for: "customID")
         XCTAssertEqual(newCustomID, 8, "Should be able to return next integer value for given attribute.")
     }
     

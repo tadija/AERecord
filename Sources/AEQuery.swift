@@ -79,7 +79,7 @@ public extension NSManagedObject {
 
         - returns: The created predicate.
     */
-    class func createPredicate(forAttributes attributes: [AnyHashable : Any],
+    class func createPredicate(with attributes: [AnyHashable : Any],
                                predicateType: NSCompoundPredicate.LogicalType = defaultPredicateType) -> NSPredicate {
         
         var predicates = [NSPredicate]()
@@ -113,7 +113,7 @@ public extension NSManagedObject {
 
         - returns: New instance of `Self` with set attributes.
     */
-    class func create(withAttributes attributes: [String : Any],
+    class func create(with attributes: [String : Any],
                       in context: NSManagedObjectContext = AERecord.Context.default) -> Self {
         
         let object = create(in: context)
@@ -134,10 +134,10 @@ public extension NSManagedObject {
 
         - returns: Instance of managed object.
     */
-    class func firstOrCreate(withAttribute attribute: String, value: Any,
+    class func firstOrCreate(with attribute: String, value: Any,
                              in context: NSManagedObjectContext = AERecord.Context.default) -> Self {
         
-        return _firstOrCreateWithAttribute(attribute, value: value, in: context)
+        return _firstOrCreate(with: attribute, value: value, in: context)
     }
     
     /**
@@ -149,10 +149,10 @@ public extension NSManagedObject {
 
         - returns: Instance of `Self`.
     */
-    private class func _firstOrCreateWithAttribute<T>(_ attribute: String, value: Any,
+    private class func _firstOrCreate<T>(with attribute: String, value: Any,
                                                    in context: NSManagedObjectContext = AERecord.Context.default) -> T {
         
-        let object = firstOrCreate(withAttributes: [attribute : value], in: context)
+        let object = firstOrCreate(with: [attribute : value], in: context)
         return object as! T
     }
     
@@ -165,11 +165,11 @@ public extension NSManagedObject {
 
         - returns: Instance of managed object.
     */
-    class func firstOrCreate(withAttributes attributes: [String : Any],
+    class func firstOrCreate(with attributes: [String : Any],
                              predicateType: NSCompoundPredicate.LogicalType = defaultPredicateType,
                              in context: NSManagedObjectContext = AERecord.Context.default) -> Self {
         
-        return _firstOrCreate(withAttributes: attributes, predicateType: predicateType, in: context)
+        return _firstOrCreate(with: attributes, predicateType: predicateType, in: context)
     }
     
     /**
@@ -181,19 +181,35 @@ public extension NSManagedObject {
 
         - returns: Instance of `Self`.
     */
-    private class func _firstOrCreate<T>(withAttributes attributes: [String : Any],
+    private class func _firstOrCreate<T>(with attributes: [String : Any],
                                       predicateType: NSCompoundPredicate.LogicalType = defaultPredicateType,
                                       in context: NSManagedObjectContext = AERecord.Context.default) -> T {
         
-        let predicate = createPredicate(forAttributes: attributes, predicateType: predicateType)
+        let predicate = createPredicate(with: attributes, predicateType: predicateType)
         let request = createFetchRequest(predicate: predicate)
         request.fetchLimit = 1
         
         let objects = AERecord.execute(fetchRequest: request, in: context)
-        return (objects.first ?? create(withAttributes: attributes, in: context)) as! T
+        return (objects.first ?? create(with: attributes, in: context)) as! T
     }
     
     // MARK: - Find First
+    
+    /**
+        Finds the first record ordered by given attribute.
+
+        - parameter attribute: Attribute name.
+        - parameter ascending: A Boolean value.
+        - parameter context: If not specified, `AERecord.Context.default` will be used.
+
+        - returns: Optional managed object.
+    */
+    class func first(orderedBy attribute: String, ascending: Bool = true,
+                     in context: NSManagedObjectContext = AERecord.Context.default) -> Self? {
+        
+        let sortDescriptors = [NSSortDescriptor(key: attribute, ascending: ascending)]
+        return first(orderedBy: sortDescriptors, in: context)
+    }
     
     /**
         Finds the first record.
@@ -203,10 +219,10 @@ public extension NSManagedObject {
 
         - returns: Optional managed object.
     */
-    class func first(sortDescriptors: [NSSortDescriptor]? = nil,
+    class func first(orderedBy sortDescriptors: [NSSortDescriptor]? = nil,
                      in context: NSManagedObjectContext = AERecord.Context.default) -> Self? {
         
-        return _first(sortDescriptors: sortDescriptors, in: context)
+        return _first(orderedBy: sortDescriptors, in: context)
     }
     
     /**
@@ -217,7 +233,7 @@ public extension NSManagedObject {
 
         - returns: Optional instance of `Self`.
     */
-    private class func _first<T>(sortDescriptors: [NSSortDescriptor]? = nil,
+    private class func _first<T>(orderedBy sortDescriptors: [NSSortDescriptor]? = nil,
                               in context: NSManagedObjectContext = AERecord.Context.default) -> T? {
         
         let request = createFetchRequest(sortDescriptors: sortDescriptors)
@@ -236,10 +252,10 @@ public extension NSManagedObject {
 
         - returns: Optional managed object.
     */
-    class func first(withPredicate predicate: NSPredicate, sortDescriptors: [NSSortDescriptor]? = nil,
+    class func first(with predicate: NSPredicate, orderedBy sortDescriptors: [NSSortDescriptor]? = nil,
                      in context: NSManagedObjectContext = AERecord.Context.default) -> Self? {
         
-        return _first(withPredicate: predicate, sortDescriptors: sortDescriptors, in: context)
+        return _first(with: predicate, orderedBy: sortDescriptors, in: context)
     }
     
     /**
@@ -251,7 +267,7 @@ public extension NSManagedObject {
 
         - returns: Optional instance of `Self`.
     */
-    private class func _first<T>(withPredicate predicate: NSPredicate, sortDescriptors: [NSSortDescriptor]? = nil,
+    private class func _first<T>(with predicate: NSPredicate, orderedBy sortDescriptors: [NSSortDescriptor]? = nil,
                               in context: NSManagedObjectContext = AERecord.Context.default) -> T? {
         
         let request = createFetchRequest(predicate: predicate, sortDescriptors: sortDescriptors)
@@ -271,11 +287,11 @@ public extension NSManagedObject {
 
         - returns: Optional managed object.
     */
-    class func first(withAttribute attribute: String, value: Any, sortDescriptors: [NSSortDescriptor]? = nil,
+    class func first(with attribute: String, value: Any, orderedBy sortDescriptors: [NSSortDescriptor]? = nil,
                      in context: NSManagedObjectContext = AERecord.Context.default) -> Self? {
         
         let predicate = NSPredicate(format: "%K = %@", argumentArray: [attribute, value])
-        return first(withPredicate: predicate, sortDescriptors: sortDescriptors, in: context)
+        return first(with: predicate, orderedBy: sortDescriptors, in: context)
     }
     
     /**
@@ -288,29 +304,13 @@ public extension NSManagedObject {
 
         - returns: Optional managed object.
     */
-    class func first(withAttributes attributes: [AnyHashable : Any],
+    class func first(with attributes: [AnyHashable : Any],
                      predicateType: NSCompoundPredicate.LogicalType = defaultPredicateType,
-                     sortDescriptors: [NSSortDescriptor]? = nil,
+                     orderedBy sortDescriptors: [NSSortDescriptor]? = nil,
                      in context: NSManagedObjectContext = AERecord.Context.default) -> Self? {
         
-        let predicate = createPredicate(forAttributes: attributes, predicateType: predicateType)
-        return first(withPredicate: predicate, sortDescriptors: sortDescriptors, in: context)
-    }
-    
-    /**
-        Finds the first record ordered by given attribute.
-
-        - parameter name: Attribute name.
-        - parameter ascending: A Boolean value.
-        - parameter context: If not specified, `AERecord.Context.default` will be used.
-
-        - returns: Optional managed object.
-    */
-    class func first(orderedByAttribute name: String, ascending: Bool = true,
-                     in context: NSManagedObjectContext = AERecord.Context.default) -> Self? {
-        
-        let sortDescriptors = [NSSortDescriptor(key: name, ascending: ascending)]
-        return first(sortDescriptors: sortDescriptors, in: context)
+        let predicate = createPredicate(with: attributes, predicateType: predicateType)
+        return first(with: predicate, orderedBy: sortDescriptors, in: context)
     }
     
     // MARK: - Find All
@@ -323,7 +323,7 @@ public extension NSManagedObject {
 
         - returns: Optional managed object.
     */
-    class func all(withSortDescriptors sortDescriptors: [NSSortDescriptor]? = nil,
+    class func all(orderedBy sortDescriptors: [NSSortDescriptor]? = nil,
                    in context: NSManagedObjectContext = AERecord.Context.default) -> [NSManagedObject]? {
         
         let request = createFetchRequest(sortDescriptors: sortDescriptors)
@@ -339,10 +339,10 @@ public extension NSManagedObject {
 
         - returns: Optional array of `Self` instances.
     */
-    class func all<T>(withSortDescriptors sortDescriptors: [NSSortDescriptor]? = nil,
+    class func all<T>(orderedBy sortDescriptors: [NSSortDescriptor]? = nil,
                    in context: NSManagedObjectContext = AERecord.Context.default) -> [T]? {
         
-        let objects = all(withSortDescriptors: sortDescriptors, in: context)
+        let objects = all(orderedBy: sortDescriptors, in: context)
         return objects?.map { $0 as! T }
     }
     
@@ -355,7 +355,7 @@ public extension NSManagedObject {
 
         - returns: Optional managed object.
     */
-    class func all(withPredicate predicate: NSPredicate, sortDescriptors: [NSSortDescriptor]? = nil,
+    class func all(with predicate: NSPredicate, orderedBy sortDescriptors: [NSSortDescriptor]? = nil,
                    in context: NSManagedObjectContext = AERecord.Context.default) -> [NSManagedObject]? {
         
         let request = createFetchRequest(predicate: predicate, sortDescriptors: sortDescriptors)
@@ -372,10 +372,10 @@ public extension NSManagedObject {
 
         - returns: Optional array of `Self` instances.
     */
-    class func all<T>(withPredicate predicate: NSPredicate, sortDescriptors: [NSSortDescriptor]? = nil,
+    class func all<T>(with predicate: NSPredicate, orderedBy sortDescriptors: [NSSortDescriptor]? = nil,
                    in context: NSManagedObjectContext = AERecord.Context.default) -> [T]? {
         
-        let objects = all(withPredicate: predicate, sortDescriptors: sortDescriptors, in: context)
+        let objects = all(with: predicate, orderedBy: sortDescriptors, in: context)
         return objects?.map { $0 as! T }
     }
     
@@ -389,11 +389,11 @@ public extension NSManagedObject {
 
         - returns: Optional managed object.
     */
-    class func all(withAttribute attribute: String, value: Any, sortDescriptors: [NSSortDescriptor]? = nil,
+    class func all(with attribute: String, value: Any, orderedBy sortDescriptors: [NSSortDescriptor]? = nil,
                    in context: NSManagedObjectContext = AERecord.Context.default) -> [NSManagedObject]? {
         
         let predicate = NSPredicate(format: "%K = %@", argumentArray: [attribute, value])
-        return all(withPredicate: predicate, sortDescriptors: sortDescriptors, in: context)
+        return all(with: predicate, orderedBy: sortDescriptors, in: context)
     }
     
     /**
@@ -406,10 +406,10 @@ public extension NSManagedObject {
 
         - returns: Optional array of `Self` instances.
     */
-    class func all<T>(withAttribute attribute: String, value: Any, sortDescriptors: [NSSortDescriptor]? = nil,
+    class func all<T>(with attribute: String, value: Any, orderedBy sortDescriptors: [NSSortDescriptor]? = nil,
                    in context: NSManagedObjectContext = AERecord.Context.default) -> [T]? {
         
-        let objects = all(withAttribute: attribute, value: value, sortDescriptors: sortDescriptors, in: context)
+        let objects = all(with: attribute, value: value, orderedBy: sortDescriptors, in: context)
         return objects?.map { $0 as! T }
     }
     
@@ -423,13 +423,13 @@ public extension NSManagedObject {
 
         - returns: Optional managed object.
     */
-    class func all(withAttributes attributes: [AnyHashable : Any],
+    class func all(with attributes: [AnyHashable : Any],
                    predicateType: NSCompoundPredicate.LogicalType = defaultPredicateType,
-                   sortDescriptors: [NSSortDescriptor]? = nil,
+                   orderedBy sortDescriptors: [NSSortDescriptor]? = nil,
                    in context: NSManagedObjectContext = AERecord.Context.default) -> [NSManagedObject]? {
         
-        let predicate = createPredicate(forAttributes: attributes, predicateType: predicateType)
-        return all(withPredicate: predicate, sortDescriptors: sortDescriptors, in: context)
+        let predicate = createPredicate(with: attributes, predicateType: predicateType)
+        return all(with: predicate, orderedBy: sortDescriptors, in: context)
     }
     
     /**
@@ -442,13 +442,12 @@ public extension NSManagedObject {
 
         - returns: Optional array of `Self` instances.
     */
-    class func all<T>(withAttributes attributes: [AnyHashable : Any],
+    class func all<T>(with attributes: [AnyHashable : Any],
                    predicateType: NSCompoundPredicate.LogicalType = defaultPredicateType,
-                   sortDescriptors: [NSSortDescriptor]? = nil,
+                   orderedBy sortDescriptors: [NSSortDescriptor]? = nil,
                    in context: NSManagedObjectContext = AERecord.Context.default) -> [T]? {
         
-        let objects = all(withAttributes: attributes, predicateType: predicateType,
-                          sortDescriptors: sortDescriptors, in: context)
+        let objects = all(with: attributes, predicateType: predicateType, orderedBy: sortDescriptors, in: context)
         return objects?.map { $0 as! T }
     }
     
@@ -459,7 +458,7 @@ public extension NSManagedObject {
 
         - parameter context: If not specified, `AERecord.Context.default` will be used.
     */
-    func delete(in context: NSManagedObjectContext = AERecord.Context.default) {
+    func delete(from context: NSManagedObjectContext = AERecord.Context.default) {
         context.delete(self)
     }
     
@@ -468,7 +467,7 @@ public extension NSManagedObject {
 
         - parameter context: If not specified, `AERecord.Context.default` will be used.
     */
-    class func deleteAll(in context: NSManagedObjectContext = AERecord.Context.default) {
+    class func deleteAll(from context: NSManagedObjectContext = AERecord.Context.default) {
         if let objects = self.all(in: context) {
             for object in objects {
                 context.delete(object)
@@ -482,10 +481,10 @@ public extension NSManagedObject {
         - parameter predicate: Predicate.
         - parameter context: If not specified, `AERecord.Context.default` will be used.
     */
-    class func deleteAll(withPredicate predicate: NSPredicate,
-                         in context: NSManagedObjectContext = AERecord.Context.default) {
+    class func deleteAll(with predicate: NSPredicate,
+                         from context: NSManagedObjectContext = AERecord.Context.default) {
         
-        if let objects = all(withPredicate: predicate, in: context) {
+        if let objects = all(with: predicate, in: context) {
             for object in objects {
                 context.delete(object)
             }
@@ -499,10 +498,10 @@ public extension NSManagedObject {
         - parameter value: Attribute value.
         - parameter context: If not specified, `AERecord.Context.default` will be used.
     */
-    class func deleteAll(withAttribute attribute: String, value: Any,
-                         in context: NSManagedObjectContext = AERecord.Context.default) {
+    class func deleteAll(with attribute: String, value: Any,
+                         from context: NSManagedObjectContext = AERecord.Context.default) {
         
-        if let objects = all(withAttribute: attribute, value: value, in: context) {
+        if let objects = all(with: attribute, value: value, in: context) {
             for object in objects {
                 context.delete(object)
             }
@@ -516,11 +515,11 @@ public extension NSManagedObject {
         - parameter predicateType: If not specified, `.AndPredicateType` will be used.
         - parameter context: If not specified, `AERecord.Context.default` will be used.
     */
-    class func deleteAll(withAttributes attributes: [AnyHashable : Any],
+    class func deleteAll(with attributes: [AnyHashable : Any],
                          predicateType: NSCompoundPredicate.LogicalType = defaultPredicateType,
-                         in context: NSManagedObjectContext = AERecord.Context.default) {
+                         from context: NSManagedObjectContext = AERecord.Context.default) {
         
-        if let objects = all(withAttributes: attributes, predicateType: predicateType, in: context) {
+        if let objects = all(with: attributes, predicateType: predicateType, in: context) {
             for object in objects {
                 context.delete(object)
             }
@@ -537,7 +536,7 @@ public extension NSManagedObject {
 
         - returns: Count of records.
     */
-    class func count(withPredicate predicate: NSPredicate? = nil,
+    class func count(with predicate: NSPredicate? = nil,
                      in context: NSManagedObjectContext = AERecord.Context.default) -> Int {
         
         let request = createFetchRequest(predicate: predicate)
@@ -563,10 +562,10 @@ public extension NSManagedObject {
 
         - returns: Count of records.
     */
-    class func count(withAttribute attribute: String, value: Any,
+    class func count(with attribute: String, value: Any,
                      in context: NSManagedObjectContext = AERecord.Context.default) -> Int {
         
-        return count(withAttributes: [attribute : value], in: context)
+        return count(with: [attribute : value], in: context)
     }
     
     /**
@@ -578,12 +577,12 @@ public extension NSManagedObject {
 
         - returns: Count of records.
     */
-    class func count(withAttributes attributes: [AnyHashable : Any],
+    class func count(with attributes: [AnyHashable : Any],
                      predicateType: NSCompoundPredicate.LogicalType = defaultPredicateType,
                      in context: NSManagedObjectContext = AERecord.Context.default) -> Int {
         
-        let predicate = createPredicate(forAttributes: attributes, predicateType: predicateType)
-        return count(withPredicate: predicate, in: context)
+        let predicate = createPredicate(with: attributes, predicateType: predicateType)
+        return count(with: predicate, in: context)
     }
     
     // MARK: - Distinct
@@ -598,14 +597,14 @@ public extension NSManagedObject {
 
         - returns: Throws optional Array of `Any`.
     */
-    class func distinctValues(withAttribute attribute: String,
-                              predicate: NSPredicate? = nil, sortDescriptors: [NSSortDescriptor]? = nil,
+    class func distinctValues(with attribute: String,
+                              predicate: NSPredicate? = nil, orderedBy sortDescriptors: [NSSortDescriptor]? = nil,
                               in context: NSManagedObjectContext = AERecord.Context.default) throws -> [Any]? {
         
         var distinctValues = [Any]()
         
-        if let distinctRecords = try distinctRecords(withAttributes: [attribute], predicate: predicate,
-                                                     sortDescriptors: sortDescriptors, in: context)
+        if let distinctRecords = try distinctRecords(with: [attribute], predicate: predicate,
+                                                     orderedBy: sortDescriptors, in: context)
         {
             for record in distinctRecords {
                 if let value = record[attribute] {
@@ -627,8 +626,8 @@ public extension NSManagedObject {
 
         - returns: Throws optional Array of `Any`.
     */
-    class func distinctRecords(withAttributes attributes: [AnyHashable],
-                               predicate: NSPredicate? = nil, sortDescriptors: [NSSortDescriptor]? = nil,
+    class func distinctRecords(with attributes: [AnyHashable],
+                               predicate: NSPredicate? = nil, orderedBy sortDescriptors: [NSSortDescriptor]? = nil,
                                in context: NSManagedObjectContext = AERecord.Context.default) throws -> [NSDictionary]? {
         
         let request = NSFetchRequest<NSDictionary>(entityName: entityName)
@@ -653,19 +652,15 @@ public extension NSManagedObject {
 
         - returns: Auto incremented ID.
     */
-    class func autoIncrementedInteger(forAttribute attribute: String,
+    class func autoIncrementedInteger(for attribute: String,
                                       in context: NSManagedObjectContext = AERecord.Context.default) -> Int {
         
         let sortDescriptor = NSSortDescriptor(key: attribute, ascending: false)
-        if let object = self.first(sortDescriptors: [sortDescriptor], in: context) {
-            if let max = object.value(forKey: attribute) as? Int {
-                return max + 1
-            } else {
-                return 0
-            }
-        } else {
-            return 0
-        }
+        guard
+            let object = self.first(orderedBy: [sortDescriptor], in: context),
+            let max = object.value(forKey: attribute) as? Int
+        else { return 0 }
+        return max + 1
     }
     
     /**
@@ -674,8 +669,8 @@ public extension NSManagedObject {
         - parameter mergeChanges: A Boolean value.
         - parameter context: If not specified, `AERecord.Context.default` will be used.
     */
-    func refresh(in context: NSManagedObjectContext = AERecord.Context.default, mergeChanges: Bool = true) {
-        AERecord.refreshObjects(in: context, objectIDs: [objectID], mergeChanges: mergeChanges)
+    func refresh(mergeChanges: Bool = true, in context: NSManagedObjectContext = AERecord.Context.default) {
+        AERecord.refreshObjects(with: [objectID], mergeChanges: mergeChanges, in: context)
     }
     
     // MARK: - Batch Update
@@ -683,14 +678,14 @@ public extension NSManagedObject {
     /**
         Updates data directly in persistent store.
 
-        - parameter predicate: Predicate.
         - parameter properties: Properties to update.
+        - parameter predicate: Predicate.
         - parameter resultType: If not specified, `StatusOnlyResultType` will be used.
-        - parameter context If: not specified, `AERecord.Context.default` will be used.
+        - parameter context: If not specified, `AERecord.Context.default` will be used.
 
         - returns: Batch update result.
     */
-    class func batchUpdate(properties: [AnyHashable : Any]? = nil, predicate: NSPredicate? = nil,
+    class func batchUpdate(properties: [AnyHashable : Any], predicate: NSPredicate? = nil,
                            resultType: NSBatchUpdateRequestResultType = .statusOnlyResultType,
                            in context: NSManagedObjectContext = AERecord.Context.default) -> NSBatchUpdateResult? {
         
@@ -707,7 +702,7 @@ public extension NSManagedObject {
                     batchResult = result
                 }
             } catch {
-                print(error)
+                debugPrint(error)
             }
         }
         
@@ -717,13 +712,13 @@ public extension NSManagedObject {
     /**
         Updates data directly in persistent store.
 
-        - parameter predicate: Predicate.
         - parameter properties: Properties to update.
+        - parameter predicate: Predicate.
         - parameter context: If not specified, `AERecord.Context.default` will be used.
 
         - returns: Count of updated objects.
     */
-    class func objectsCountForBatchUpdate(properties: [AnyHashable : Any]? = nil, predicate: NSPredicate? = nil,
+    class func objectsCountForBatchUpdate(properties: [AnyHashable : Any], predicate: NSPredicate? = nil,
                                           in context: NSManagedObjectContext = AERecord.Context.default) -> Int {
         
         let type = NSBatchUpdateRequestResultType.updatedObjectsCountResultType
@@ -743,17 +738,17 @@ public extension NSManagedObject {
 
         Objects are turned into faults after updating *(managed object context is refreshed)*.
 
-        - parameter predicate: Predicate.
         - parameter properties: Properties to update.
+        - parameter predicate: Predicate.
         - parameter context: If not specified, `AERecord.Context.default` will be used.
     */
-    class func batchUpdateAndRefreshObjects(properties: [AnyHashable : Any]? = nil, predicate: NSPredicate? = nil,
+    class func batchUpdateAndRefreshObjects(properties: [AnyHashable : Any], predicate: NSPredicate? = nil,
                                             in context: NSManagedObjectContext = AERecord.Context.default) {
         
         let type = NSBatchUpdateRequestResultType.updatedObjectIDsResultType
         if let result = batchUpdate(properties: properties, predicate: predicate, resultType: type, in: context) {
             if let objectIDs = result.result as? [NSManagedObjectID] {
-                AERecord.refreshObjects(in: context, objectIDs: objectIDs, mergeChanges: true)
+                AERecord.refreshObjects(with: objectIDs, mergeChanges: true, in: context)
             }
         }
     }

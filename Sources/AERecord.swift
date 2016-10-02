@@ -66,12 +66,11 @@ open class AERecord {
     
         - returns: Throws error if something went wrong.
     */
-    open class func loadCoreDataStack(
-        managedObjectModel: NSManagedObjectModel = AEStack.defaultModel,
-        storeType: String = NSSQLiteStoreType,
-        configuration: String? = nil,
-        storeURL: URL = AEStack.defaultURL,
-        options: [AnyHashable : Any]? = nil) throws {
+    open class func loadCoreDataStack(managedObjectModel: NSManagedObjectModel = AEStack.defaultModel,
+                                      storeType: String = NSSQLiteStoreType,
+                                      configuration: String? = nil,
+                                      storeURL: URL = AEStack.defaultURL,
+                                      options: [AnyHashable : Any]? = nil) throws {
         
         try AEStack.shared.loadCoreDataStack(managedObjectModel: managedObjectModel, storeType: storeType,
                                              configuration: configuration, storeURL: storeURL, options: options)
@@ -96,8 +95,8 @@ open class AERecord {
          
          - returns: File URL for the store with given name.
     */
-    open class func storeURL(forName name: String) -> URL {
-        return AEStack.storeURL(forName: name)
+    open class func storeURL(for name: String) -> URL {
+        return AEStack.storeURL(for: name)
     }
     
     /**
@@ -152,10 +151,10 @@ open class AERecord {
         - parameter objectIDS: Array of `NSManagedObjectID` objects to turn into fault.
         - parameter mergeChanges: A Boolean value.
     */
-    open class func refreshObjects(in context: NSManagedObjectContext = Context.default,
-                                   objectIDs: [NSManagedObjectID], mergeChanges: Bool) {
+    open class func refreshObjects(with objectIDs: [NSManagedObjectID], mergeChanges: Bool,
+                                   in context: NSManagedObjectContext = Context.default) {
         
-        AEStack.refreshObjects(in: context, objectIDs: objectIDs, mergeChanges: mergeChanges)
+        AEStack.refreshObjects(with: objectIDs, mergeChanges: mergeChanges, in: context)
     }
     
     /**
@@ -164,10 +163,10 @@ open class AERecord {
         - parameter context: If not specified, `Context.default` will be used.
         - parameter mergeChanges: A Boolean value.
     */
-    open class func refreshRegisteredObjects(in context: NSManagedObjectContext = Context.default,
-                                             mergeChanges: Bool) {
+    open class func refreshRegisteredObjects(mergeChanges: Bool,
+                                             in context: NSManagedObjectContext = Context.default) {
         
-        AEStack.refreshRegisteredObjects(in: context, mergeChanges: mergeChanges)
+        AEStack.refreshRegisteredObjects(mergeChanges: mergeChanges, in: context)
     }
     
     /**
