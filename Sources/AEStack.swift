@@ -149,7 +149,7 @@ class AEStack {
     // MARK: - Context
     
     func execute<T: NSManagedObject>(fetchRequest request: NSFetchRequest<T>,
-                 inContext context: NSManagedObjectContext) -> [T] {
+                 in context: NSManagedObjectContext) -> [T] {
         
         var fetchedObjects = [T]()
         context.performAndWait {
@@ -186,7 +186,7 @@ class AEStack {
         }
     }
     
-    class func refreshObjects(inContext context: NSManagedObjectContext = AERecord.Context.default,
+    class func refreshObjects(in context: NSManagedObjectContext = AERecord.Context.default,
                               objectIDs: [NSManagedObjectID], mergeChanges: Bool) {
         
         for objectID in objectIDs {
@@ -202,22 +202,22 @@ class AEStack {
         }
     }
     
-    class func refreshRegisteredObjects(inContext context: NSManagedObjectContext, mergeChanges: Bool) {
+    class func refreshRegisteredObjects(in context: NSManagedObjectContext, mergeChanges: Bool) {
         let registeredObjectIDs = context.registeredObjects.map { return $0.objectID }
         refreshObjects(objectIDs: registeredObjectIDs, mergeChanges: mergeChanges)
     }
     
-    func truncateAllData(inContext context: NSManagedObjectContext) {
+    func truncateAllData(in context: NSManagedObjectContext) {
         if let mom = model {
             for entity in mom.entities {
                 if let entityType = NSClassFromString(entity.managedObjectClassName) as? NSManagedObject.Type {
-                    entityType.deleteAll(fromContext: context)
+                    entityType.deleteAll(in: context)
                 }
             }
         }
     }
     
-    private func mergeChanges(inContext context: NSManagedObjectContext, fromNotification notification: Notification) {
+    private func mergeChanges(in context: NSManagedObjectContext, fromNotification notification: Notification) {
         context.perform {
             context.mergeChanges(fromContextDidSave: notification)
         }
@@ -267,7 +267,7 @@ class AEStack {
             let contextToRefresh = context == mainContext ? backgroundContext : mainContext
         else { return }
         
-        mergeChanges(inContext: contextToRefresh, fromNotification: notification)
+        mergeChanges(in: contextToRefresh, fromNotification: notification)
     }
     
     // MARK: - iCloud
@@ -285,7 +285,7 @@ class AEStack {
     }
     
     @objc func persistentStoreDidImportUbiquitousContentChanges(_ changeNotification: Notification) {
-        mergeChanges(inContext: defaultContext, fromNotification: changeNotification)
+        mergeChanges(in: defaultContext, fromNotification: changeNotification)
     }
     
 }

@@ -122,9 +122,9 @@ open class AERecord {
         - returns: Result of executed fetch request.
     */
     open class func execute<T: NSManagedObject>(fetchRequest request: NSFetchRequest<T>,
-                            inContext context: NSManagedObjectContext = Context.default) -> [T] {
+                            in context: NSManagedObjectContext = Context.default) -> [T] {
         
-        return AEStack.shared.execute(fetchRequest: request, inContext: context)
+        return AEStack.shared.execute(fetchRequest: request, in: context)
     }
     
     /**
@@ -152,10 +152,10 @@ open class AERecord {
         - parameter objectIDS: Array of `NSManagedObjectID` objects to turn into fault.
         - parameter mergeChanges: A Boolean value.
     */
-    open class func refreshObjects(inContext context: NSManagedObjectContext = Context.default,
+    open class func refreshObjects(in context: NSManagedObjectContext = Context.default,
                                    objectIDs: [NSManagedObjectID], mergeChanges: Bool) {
         
-        AEStack.refreshObjects(inContext: context, objectIDs: objectIDs, mergeChanges: mergeChanges)
+        AEStack.refreshObjects(in: context, objectIDs: objectIDs, mergeChanges: mergeChanges)
     }
     
     /**
@@ -164,10 +164,10 @@ open class AERecord {
         - parameter context: If not specified, `Context.default` will be used.
         - parameter mergeChanges: A Boolean value.
     */
-    open class func refreshRegisteredObjects(inContext context: NSManagedObjectContext = Context.default,
+    open class func refreshRegisteredObjects(in context: NSManagedObjectContext = Context.default,
                                              mergeChanges: Bool) {
         
-        AEStack.refreshRegisteredObjects(inContext: context, mergeChanges: mergeChanges)
+        AEStack.refreshRegisteredObjects(in: context, mergeChanges: mergeChanges)
     }
     
     /**
@@ -175,8 +175,8 @@ open class AERecord {
 
         - parameter context: If not specified, `Context.default` will be used.
     */
-    open class func truncateAllData(inContext context: NSManagedObjectContext = Context.default) {
-        AEStack.shared.truncateAllData(inContext: context)
+    open class func truncateAllData(in context: NSManagedObjectContext = Context.default) {
+        AEStack.shared.truncateAllData(in: context)
     }
     
 }
