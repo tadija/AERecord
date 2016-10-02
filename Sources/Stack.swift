@@ -49,7 +49,7 @@ class Stack {
     
     class var defaultDirectory: FileManager.SearchPathDirectory {
         #if os(tvOS)
-            return .CachesDirectory
+            return .cachesDirectory
         #else
             return .documentDirectory
         #endif
