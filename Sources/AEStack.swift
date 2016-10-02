@@ -211,7 +211,7 @@ class AEStack {
         if let mom = model {
             for entity in mom.entities {
                 if let entityType = NSClassFromString(entity.managedObjectClassName) as? NSManagedObject.Type {
-                    entityType.deleteAll(context: context)
+                    entityType.deleteAll(fromContext: context)
                 }
             }
         }
