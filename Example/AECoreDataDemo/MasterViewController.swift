@@ -36,12 +36,13 @@ class MasterViewController: CoreDataTableViewController, UISplitViewControllerDe
     // MARK: - CoreData
 
     func insertNewObject(_ sender: AnyObject) {
-        Event.create(with: ["timeStamp" : NSDate()])
+        let id = Event.autoIncrementedInteger(for: "id")
+        Event.create(with: ["id": id, "timeStamp" : NSDate()])
         AERecord.saveAndWait()
     }
     
     func refreshFetchedResultsController() {
-        let sortDescriptors = [NSSortDescriptor(key: "timeStamp", ascending: true)]
+        let sortDescriptors = [NSSortDescriptor(key: "id", ascending: true)]
         let request = Event.createFetchRequest(sortDescriptors: sortDescriptors)
         fetchedResultsController = NSFetchedResultsController(fetchRequest: request,
                                                               managedObjectContext: AERecord.Context.default,
@@ -60,7 +61,7 @@ class MasterViewController: CoreDataTableViewController, UISplitViewControllerDe
         if let frc = fetchedResultsController {
             if let event = frc.object(at: indexPath) as? Event {
                 // set data
-                cell.textLabel?.text = event.timeStamp.description
+                cell.textLabel?.text = "\(event.id) | \(event.timeStamp.description)"
                 cell.accessoryType = event.selected ? .checkmark : .none
                 
                 // set highlight color

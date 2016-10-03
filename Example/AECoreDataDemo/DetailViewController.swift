@@ -41,7 +41,8 @@ class DetailViewController: CoreDataCollectionViewController {
         let addFewAction = UIAlertAction(title: "Add Few", style: .default) { (action) -> Void in
             // create few objects
             for _ in 1...5 {
-                Event.create(with: ["timeStamp" : NSDate()])
+                let id = Event.autoIncrementedInteger(for: "id")
+                Event.create(with: ["id": id, "timeStamp" : NSDate()])
             }
             AERecord.saveAndWait()
         }
@@ -89,7 +90,7 @@ class DetailViewController: CoreDataCollectionViewController {
     }
     
     func refreshFetchedResultsController() {
-        let sortDescriptors = [NSSortDescriptor(key: "timeStamp", ascending: true)]
+        let sortDescriptors = [NSSortDescriptor(key: "id", ascending: true)]
         let request = Event.createFetchRequest(sortDescriptors: sortDescriptors)
         fetchedResultsController = NSFetchedResultsController(fetchRequest: request,
                                                               managedObjectContext: AERecord.Context.default,
@@ -108,7 +109,7 @@ class DetailViewController: CoreDataCollectionViewController {
         if let frc = fetchedResultsController {
             if let event = frc.object(at: indexPath) as? Event {
                 cell.backgroundColor = event.selected ? yellow : blue
-                cell.textLabel.text = event.timeStamp.description
+                cell.textLabel.text = "\(event.id) | \(event.timeStamp.description)"
             }
         }
     }
