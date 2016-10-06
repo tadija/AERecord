@@ -1,5 +1,12 @@
 # Changelog
 
+## Version 4.0.0
+
+- Code updated for Swift 3.0 - Xcode 8.0 (8A218a)
+- Sources reorganized from single to multiple files
+- Major refactoring ("swiftyfying")
+- Improved generics logic (PR #36)
+
 ## Version 3.0.0
 
 - Moved AECoreDataUI from AERecord to separate repository
