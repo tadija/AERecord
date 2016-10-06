@@ -25,8 +25,8 @@ class MasterViewController: CoreDataTableViewController, UISplitViewControllerDe
         tableView.rowHeight = UITableViewAutomaticDimension
 
         // setup buttons
-        self.navigationItem.leftBarButtonItem = self.editButtonItem()
-        let addButton = UIBarButtonItem(barButtonSystemItem: .Add, target: self, action: #selector(MasterViewController.insertNewObject(_:)))
+        navigationItem.leftBarButtonItem = editButtonItem
+        let addButton = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(insertNewObject(_:)))
         self.navigationItem.rightBarButtonItem = addButton
         
         // setup fetchedResultsController property
@@ -35,74 +35,79 @@ class MasterViewController: CoreDataTableViewController, UISplitViewControllerDe
     
     // MARK: - CoreData
 
-    func insertNewObject(sender: AnyObject) {
-        // create object
-        Event.createWithAttributes(["timeStamp" : NSDate()])
-        AERecord.saveContextAndWait()
+    func insertNewObject(_ sender: AnyObject) {
+        let id = Event.autoIncrementedInteger(for: "id")
+        Event.create(with: ["id": id, "timeStamp" : NSDate()])
+        AERecord.saveAndWait()
     }
     
     func refreshFetchedResultsController() {
-        let sortDescriptors = [NSSortDescriptor(key: "timeStamp", ascending: true)]
+        let sortDescriptors = [NSSortDescriptor(key: "id", ascending: true)]
         let request = Event.createFetchRequest(sortDescriptors: sortDescriptors)
-        fetchedResultsController = NSFetchedResultsController(fetchRequest: request, managedObjectContext: AERecord.defaultContext, sectionNameKeyPath: nil, cacheName: nil)
+        fetchedResultsController = NSFetchedResultsController(fetchRequest: request,
+                                                              managedObjectContext: AERecord.Context.default,
+                                                              sectionNameKeyPath: nil, cacheName: nil)
     }
 
     // MARK: - Table View
-
-    override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCellWithIdentifier("Cell", forIndexPath: indexPath)
+    
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath)
         self.configureCell(cell, atIndexPath: indexPath)
         return cell
     }
 
-    func configureCell(cell: UITableViewCell, atIndexPath indexPath: NSIndexPath) {
+    func configureCell(_ cell: UITableViewCell, atIndexPath indexPath: IndexPath) {
         if let frc = fetchedResultsController {
-            if let event = frc.objectAtIndexPath(indexPath) as? Event {
+            if let event = frc.object(at: indexPath) as? Event {
                 // set data
-                cell.textLabel?.text = event.timeStamp.description
-                cell.accessoryType = event.selected ? .Checkmark : .None
+                cell.textLabel?.text = "\(event.id) | \(event.timeStamp.description)"
+                cell.accessoryType = event.selected ? .checkmark : .none
                 
                 // set highlight color
                 let highlightColorView = UIView()
                 highlightColorView.backgroundColor = yellow
                 cell.selectedBackgroundView = highlightColorView
-                cell.textLabel?.highlightedTextColor = UIColor.darkGrayColor()
+                cell.textLabel?.highlightedTextColor = UIColor.darkGray
             }
         }
     }
     
-    override func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
-        // Return false if you do not want the specified item to be editable.
+    override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
         return true
     }
     
-    override func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
-        if editingStyle == .Delete {
+    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle,
+                            forRowAt indexPath: IndexPath) {
+        
+        if editingStyle == .delete {
             // delete object
-            if let event = fetchedResultsController?.objectAtIndexPath(indexPath) as? Event {
-                event.deleteFromContext()
-                AERecord.saveContext()
+            if let event = fetchedResultsController?.object(at: indexPath) as? Event {
+                event.delete()
+                AERecord.save()
             }
         }
     }
     
-    override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        // update value
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if let frc = fetchedResultsController {
-            if let event = frc.objectAtIndexPath(indexPath) as? Event {
+            if let event = frc.object(at: indexPath) as? Event {
                 // deselect previous / select current
-                if let previous: Event = Event.firstWithAttribute("selected", value: true) {
+                if let previous: Event = Event.first(with: "selected", value: true) {
                     previous.selected = false
                 }
                 event.selected = true
-                AERecord.saveContextAndWait()
+                AERecord.saveAndWait()
             }
         }
     }
     
     // MARK: - UISplitViewControllerDelegate
     
-    func splitViewController(splitViewController: UISplitViewController, collapseSecondaryViewController secondaryViewController: UIViewController, ontoPrimaryViewController primaryViewController: UIViewController) -> Bool {
+    func splitViewController(splitViewController: UISplitViewController,
+                             collapseSecondaryViewController secondaryViewController: UIViewController,
+                             ontoPrimaryViewController primaryViewController: UIViewController) -> Bool {
+        
         return collapseDetailViewController
     }
 

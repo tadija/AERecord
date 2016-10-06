@@ -11,6 +11,7 @@ import CoreData
 
 class Event: NSManagedObject {
 
+    @NSManaged var id: Int
     @NSManaged var timeStamp: NSDate
     @NSManaged var selected: Bool
 

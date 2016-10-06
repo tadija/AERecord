@@ -20,11 +20,11 @@ class DetailViewController: CoreDataCollectionViewController {
         super.viewDidLoad()
 
         // setup UISplitViewController displayMode button
-        navigationItem.leftBarButtonItem = splitViewController?.displayModeButtonItem()
+        navigationItem.leftBarButtonItem = splitViewController?.displayModeButtonItem
         navigationItem.leftItemsSupplementBackButton = true
         
         // setup options button
-        let optionsButton = UIBarButtonItem(title: "Options", style: .Plain, target: self, action: #selector(DetailViewController.showOptions(_:)))
+        let optionsButton = UIBarButtonItem(title: "Options", style: .plain, target: self, action: #selector(showOptions(_:)))
         self.navigationItem.rightBarButtonItem = optionsButton
 
         // setup fetchedResultsController property
@@ -33,27 +33,28 @@ class DetailViewController: CoreDataCollectionViewController {
     
     // MARK: - CoreData
     
-    func showOptions(sender: AnyObject) {
+    func showOptions(_ sender: AnyObject) {
 
-        let optionsAlert = UIAlertController(title: nil, message: nil, preferredStyle: UIAlertControllerStyle.ActionSheet)
+        let optionsAlert = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
         optionsAlert.popoverPresentationController?.barButtonItem = self.navigationItem.rightBarButtonItem
         
-        let addFewAction = UIAlertAction(title: "Add Few", style: .Default) { (action) -> Void in
+        let addFewAction = UIAlertAction(title: "Add Few", style: .default) { (action) -> Void in
             // create few objects
             for _ in 1...5 {
-                Event.createWithAttributes(["timeStamp" : NSDate()])
+                let id = Event.autoIncrementedInteger(for: "id")
+                Event.create(with: ["id": id, "timeStamp" : NSDate()])
             }
-            AERecord.saveContextAndWait()
+            AERecord.saveAndWait()
         }
         
-        let deleteAllAction = UIAlertAction(title: "Delete All", style: .Destructive) { (action) -> Void in
+        let deleteAllAction = UIAlertAction(title: "Delete All", style: .destructive) { (action) -> Void in
             // delete all objects
             Event.deleteAll()
-            AERecord.saveContextAndWait()
+            AERecord.saveAndWait()
         }
         
-        let updateAllAction = UIAlertAction(title: "Update All", style: .Default) { (action) in
-            if NSProcessInfo.instancesRespondToSelector(#selector(NSProcessInfo.isOperatingSystemAtLeastVersion(_:))) {
+        let updateAllAction = UIAlertAction(title: "Update All", style: .default) { (action) in
+            if ProcessInfo.instancesRespond(to: #selector(ProcessInfo.isOperatingSystemAtLeast)) {
                 // >= iOS 8
                 // batch update all objects (directly in persistent store) then refresh objects in context
                 Event.batchUpdateAndRefreshObjects(properties: ["timeStamp" : NSDate()])
@@ -71,13 +72,13 @@ class DetailViewController: CoreDataCollectionViewController {
                     for e in events {
                         e.timeStamp = NSDate()
                     }
-                    AERecord.saveContextAndWait()
+                    AERecord.saveAndWait()
                 }
             }
         }
         
-        let cancelAction = UIAlertAction(title: "Cancel", style: .Cancel) { (action) -> Void in
-            self.dismissViewControllerAnimated(true, completion: nil)
+        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel) { (action) -> Void in
+            self.dismiss(animated: true, completion: nil)
         }
         
         optionsAlert.addAction(addFewAction)
@@ -85,47 +86,49 @@ class DetailViewController: CoreDataCollectionViewController {
         optionsAlert.addAction(updateAllAction)
         optionsAlert.addAction(cancelAction)
         
-        presentViewController(optionsAlert, animated: true, completion: nil)
+        present(optionsAlert, animated: true, completion: nil)
     }
     
     func refreshFetchedResultsController() {
-        let sortDescriptors = [NSSortDescriptor(key: "timeStamp", ascending: true)]
+        let sortDescriptors = [NSSortDescriptor(key: "id", ascending: true)]
         let request = Event.createFetchRequest(sortDescriptors: sortDescriptors)
-        fetchedResultsController = NSFetchedResultsController(fetchRequest: request, managedObjectContext: AERecord.defaultContext, sectionNameKeyPath: nil, cacheName: nil)
+        fetchedResultsController = NSFetchedResultsController(fetchRequest: request,
+                                                              managedObjectContext: AERecord.Context.default,
+                                                              sectionNameKeyPath: nil, cacheName: nil)
     }
     
     // MARK: - Collection View
     
-    override func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCellWithReuseIdentifier("Cell", forIndexPath: indexPath) as! CustomCollectionViewCell
+    override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "Cell", for: indexPath) as! CustomCollectionViewCell
         self.configureCell(cell, atIndexPath: indexPath)
         return cell
     }
     
-    func configureCell(cell: CustomCollectionViewCell, atIndexPath indexPath: NSIndexPath) {
+    func configureCell(_ cell: CustomCollectionViewCell, atIndexPath indexPath: IndexPath) {
         if let frc = fetchedResultsController {
-            if let event = frc.objectAtIndexPath(indexPath) as? Event {
+            if let event = frc.object(at: indexPath) as? Event {
                 cell.backgroundColor = event.selected ? yellow : blue
-                cell.textLabel.text = event.timeStamp.description
+                cell.textLabel.text = "\(event.id) | \(event.timeStamp.description)"
             }
         }
     }
     
-    override func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
-        if let cell = collectionView.cellForItemAtIndexPath(indexPath) as? CustomCollectionViewCell {
+    override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        if let cell = collectionView.cellForItem(at: indexPath) as? CustomCollectionViewCell {
             // update value
             if let frc = fetchedResultsController {
-                if let event = frc.objectAtIndexPath(indexPath) as? Event {
+                if let event = frc.object(at: indexPath) as? Event {
                     cell.backgroundColor = yellow
                     // deselect previous
-                    if let previous = Event.firstWithAttribute("selected", value: true) {
+                    if let previous = Event.first(with: "selected", value: true) {
                         previous.selected = false
-                        AERecord.saveContextAndWait()
+                        AERecord.saveAndWait()
                     }
                     // select current and refresh timestamp
                     event.selected = true
                     event.timeStamp = NSDate()
-                    AERecord.saveContextAndWait()
+                    AERecord.saveAndWait()
                 }
             }
         }

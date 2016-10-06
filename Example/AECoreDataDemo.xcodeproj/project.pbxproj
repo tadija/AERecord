@@ -23,6 +23,41 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		8B250A7C1DA18AEF007FA098 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 8BFD97801CF09028008E8C9E /* AERecord.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 8BFD97D41CF0E8C2008E8C9E;
+			remoteInfo = "AERecord watchOS";
+		};
+		8B250A7E1DA18AEF007FA098 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 8BFD97801CF09028008E8C9E /* AERecord.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 8BFD97B61CF0E79E008E8C9E;
+			remoteInfo = "AERecord tvOS";
+		};
+		8B250A801DA18AEF007FA098 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 8BFD97801CF09028008E8C9E /* AERecord.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 8BFD97E21CF0E976008E8C9E;
+			remoteInfo = "AERecord tvOS Tests";
+		};
+		8B250A821DA18AEF007FA098 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 8BFD97801CF09028008E8C9E /* AERecord.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 8BFD97C51CF0E883008E8C9E;
+			remoteInfo = "AERecord OSX";
+		};
+		8B250A841DA18AEF007FA098 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 8BFD97801CF09028008E8C9E /* AERecord.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 8BFD97F61CF0EA36008E8C9E;
+			remoteInfo = "AERecord OSX Tests";
+		};
 		8BFD97861CF09028008E8C9E /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 8BFD97801CF09028008E8C9E /* AERecord.xcodeproj */;
@@ -166,7 +201,12 @@
 			isa = PBXGroup;
 			children = (
 				8BFD97871CF09028008E8C9E /* AERecord.framework */,
-				8BFD97891CF09028008E8C9E /* AERecordTests.xctest */,
+				8BFD97891CF09028008E8C9E /* AERecord iOS Tests.xctest */,
+				8B250A7D1DA18AEF007FA098 /* AERecord.framework */,
+				8B250A7F1DA18AEF007FA098 /* AERecord.framework */,
+				8B250A811DA18AEF007FA098 /* AERecord tvOS Tests.xctest */,
+				8B250A831DA18AEF007FA098 /* AERecord.framework */,
+				8B250A851DA18AEF007FA098 /* AERecord OSX Tests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -210,11 +250,12 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 0730;
-				LastUpgradeCheck = 0730;
+				LastUpgradeCheck = 0800;
 				ORGANIZATIONNAME = AE;
 				TargetAttributes = {
 					8BFD97151CF08CAD008E8C9E = {
 						CreatedOnToolsVersion = 7.3.1;
+						LastSwiftMigration = 0800;
 					};
 				};
 			};
@@ -247,6 +288,41 @@
 /* End PBXProject section */
 
 /* Begin PBXReferenceProxy section */
+		8B250A7D1DA18AEF007FA098 /* AERecord.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = AERecord.framework;
+			remoteRef = 8B250A7C1DA18AEF007FA098 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		8B250A7F1DA18AEF007FA098 /* AERecord.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = AERecord.framework;
+			remoteRef = 8B250A7E1DA18AEF007FA098 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		8B250A811DA18AEF007FA098 /* AERecord tvOS Tests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = "AERecord tvOS Tests.xctest";
+			remoteRef = 8B250A801DA18AEF007FA098 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		8B250A831DA18AEF007FA098 /* AERecord.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = AERecord.framework;
+			remoteRef = 8B250A821DA18AEF007FA098 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		8B250A851DA18AEF007FA098 /* AERecord OSX Tests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = "AERecord OSX Tests.xctest";
+			remoteRef = 8B250A841DA18AEF007FA098 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
 		8BFD97871CF09028008E8C9E /* AERecord.framework */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.framework;
@@ -254,10 +330,10 @@
 			remoteRef = 8BFD97861CF09028008E8C9E /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		8BFD97891CF09028008E8C9E /* AERecordTests.xctest */ = {
+		8BFD97891CF09028008E8C9E /* AERecord iOS Tests.xctest */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.cfbundle;
-			path = AERecordTests.xctest;
+			path = "AERecord iOS Tests.xctest";
 			remoteRef = 8BFD97881CF09028008E8C9E /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
@@ -353,8 +429,10 @@
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
@@ -399,8 +477,10 @@
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
@@ -419,6 +499,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
 			};
@@ -427,24 +508,26 @@
 		8BFD972E1CF08CAD008E8C9E /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
 				INFOPLIST_FILE = AECoreDataDemo/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = net.tadija.AECoreDataDemo;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
 			};
 			name = Debug;
 		};
 		8BFD972F1CF08CAD008E8C9E /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
 				INFOPLIST_FILE = AECoreDataDemo/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = net.tadija.AECoreDataDemo;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
 			};
 			name = Release;
 		};
