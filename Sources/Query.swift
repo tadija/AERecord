@@ -597,13 +597,13 @@ public extension NSManagedObject {
 
         - returns: Throws optional Array of `Any`.
     */
-    class func distinctValues(with attribute: String,
+    class func distinctValues(for attribute: String,
                               predicate: NSPredicate? = nil, orderedBy sortDescriptors: [NSSortDescriptor]? = nil,
                               in context: NSManagedObjectContext = AERecord.Context.default) throws -> [Any]? {
         
         var distinctValues = [Any]()
         
-        if let distinctRecords = try distinctRecords(with: [attribute], predicate: predicate,
+        if let distinctRecords = try distinctRecords(for: [attribute], predicate: predicate,
                                                      orderedBy: sortDescriptors, in: context)
         {
             for record in distinctRecords {
@@ -626,7 +626,7 @@ public extension NSManagedObject {
 
         - returns: Throws optional Array of `Any`.
     */
-    class func distinctRecords(with attributes: [AnyHashable],
+    class func distinctRecords(for attributes: [AnyHashable],
                                predicate: NSPredicate? = nil, orderedBy sortDescriptors: [NSSortDescriptor]? = nil,
                                in context: NSManagedObjectContext = AERecord.Context.default) throws -> [NSDictionary]? {
         
