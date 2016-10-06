@@ -1,7 +1,7 @@
 # AERecord
 **Super awesome Core Data wrapper written in Swift (iOS, watchOS, OSX, tvOS)**
 
-[![Language Swift 2.2](https://img.shields.io/badge/Language-Swift%202.2-orange.svg?style=flat)](https://swift.org)
+[![Language Swift 3.0](https://img.shields.io/badge/Language-Swift%203.0-orange.svg?style=flat)](https://swift.org)
 [![Platforms iOS | watchOS | tvOS | OSX](https://img.shields.io/badge/Platforms-iOS%20%7C%20watchOS%20%7C%20tvOS%20%7C%20OS%20X-lightgray.svg?style=flat)](http://www.apple.com)
 [![License MIT](https://img.shields.io/badge/License-MIT-lightgrey.svg?style=flat)](https://github.com/tadija/AERecord/blob/master/LICENSE)
 
@@ -38,15 +38,17 @@ All that boilerplate code for setting up of Core Data stack, passing the right `
 ## Features
 - Create default or custom Core Data stack **(or more stacks)** easily accessible from everywhere
 - Have **[main and background contexts](http://floriankugler.com/2013/04/29/concurrent-core-data-stack-performance-shootout/)**, always **in sync**, but don't worry about it
-- [CRUD](https://en.wikipedia.org/wiki/Create,_read,_update_and_delete) data in many ways with **one liners**
-- iCloud Support
+- [CRUD](https://en.wikipedia.org/wiki/Create,_read,_update_and_delete) data in many ways with **generic one liners**
+- **iCloud** support
 - Covered with **unit tests**
 - Covered with [docs](http://cocoadocs.org/docsets/AERecord)
 
 ## Usage
 
+You may see [this demo project](https://github.com/tadija/AECoreDataDemo) for example.
+
 ### Create Core Data stack
-Almost everything in `AERecord` is made with 'optional' parameters (which have default values if you don't specify anything).
+Almost everything in `AERecord` is made with 'optional' parameters (which have default values if you don't specify anything).  
 So you can load (create if doesn't already exist) CoreData stack like this:
 
 ```swift
@@ -60,10 +62,10 @@ do {
 or like this:
 
 ```swift
-let myModel: NSManagedObjectModel = AERecord.modelFromBundle(forClass: MyClass.self)
+let myModel: NSManagedObjectModel = AERecord.modelFromBundle(for: MyClass.self)
 let myStoreType = NSInMemoryStoreType
 let myConfiguration = ...
-let myStoreURL = AERecord.storeURLForName("MyName")
+let myStoreURL = AERecord.storeURL(for: "MyName")
 let myOptions = [NSMigratePersistentStoresAutomaticallyOption : true]
 do {
     try AERecord.loadCoreDataStack(managedObjectModel: myModel, storeType: myStoreType, configuration: myConfiguration, storeURL: myStoreURL, options: myOptions)
@@ -78,14 +80,14 @@ If for any reason you want to completely remove your stack and start over (separ
 
 ```swift
 do {
-    AERecord.destroyCoreDataStack() // destroy deafult stack
+    try AERecord.destroyCoreDataStack() // destroy deafult stack
 } catch {
     print(error)
 }
 
 do {
-    let demoStoreURL = AERecord.storeURLForName("Demo")
-    AERecord.destroyCoreDataStack(storeURL: demoStoreURL) // destroy custom stack
+    let demoStoreURL = AERecord.storeURL(for: "Demo")
+    try AERecord.destroyCoreDataStack(storeURL: demoStoreURL) // destroy custom stack
 } catch {
     print(error)
 }
@@ -98,40 +100,40 @@ AERecord.truncateAllData()
 ```
 
 ### Context operations
-Context for current thread (defaultContext) is used if you don't specify any (all examples below are using defaultContext).
+Context for current thread (`Context.default`) is used if you don't specify any (all examples below are using `Context.default`).
 
 ```swift
 // get context
-AERecord.mainContext // get NSManagedObjectContext for main thread
-AERecord.backgroundContext // get NSManagedObjectContext for background thread
-AERecord.defaultContext // get NSManagedObjectContext for current thread
+AERecord.Context.main // get NSManagedObjectContext for main thread
+AERecord.Context.background // get NSManagedObjectContext for background thread
+AERecord.Context.default // get NSManagedObjectContext for current thread
 
 // execute NSFetchRequest
 let request = ...
-let managedObjects = AERecord.executeFetchRequest(request) // returns array of objects
+let managedObjects = AERecord.execute(fetchRequest: request) // returns array of objects
 
 // save context
-AERecord.saveContext() // save default context
-AERecord.saveContextAndWait() // save default context and wait for save to finish
+AERecord.save() // save default context
+AERecord.saveAndWait() // save default context and wait for save to finish
 
 // turn managed objects into faults (you don't need this often, but sometimes you do)
-let objectIDS = ...
-AERecord.refreshObjects(objectIDS: objectIDS, mergeChanges: true) // turn objects for given IDs into faults
-AERecord.refreshAllRegisteredObjects(mergeChanges: true) // turn all registered objects into faults
+let objectIDs = ...
+AERecord.refreshObjects(with: [objectIDs], mergeChanges: true) // turn objects for given IDs into faults
+AERecord.refreshRegisteredObjects(mergeChanges: true) // turn all registered objects into faults
 ```
 
 ### Easy Queries
 Easy querying helpers are created as `NSManagedObject` extension.  
-All queries are called on `NSManagedObject` (or it's subclass), and `defaultContext` is used if you don't specify any (all examples below are using `defaultContext`).  
-All finders have optional parameter for `NSSortDescriptor` which is not used in these examples.
+All queries are called on generic `NSManagedObject`, and `Context.default` is used if you don't specify any (all examples below are using `Context.default`). All finders have optional parameter for `NSSortDescriptor` which is not used in these examples.
+For even more examples check out unit tests.
 
 #### General
-If you need custom `NSFetchRequest`, you can use `createPredicateForAttributes` and `createFetchRequest`, tweak it as you wish and execute with `AERecord`.
+If you need custom `NSFetchRequest`, you can use `createPredicate(with:)` and `createFetchRequest(predicate:sortdDescriptors:)`, tweak it as you wish and execute with `AERecord`.
 
 ```swift
 // create request for any entity type
 let attributes = ...
-let predicate = NSManagedObject.createPredicateForAttributes(attributes)
+let predicate = NSManagedObject.createPredicate(with: attributes)
 let sortDescriptors = ...
 let request = NSManagedObject.createFetchRequest(predicate: predicate, sortDescriptors: sortDescriptors)
 
@@ -139,7 +141,7 @@ let request = NSManagedObject.createFetchRequest(predicate: predicate, sortDescr
 request.someProperty = someValue
 
 // execute request and get array of entity objects
-let managedObjects = AERecord.executeFetchRequest(request)
+let managedObjects = AERecord.execute(fetchRequest: request)
 ```
 
 Of course, all of the often needed requests for creating, finding, counting or deleting entities are already there, so just keep reading.
@@ -149,12 +151,12 @@ Of course, all of the often needed requests for creating, finding, counting or d
 NSManagedObject.create() // create new object
 
 let attributes = ...
-NSManagedObject.createWithAttributes(attributes) // create new object and sets it's attributes
+NSManagedObject.create(with: attributes) // create new object and sets it's attributes
 
-NSManagedObject.firstOrCreateWithAttribute("city", value: "Belgrade") // get existing object (or create new if it doesn't already exist) with given attribute
+NSManagedObject.firstOrCreate(with: "city", value: "Belgrade") // get existing object (or create new if it doesn't already exist) with given attribute
 
 let attributes = ...
-NSManagedObject.firstOrCreateWithAttributes(attributes) // get existing object (or create new if it doesn't already exist) with given attributes
+NSManagedObject.firstOrCreate(with: attributes) // get existing object (or create new if it doesn't already exist) with given attributes
 ```
 
 #### Find first
@@ -162,14 +164,14 @@ NSManagedObject.firstOrCreateWithAttributes(attributes) // get existing object (
 NSManagedObject.first() // get first object
 
 let predicate = ...
-NSManagedObject.firstWithPredicate(predicate) // get first object with predicate
+NSManagedObject.first(with: predicate) // get first object with predicate
 
-NSManagedObject.firstWithAttribute("bike", value: "KTM") // get first object with given attribute name and value
+NSManagedObject.first(with: "bike", value: "KTM") // get first object with given attribute name and value
 
 let attributes = ...
-NSManagedObject.firstWithAttributes(attributes) // get first object with given attributes
+NSManagedObject.first(with: attributes) // get first object with given attributes
 
-NSManagedObject.firstOrderedByAttribute("speed", ascending: false) // get first object ordered by given attribute name
+NSManagedObject.first(orderedBy: "speed", ascending: false) // get first object ordered by given attribute name
 ```
 
 #### Find all
@@ -177,28 +179,28 @@ NSManagedObject.firstOrderedByAttribute("speed", ascending: false) // get first 
 NSManagedObject.all() // get all objects
 
 let predicate = ...
-NSManagedObject.allWithPredicate(predicate) // get all objects with predicate
+NSManagedObject.all(with: predicate) // get all objects with predicate
 
-NSManagedObject.allWithAttribute("year", value: 1984) // get all objects with given attribute name and value
+NSManagedObject.all(with: "year", value: 1984) // get all objects with given attribute name and value
 
 let attributes = ...
-NSManagedObject.allWithAttributes(attributes) // get all objects with given attributes
+NSManagedObject.all(with: attributes) // get all objects with given attributes
 ```
 
 #### Delete
 ```swift
 let managedObject = ...
-managedObject.deleteFromContext() // delete object (call on instance)
+managedObject.delete() // delete object (call on instance)
 
 NSManagedObject.deleteAll() // delete all objects
 
-NSManagedObject.deleteAllWithAttribute("fat", value: true) // delete all objects with given attribute name and value
+NSManagedObject.deleteAll(with: "fat", value: true) // delete all objects with given attribute name and value
 
 let attributes = ...
-NSManagedObject.deleteAllWithAttributes(attributes) // delete all objects with given attributes
+NSManagedObject.deleteAll(with: attributes) // delete all objects with given attributes
 
 let predicate = ...
-NSManagedObject.deleteAllWithPredicate(predicate) // delete all objects with given predicate
+NSManagedObject.deleteAll(with: predicate) // delete all objects with given predicate
 ```
 
 #### Count
@@ -206,25 +208,25 @@ NSManagedObject.deleteAllWithPredicate(predicate) // delete all objects with giv
 NSManagedObject.count() // count all objects
 
 let predicate = ...
-NSManagedObject.countWithPredicate(predicate) // count all objects with predicate
+NSManagedObject.count(with: predicate) // count all objects with predicate
 
-NSManagedObject.countWithAttribute("selected", value: true) // count all objects with given attribute name and value
+NSManagedObject.count(with: "selected", value: true) // count all objects with given attribute name and value
 
 let attributes = ...
-NSManagedObject.countWithAttributes(attributes) // count all objects with given attributes
+NSManagedObject.count(with: attributes) // count all objects with given attributes
 ```
 
 #### Distinct
 ```swift
 do {
-    NSManagedObject.distinctValuesForAttribute("city") // get array of all distinct values for given attribute name
+    try NSManagedObject.distinctValues(for: "city") // get array of all distinct values for given attribute name
 } catch {
     print(error)
 }
 
 do {
     let attributes = ["country", "city"]
-    NSManagedObject.distinctRecordsForAttributes(attributes) // get dictionary with name and values of all distinct records for multiple given attributes
+    try NSManagedObject.distinctRecords(for: attributes) // get dictionary with name and values of all distinct records for multiple given attributes
 } catch {
     print(error)
 }
@@ -234,7 +236,7 @@ do {
 If you need to have auto incremented attribute, just create one with Int type and get next ID like this:
 
 ```swift
-NSManagedObject.autoIncrementedIntegerAttribute("myCustomAutoID") // returns next ID for given attribute of Integer type
+NSManagedObject.autoIncrementedInteger(for: "myCustomAutoID") // returns next ID for given attribute of Integer type
 ```
 
 #### Turn managed object into fault
@@ -259,26 +261,28 @@ NSManagedObject.batchUpdateAndRefreshObjects(properties: ["timeStamp" : NSDate()
 ```
 
 ## Requirements
-- Xcode 7.3+
+- Xcode 8.0+
 - iOS 8.0+
 
 ## Installation
 
-- Using [CocoaPods](http://cocoapods.org/):
+- [Swift Package Manager](https://swift.org/package-manager/):
 
-    ```ruby
-    pod 'AERecord'
     ```
-
+    .Package(url: "https://github.com/tadija/AERecord.git", majorVersion: 4)
+    ```
+    
 - [Carthage](https://github.com/Carthage/Carthage):
 
     ```ogdl
     github "tadija/AERecord"
     ```
 
-- Manually:
+- [CocoaPods](http://cocoapods.org/):
 
-  Just drag **AERecord.swift** into your project and start using it.
+    ```ruby
+    pod 'AERecord'
+    ```
 
 ## License
 AERecord is released under the MIT license. See [LICENSE](LICENSE) for details.
