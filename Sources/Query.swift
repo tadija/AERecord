@@ -69,7 +69,7 @@ public extension NSManagedObject {
         return request
     }
     
-    private static let defaultPredicateType: NSCompoundPredicate.LogicalType = .and
+    public static let defaultPredicateType: NSCompoundPredicate.LogicalType = .and
     
     /**
         Creates predicate for given attributes and predicate type.

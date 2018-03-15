@@ -25,7 +25,7 @@
 import CoreData
 
 /// This internal class is core of AERecord as it configures and accesses Core Data Stack.
-class Stack {
+public class Stack {
     
     // MARK: - Singleton
     
@@ -33,17 +33,17 @@ class Stack {
     
     // MARK: - Defaults
     
-    class var defaultModel: NSManagedObjectModel {
+    public class var defaultModel: NSManagedObjectModel {
         return NSManagedObjectModel.mergedModel(from: nil)!
     }
     
-    class var defaultName: String {
+    public class var defaultName: String {
         guard let identifier = Bundle.main.bundleIdentifier
         else { return Bundle(for: Stack.self).bundleIdentifier! }
         return identifier
     }
     
-    class var defaultURL: URL {
+    public class var defaultURL: URL {
         return storeURL(for: defaultName)
     }
     
