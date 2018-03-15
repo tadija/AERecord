@@ -20,8 +20,9 @@ public class Stack {
     }
     
     public class var defaultName: String {
-        guard let identifier = Bundle.main.bundleIdentifier
-        else { return Bundle(for: Stack.self).bundleIdentifier! }
+        guard let identifier = Bundle.main.bundleIdentifier else {
+            return Bundle(for: Stack.self).bundleIdentifier!
+        }
         return identifier
     }
     
@@ -72,11 +73,13 @@ public class Stack {
                            configuration: String? = nil,
                            storeURL: URL = defaultURL,
                            options: [AnyHashable : Any]? = nil) throws {
-        
         model = managedObjectModel
         configureManagedObjectContexts()
-        try configureStoreCoordinator(model: managedObjectModel, type: storeType,
-                                      configuration: configuration, url: storeURL, options: options)
+        try configureStoreCoordinator(model: managedObjectModel,
+                                      type: storeType,
+                                      configuration: configuration,
+                                      url: storeURL,
+                                      options: options)
         startReceivingContextNotifications()
     }
     
@@ -95,7 +98,7 @@ public class Stack {
     }
     
     func destroyCoreDataStack(storeURL: URL = defaultURL) throws {
-        /// - NOTE: must load this core data stack first
+        /// - Note: must load this core data stack first
         /// because there is no `storeCoordinator` if `destroyCoreDataStack` is called before `loadCoreDataStack`
         /// also if we're in other stack currently that `storeCoordinator` doesn't know about this `storeURL`
         try loadCoreDataStack(storeURL: storeURL)
@@ -131,7 +134,7 @@ public class Stack {
     
     func execute<T: NSManagedObject>(fetchRequest request: NSFetchRequest<T>,
                  in context: NSManagedObjectContext) -> [T] {
-        
+
         var fetchedObjects = [T]()
         context.performAndWait {
             do {
@@ -246,26 +249,31 @@ public class Stack {
         guard
             let context = notification.object as? NSManagedObjectContext,
             let contextToRefresh = context == mainContext ? backgroundContext : mainContext
-        else { return }
-        
+        else {
+            return
+        }
         mergeChanges(from: notification, in: contextToRefresh)
     }
     
     // MARK: - iCloud
     
-    @objc func storesWillChange(_ notification: Notification) {
+    @objc
+    func storesWillChange(_ notification: Notification) {
         saveAndWait(context: defaultContext)
     }
     
-    @objc func storesDidChange(_ notification: Notification) {
-        // Does nothing here. You should probably update your UI now.
+    @objc
+    func storesDidChange(_ notification: Notification) {
+        /// - Note: Nothing here. You should probably update your UI now.
     }
     
-    @objc func willRemoveStore(_ notification: Notification) {
-        // Does nothing here (for now).
+    @objc
+    func willRemoveStore(_ notification: Notification) {
+        /// - Note: Nothing here (for now).
     }
     
-    @objc func persistentStoreDidImportUbiquitousContentChanges(_ changeNotification: Notification) {
+    @objc
+    func persistentStoreDidImportUbiquitousContentChanges(_ changeNotification: Notification) {
         mergeChanges(from: changeNotification, in: defaultContext)
     }
     

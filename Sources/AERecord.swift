@@ -31,7 +31,7 @@ open class AERecord {
     /**
         Loads Core Data Stack (creates new if it doesn't already exist) with given options (all options are optional).
     
-        - NOTE:
+        - Note:
         Default option for `managedObjectModel` is `NSManagedObjectModel.mergedModelFromBundles(nil)!`,
         custom may be provided by using `modelFromBundle:` method.
         
