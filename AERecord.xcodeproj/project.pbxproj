@@ -149,6 +149,34 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		8B6D9948205B062D0079EB3A /* AERecordTests */ = {
+			isa = PBXGroup;
+			children = (
+				8BFD96BF1CF0709C008E8C9E /* AERecordTests.swift */,
+				8B6D9949205B07280079EB3A /* Resources */,
+			);
+			path = AERecordTests;
+			sourceTree = "<group>";
+		};
+		8B6D9949205B07280079EB3A /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				8BFD96CE1CF07195008E8C9E /* AERecordTest.xcdatamodeld */,
+				8BFD96D01CF07195008E8C9E /* Animal.swift */,
+				8BFD96D11CF07195008E8C9E /* Breed.swift */,
+				8BFD96D21CF07195008E8C9E /* Species.swift */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		8B6D994B205B07B20079EB3A /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				8BFD96C11CF0709C008E8C9E /* Info.plist */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
 		8BFD96A61CF0709B008E8C9E = {
 			isa = PBXGroup;
 			children = (
@@ -187,9 +215,8 @@
 		8BFD96BE1CF0709C008E8C9E /* Tests */ = {
 			isa = PBXGroup;
 			children = (
-				8BFD96BF1CF0709C008E8C9E /* AERecordTests.swift */,
-				8BFD96D71CF07199008E8C9E /* Resources */,
-				8BFD96CD1CF07166008E8C9E /* Supporting Files */,
+				8B6D9948205B062D0079EB3A /* AERecordTests */,
+				8B6D994B205B07B20079EB3A /* Supporting Files */,
 			);
 			path = Tests;
 			sourceTree = "<group>";
@@ -201,25 +228,6 @@
 				8BFD96B51CF0709C008E8C9E /* Info.plist */,
 			);
 			name = "Supporting Files";
-			sourceTree = "<group>";
-		};
-		8BFD96CD1CF07166008E8C9E /* Supporting Files */ = {
-			isa = PBXGroup;
-			children = (
-				8BFD96C11CF0709C008E8C9E /* Info.plist */,
-			);
-			name = "Supporting Files";
-			sourceTree = "<group>";
-		};
-		8BFD96D71CF07199008E8C9E /* Resources */ = {
-			isa = PBXGroup;
-			children = (
-				8BFD96CE1CF07195008E8C9E /* AERecordTest.xcdatamodeld */,
-				8BFD96D01CF07195008E8C9E /* Animal.swift */,
-				8BFD96D11CF07195008E8C9E /* Breed.swift */,
-				8BFD96D21CF07195008E8C9E /* Species.swift */,
-			);
-			name = Resources;
 			sourceTree = "<group>";
 		};
 		8BFD970C1CF08112008E8C9E /* Supporting Files */ = {
