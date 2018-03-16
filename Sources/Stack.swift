@@ -1,31 +1,13 @@
-//
-// Stack.swift
-//
-// Copyright (c) 2014-2016 Marko Tadić <tadija@me.com> http://tadija.net
-//
-// Permission is hereby granted, free of charge, to any person obtaining a copy
-// of this software and associated documentation files (the "Software"), to deal
-// in the Software without restriction, including without limitation the rights
-// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-// copies of the Software, and to permit persons to whom the Software is
-// furnished to do so, subject to the following conditions:
-//
-// The above copyright notice and this permission notice shall be included in all
-// copies or substantial portions of the Software.
-//
-// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-// SOFTWARE.
-//
+/**
+ *  https://github.com/tadija/AERecord
+ *  Copyright (c) Marko Tadić 2014-2018
+ *  Licensed under the MIT license. See LICENSE file.
+ */
 
 import CoreData
 
 /// This internal class is core of AERecord as it configures and accesses Core Data Stack.
-class Stack {
+public class Stack {
     
     // MARK: - Singleton
     
@@ -33,17 +15,18 @@ class Stack {
     
     // MARK: - Defaults
     
-    class var defaultModel: NSManagedObjectModel {
+    public class var defaultModel: NSManagedObjectModel {
         return NSManagedObjectModel.mergedModel(from: nil)!
     }
     
-    class var defaultName: String {
-        guard let identifier = Bundle.main.bundleIdentifier
-        else { return Bundle(for: Stack.self).bundleIdentifier! }
+    public class var defaultName: String {
+        guard let identifier = Bundle.main.bundleIdentifier else {
+            return Bundle(for: Stack.self).bundleIdentifier!
+        }
         return identifier
     }
     
-    class var defaultURL: URL {
+    public class var defaultURL: URL {
         return storeURL(for: defaultName)
     }
     
@@ -90,11 +73,13 @@ class Stack {
                            configuration: String? = nil,
                            storeURL: URL = defaultURL,
                            options: [AnyHashable : Any]? = nil) throws {
-        
         model = managedObjectModel
         configureManagedObjectContexts()
-        try configureStoreCoordinator(model: managedObjectModel, type: storeType,
-                                      configuration: configuration, url: storeURL, options: options)
+        try configureStoreCoordinator(model: managedObjectModel,
+                                      type: storeType,
+                                      configuration: configuration,
+                                      url: storeURL,
+                                      options: options)
         startReceivingContextNotifications()
     }
     
@@ -113,7 +98,7 @@ class Stack {
     }
     
     func destroyCoreDataStack(storeURL: URL = defaultURL) throws {
-        /// - NOTE: must load this core data stack first
+        /// - Note: must load this core data stack first
         /// because there is no `storeCoordinator` if `destroyCoreDataStack` is called before `loadCoreDataStack`
         /// also if we're in other stack currently that `storeCoordinator` doesn't know about this `storeURL`
         try loadCoreDataStack(storeURL: storeURL)
@@ -149,7 +134,7 @@ class Stack {
     
     func execute<T: NSManagedObject>(fetchRequest request: NSFetchRequest<T>,
                  in context: NSManagedObjectContext) -> [T] {
-        
+
         var fetchedObjects = [T]()
         context.performAndWait {
             do {
@@ -264,26 +249,31 @@ class Stack {
         guard
             let context = notification.object as? NSManagedObjectContext,
             let contextToRefresh = context == mainContext ? backgroundContext : mainContext
-        else { return }
-        
+        else {
+            return
+        }
         mergeChanges(from: notification, in: contextToRefresh)
     }
     
     // MARK: - iCloud
     
-    @objc func storesWillChange(_ notification: Notification) {
+    @objc
+    func storesWillChange(_ notification: Notification) {
         saveAndWait(context: defaultContext)
     }
     
-    @objc func storesDidChange(_ notification: Notification) {
-        // Does nothing here. You should probably update your UI now.
+    @objc
+    func storesDidChange(_ notification: Notification) {
+        /// - Note: Nothing here. You should probably update your UI now.
     }
     
-    @objc func willRemoveStore(_ notification: Notification) {
-        // Does nothing here (for now).
+    @objc
+    func willRemoveStore(_ notification: Notification) {
+        /// - Note: Nothing here (for now).
     }
     
-    @objc func persistentStoreDidImportUbiquitousContentChanges(_ changeNotification: Notification) {
+    @objc
+    func persistentStoreDidImportUbiquitousContentChanges(_ changeNotification: Notification) {
         mergeChanges(from: changeNotification, in: defaultContext)
     }
     

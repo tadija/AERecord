@@ -1,21 +1,18 @@
+[![Swift 4.0](https://img.shields.io/badge/Swift-4.0-orange.svg?style=flat)](https://swift.org)
+[![Platforms iOS | watchOS | tvOS | OSX](https://img.shields.io/badge/Platforms-iOS%20%7C%20watchOS%20%7C%20tvOS%20%7C%20OS%20X-lightgray.svg?style=flat)](http://www.apple.com)
+[![CocoaPods](https://img.shields.io/cocoapods/v/AERecord.svg?style=flat)](https://cocoapods.org/pods/AERecord)
+[![Carthage](https://img.shields.io/badge/Carthage-compatible-brightgreen.svg?style=flat)](https://github.com/Carthage/Carthage)
+[![Swift Package Manager](https://img.shields.io/badge/SPM-compatible-brightgreen.svg)](https://github.com/apple/swift-package-manager)
+[![License MIT](https://img.shields.io/badge/License-MIT-lightgrey.svg?style=flat)](https://github.com/tadija/AERecord/blob/master/LICENSE)
+
 # AERecord
 **Super awesome Core Data wrapper written in Swift (iOS, watchOS, OSX, tvOS)**
 
-[![Language Swift 3.0](https://img.shields.io/badge/Language-Swift%203.0-orange.svg?style=flat)](https://swift.org)
-[![Platforms iOS | watchOS | tvOS | OSX](https://img.shields.io/badge/Platforms-iOS%20%7C%20watchOS%20%7C%20tvOS%20%7C%20OS%20X-lightgray.svg?style=flat)](http://www.apple.com)
-[![License MIT](https://img.shields.io/badge/License-MIT-lightgrey.svg?style=flat)](https://github.com/tadija/AERecord/blob/master/LICENSE)
-
-[![CocoaPods Version](https://img.shields.io/cocoapods/v/AERecord.svg?style=flat)](https://cocoapods.org/pods/AERecord)
-[![Carthage compatible](https://img.shields.io/badge/Carthage-compatible-brightgreen.svg?style=flat)](https://github.com/Carthage/Carthage)
-[![Swift Package Manager compatible](https://img.shields.io/badge/Swift%20Package%20Manager-compatible-brightgreen.svg)](https://github.com/apple/swift-package-manager)
-
-[AECoreDataUI](https://github.com/tadija/AECoreDataUI) was previously part of **AERecord**, so you may want to check that also.
-
->Why do we need yet another one Core Data wrapper? You tell me!  
-Inspired by many different (spoiler alert) **magical** solutions, I wanted something which combines complexity and functionality just about right.
-All that boilerplate code for setting up of Core Data stack, passing the right `NSManagedObjectContext` all accross the project and different threads, not to mention that boring `NSFetchRequest` boilerplates for any kind of creating or querying the data - should be less complicated now, with **AERecord**.
+> I made this for personal use, but feel free to use it or contribute.
+> For more examples check out [Sources](Sources) and [Tests](Tests).
 
 ## Index
+- [Intro](#intro)
 - [Features](#features)
 - [Usage](#usage)
     - [Create Core Data stack](#create-core-data-stack)
@@ -31,9 +28,16 @@ All that boilerplate code for setting up of Core Data stack, passing the right `
         - [Auto increment](#auto-increment)
         - [Turn managed object into fault](#turn-managed-object-into-fault)
         - [Batch update](#batch-update)
-- [Requirements](#requirements)
 - [Installation](#installation)
 - [License](#license)
+
+## Intro
+
+[AECoreDataUI](https://github.com/tadija/AECoreDataUI) was previously part of **AERecord**, so you may want to check that also.
+
+Why do we need yet another one Core Data wrapper? You tell me!  
+Inspired by many different (spoiler alert) **magical** solutions, I wanted something which combines complexity and functionality just about right.
+All that boilerplate code for setting up of Core Data stack, passing the right `NSManagedObjectContext` all accross the project and different threads, not to mention that boring `NSFetchRequest` boilerplates for any kind of creating or querying the data - should be more simple with this.
 
 ## Features
 - Create default or custom Core Data stack **(or more stacks)** easily accessible from everywhere
@@ -41,7 +45,7 @@ All that boilerplate code for setting up of Core Data stack, passing the right `
 - [CRUD](https://en.wikipedia.org/wiki/Create,_read,_update_and_delete) data in many ways with **generic one liners**
 - **iCloud** support
 - Covered with **unit tests**
-- Covered with [docs](http://cocoadocs.org/docsets/AERecord)
+- Covered with inline docs
 
 ## Usage
 
@@ -80,7 +84,7 @@ If for any reason you want to completely remove your stack and start over (separ
 
 ```swift
 do {
-    try AERecord.destroyCoreDataStack() // destroy deafult stack
+    try AERecord.destroyCoreDataStack() // destroy default stack
 } catch {
     print(error)
 }
@@ -259,10 +263,6 @@ NSManagedObject.objectsCountForBatchUpdate(properties: ["timeStamp" : NSDate()])
 
 NSManagedObject.batchUpdateAndRefreshObjects(properties: ["timeStamp" : NSDate()]) // turns updated objects into faults after updating them in persistent store
 ```
-
-## Requirements
-- Xcode 8.0+
-- iOS 8.0+
 
 ## Installation
 

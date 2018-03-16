@@ -4,8 +4,12 @@
  *  Licensed under the MIT license. See LICENSE file.
  */
 
-import PackageDescription
+import Foundation
+import CoreData
 
-let package = Package(
-    name: "AERecord"
-)
+class Species: NSManagedObject {
+
+    @NSManaged var name: String
+    @NSManaged var breeds: NSSet
+
+}

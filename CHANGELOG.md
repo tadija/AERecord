@@ -1,5 +1,11 @@
 # Changelog
 
+## Version 4.1.0
+
+- Migrated to Swift 4
+- Updated project to recommended settings with Xcode 9.2 (9C40b)
+- Minor refactoring
+
 ## Version 4.0.0
 
 - Code updated for Swift 3.0 - Xcode 8.0 (8A218a)

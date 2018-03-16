@@ -1,10 +1,8 @@
-//
-//  Breed.swift
-//  AERecord
-//
-//  Created by Marko Tadic on 7/1/15.
-//  Copyright (c) 2015 ae. All rights reserved.
-//
+/**
+ *  https://github.com/tadija/AERecord
+ *  Copyright (c) Marko Tadić 2014-2018
+ *  Licensed under the MIT license. See LICENSE file.
+ */
 
 import Foundation
 import CoreData
