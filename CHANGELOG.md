@@ -1,5 +1,10 @@
 # Changelog
 
+## Version 4.1.1
+
+- Bumped Swift version to 4.2 with Xcode 10 GM
+- Reorganized files and directories
+
 ## Version 4.1.0
 
 - Migrated to Swift 4
