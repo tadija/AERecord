@@ -7,40 +7,40 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		8B250A971DA1BA30007FA098 /* Stack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B5258721D9FFD0400C4A604 /* Stack.swift */; };
-		8B250A981DA1BA31007FA098 /* Stack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B5258721D9FFD0400C4A604 /* Stack.swift */; };
-		8B250A991DA1BA31007FA098 /* Stack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B5258721D9FFD0400C4A604 /* Stack.swift */; };
-		8B250A9A1DA1BA34007FA098 /* Query.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B5258741D9FFDA300C4A604 /* Query.swift */; };
-		8B250A9B1DA1BA34007FA098 /* Query.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B5258741D9FFDA300C4A604 /* Query.swift */; };
-		8B250A9C1DA1BA35007FA098 /* Query.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B5258741D9FFDA300C4A604 /* Query.swift */; };
-		8B5258731D9FFD0400C4A604 /* Stack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B5258721D9FFD0400C4A604 /* Stack.swift */; };
-		8B5258751D9FFDA300C4A604 /* Query.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B5258741D9FFDA300C4A604 /* Query.swift */; };
-		8BFD96B41CF0709C008E8C9E /* AERecord.h in Headers */ = {isa = PBXBuildFile; fileRef = 8BFD96B31CF0709C008E8C9E /* AERecord.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		8B080D7421506167009B8DBB /* AERecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B080D7121506167009B8DBB /* AERecord.swift */; };
+		8B080D7521506167009B8DBB /* AERecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B080D7121506167009B8DBB /* AERecord.swift */; };
+		8B080D7621506167009B8DBB /* AERecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B080D7121506167009B8DBB /* AERecord.swift */; };
+		8B080D7721506167009B8DBB /* AERecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B080D7121506167009B8DBB /* AERecord.swift */; };
+		8B080D7821506167009B8DBB /* Query.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B080D7221506167009B8DBB /* Query.swift */; };
+		8B080D7921506167009B8DBB /* Query.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B080D7221506167009B8DBB /* Query.swift */; };
+		8B080D7A21506167009B8DBB /* Query.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B080D7221506167009B8DBB /* Query.swift */; };
+		8B080D7B21506167009B8DBB /* Query.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B080D7221506167009B8DBB /* Query.swift */; };
+		8B080D7C21506167009B8DBB /* Stack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B080D7321506167009B8DBB /* Stack.swift */; };
+		8B080D7D21506167009B8DBB /* Stack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B080D7321506167009B8DBB /* Stack.swift */; };
+		8B080D7E21506167009B8DBB /* Stack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B080D7321506167009B8DBB /* Stack.swift */; };
+		8B080D7F21506167009B8DBB /* Stack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B080D7321506167009B8DBB /* Stack.swift */; };
+		8B080D8021506189009B8DBB /* AERecord.h in Headers */ = {isa = PBXBuildFile; fileRef = 8B080D6621506146009B8DBB /* AERecord.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		8B080D812150618A009B8DBB /* AERecord.h in Headers */ = {isa = PBXBuildFile; fileRef = 8B080D6621506146009B8DBB /* AERecord.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		8B080D822150618A009B8DBB /* AERecord.h in Headers */ = {isa = PBXBuildFile; fileRef = 8B080D6621506146009B8DBB /* AERecord.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		8B080D832150618B009B8DBB /* AERecord.h in Headers */ = {isa = PBXBuildFile; fileRef = 8B080D6621506146009B8DBB /* AERecord.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		8B080D84215061F1009B8DBB /* Animal.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B080D6C21506146009B8DBB /* Animal.swift */; };
+		8B080D85215061F1009B8DBB /* Breed.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B080D6D21506146009B8DBB /* Breed.swift */; };
+		8B080D86215061F1009B8DBB /* Species.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B080D6E21506146009B8DBB /* Species.swift */; };
+		8B080D87215061F2009B8DBB /* Animal.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B080D6C21506146009B8DBB /* Animal.swift */; };
+		8B080D88215061F2009B8DBB /* Breed.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B080D6D21506146009B8DBB /* Breed.swift */; };
+		8B080D89215061F2009B8DBB /* Species.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B080D6E21506146009B8DBB /* Species.swift */; };
+		8B080D8A215061F2009B8DBB /* Animal.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B080D6C21506146009B8DBB /* Animal.swift */; };
+		8B080D8B215061F2009B8DBB /* Breed.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B080D6D21506146009B8DBB /* Breed.swift */; };
+		8B080D8C215061F2009B8DBB /* Species.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B080D6E21506146009B8DBB /* Species.swift */; };
+		8B080D8D215061F6009B8DBB /* AERecordTest.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 8B080D6A21506146009B8DBB /* AERecordTest.xcdatamodeld */; };
+		8B080D8E215061F6009B8DBB /* AERecordTest.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 8B080D6A21506146009B8DBB /* AERecordTest.xcdatamodeld */; };
+		8B080D8F215061F7009B8DBB /* AERecordTest.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 8B080D6A21506146009B8DBB /* AERecordTest.xcdatamodeld */; };
 		8BFD96BB1CF0709C008E8C9E /* AERecord.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8BFD96B01CF0709B008E8C9E /* AERecord.framework */; };
 		8BFD96C01CF0709C008E8C9E /* AERecordTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BFD96BF1CF0709C008E8C9E /* AERecordTests.swift */; };
-		8BFD96CB1CF0712D008E8C9E /* AERecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BFD96CA1CF0712D008E8C9E /* AERecord.swift */; };
-		8BFD96D31CF07195008E8C9E /* AERecordTest.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 8BFD96CE1CF07195008E8C9E /* AERecordTest.xcdatamodeld */; };
-		8BFD96D41CF07195008E8C9E /* Animal.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BFD96D01CF07195008E8C9E /* Animal.swift */; };
-		8BFD96D51CF07195008E8C9E /* Breed.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BFD96D11CF07195008E8C9E /* Breed.swift */; };
-		8BFD96D61CF07195008E8C9E /* Species.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BFD96D21CF07195008E8C9E /* Species.swift */; };
-		8BFD97BE1CF0E852008E8C9E /* AERecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BFD96CA1CF0712D008E8C9E /* AERecord.swift */; };
-		8BFD97BF1CF0E85E008E8C9E /* AERecord.h in Headers */ = {isa = PBXBuildFile; fileRef = 8BFD96B31CF0709C008E8C9E /* AERecord.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		8BFD97CD1CF0E89F008E8C9E /* AERecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BFD96CA1CF0712D008E8C9E /* AERecord.swift */; };
-		8BFD97CE1CF0E8A3008E8C9E /* AERecord.h in Headers */ = {isa = PBXBuildFile; fileRef = 8BFD96B31CF0709C008E8C9E /* AERecord.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		8BFD97DC1CF0E8D6008E8C9E /* AERecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BFD96CA1CF0712D008E8C9E /* AERecord.swift */; };
-		8BFD97DD1CF0E8E2008E8C9E /* AERecord.h in Headers */ = {isa = PBXBuildFile; fileRef = 8BFD96B31CF0709C008E8C9E /* AERecord.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		8BFD97E71CF0E976008E8C9E /* AERecord.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8BFD97B61CF0E79E008E8C9E /* AERecord.framework */; };
 		8BFD97ED1CF0E9B6008E8C9E /* AERecordTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BFD96BF1CF0709C008E8C9E /* AERecordTests.swift */; };
-		8BFD97EE1CF0E9CF008E8C9E /* AERecordTest.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 8BFD96CE1CF07195008E8C9E /* AERecordTest.xcdatamodeld */; };
-		8BFD97EF1CF0E9CF008E8C9E /* Animal.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BFD96D01CF07195008E8C9E /* Animal.swift */; };
-		8BFD97F01CF0E9CF008E8C9E /* Breed.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BFD96D11CF07195008E8C9E /* Breed.swift */; };
-		8BFD97F11CF0E9CF008E8C9E /* Species.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BFD96D21CF07195008E8C9E /* Species.swift */; };
 		8BFD97FB1CF0EA36008E8C9E /* AERecord.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8BFD97C51CF0E883008E8C9E /* AERecord.framework */; };
 		8BFD98011CF0EA46008E8C9E /* AERecordTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BFD96BF1CF0709C008E8C9E /* AERecordTests.swift */; };
-		8BFD98021CF0EA46008E8C9E /* AERecordTest.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 8BFD96CE1CF07195008E8C9E /* AERecordTest.xcdatamodeld */; };
-		8BFD98031CF0EA46008E8C9E /* Animal.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BFD96D01CF07195008E8C9E /* Animal.swift */; };
-		8BFD98041CF0EA46008E8C9E /* Breed.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BFD96D11CF07195008E8C9E /* Breed.swift */; };
-		8BFD98051CF0EA46008E8C9E /* Species.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BFD96D21CF07195008E8C9E /* Species.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -68,19 +68,19 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		8B5258721D9FFD0400C4A604 /* Stack.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Stack.swift; sourceTree = "<group>"; };
-		8B5258741D9FFDA300C4A604 /* Query.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Query.swift; sourceTree = "<group>"; };
+		8B080D6621506146009B8DBB /* AERecord.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AERecord.h; sourceTree = "<group>"; };
+		8B080D6721506146009B8DBB /* AERecord.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = AERecord.plist; sourceTree = "<group>"; };
+		8B080D6821506146009B8DBB /* AERecordTests.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = AERecordTests.plist; sourceTree = "<group>"; };
+		8B080D6B21506146009B8DBB /* AERecordTest.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = AERecordTest.xcdatamodel; sourceTree = "<group>"; };
+		8B080D6C21506146009B8DBB /* Animal.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Animal.swift; sourceTree = "<group>"; };
+		8B080D6D21506146009B8DBB /* Breed.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Breed.swift; sourceTree = "<group>"; };
+		8B080D6E21506146009B8DBB /* Species.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Species.swift; sourceTree = "<group>"; };
+		8B080D7121506167009B8DBB /* AERecord.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AERecord.swift; sourceTree = "<group>"; };
+		8B080D7221506167009B8DBB /* Query.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Query.swift; sourceTree = "<group>"; };
+		8B080D7321506167009B8DBB /* Stack.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Stack.swift; sourceTree = "<group>"; };
 		8BFD96B01CF0709B008E8C9E /* AERecord.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = AERecord.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		8BFD96B31CF0709C008E8C9E /* AERecord.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AERecord.h; sourceTree = "<group>"; };
-		8BFD96B51CF0709C008E8C9E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		8BFD96BA1CF0709C008E8C9E /* AERecord iOS Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "AERecord iOS Tests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		8BFD96BF1CF0709C008E8C9E /* AERecordTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AERecordTests.swift; sourceTree = "<group>"; };
-		8BFD96C11CF0709C008E8C9E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		8BFD96CA1CF0712D008E8C9E /* AERecord.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AERecord.swift; sourceTree = "<group>"; };
-		8BFD96CF1CF07195008E8C9E /* AERecordTest.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = AERecordTest.xcdatamodel; sourceTree = "<group>"; };
-		8BFD96D01CF07195008E8C9E /* Animal.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Animal.swift; sourceTree = "<group>"; };
-		8BFD96D11CF07195008E8C9E /* Breed.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Breed.swift; sourceTree = "<group>"; };
-		8BFD96D21CF07195008E8C9E /* Species.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Species.swift; sourceTree = "<group>"; };
 		8BFD97071CF080EF008E8C9E /* AERecord.podspec */ = {isa = PBXFileReference; lastKnownFileType = text; path = AERecord.podspec; sourceTree = "<group>"; };
 		8BFD97081CF080EF008E8C9E /* CHANGELOG.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = CHANGELOG.md; sourceTree = "<group>"; };
 		8BFD97091CF080EF008E8C9E /* LICENSE */ = {isa = PBXFileReference; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
@@ -90,7 +90,7 @@
 		8BFD97C51CF0E883008E8C9E /* AERecord.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = AERecord.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		8BFD97D41CF0E8C2008E8C9E /* AERecord.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = AERecord.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		8BFD97E21CF0E976008E8C9E /* AERecord tvOS Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "AERecord tvOS Tests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
-		8BFD97F61CF0EA36008E8C9E /* AERecord OSX Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "AERecord OSX Tests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		8BFD97F61CF0EA36008E8C9E /* AERecord macOS Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "AERecord macOS Tests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -149,39 +149,60 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		8B6D9948205B062D0079EB3A /* AERecordTests */ = {
+		8B080D6521506146009B8DBB /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				8BFD96BF1CF0709C008E8C9E /* AERecordTests.swift */,
-				8B6D9949205B07280079EB3A /* Resources */,
-			);
-			path = AERecordTests;
-			sourceTree = "<group>";
-		};
-		8B6D9949205B07280079EB3A /* Resources */ = {
-			isa = PBXGroup;
-			children = (
-				8BFD96CE1CF07195008E8C9E /* AERecordTest.xcdatamodeld */,
-				8BFD96D01CF07195008E8C9E /* Animal.swift */,
-				8BFD96D11CF07195008E8C9E /* Breed.swift */,
-				8BFD96D21CF07195008E8C9E /* Species.swift */,
+				8B080D6621506146009B8DBB /* AERecord.h */,
+				8B080D6721506146009B8DBB /* AERecord.plist */,
+				8B080D6821506146009B8DBB /* AERecordTests.plist */,
+				8B080D6921506146009B8DBB /* Sample Model */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
 		};
-		8B6D994B205B07B20079EB3A /* Supporting Files */ = {
+		8B080D6921506146009B8DBB /* Sample Model */ = {
 			isa = PBXGroup;
 			children = (
-				8BFD96C11CF0709C008E8C9E /* Info.plist */,
+				8B080D6A21506146009B8DBB /* AERecordTest.xcdatamodeld */,
+				8B080D6C21506146009B8DBB /* Animal.swift */,
+				8B080D6D21506146009B8DBB /* Breed.swift */,
+				8B080D6E21506146009B8DBB /* Species.swift */,
 			);
-			name = "Supporting Files";
+			path = "Sample Model";
+			sourceTree = "<group>";
+		};
+		8B080D6F21506167009B8DBB /* Sources */ = {
+			isa = PBXGroup;
+			children = (
+				8B080D7021506167009B8DBB /* AERecord */,
+			);
+			path = Sources;
+			sourceTree = "<group>";
+		};
+		8B080D7021506167009B8DBB /* AERecord */ = {
+			isa = PBXGroup;
+			children = (
+				8B080D7121506167009B8DBB /* AERecord.swift */,
+				8B080D7221506167009B8DBB /* Query.swift */,
+				8B080D7321506167009B8DBB /* Stack.swift */,
+			);
+			path = AERecord;
+			sourceTree = "<group>";
+		};
+		8B6D9948205B062D0079EB3A /* AERecordTests */ = {
+			isa = PBXGroup;
+			children = (
+				8BFD96BF1CF0709C008E8C9E /* AERecordTests.swift */,
+			);
+			path = AERecordTests;
 			sourceTree = "<group>";
 		};
 		8BFD96A61CF0709B008E8C9E = {
 			isa = PBXGroup;
 			children = (
 				8BFD970B1CF080F7008E8C9E /* Package.swift */,
-				8BFD96B21CF0709C008E8C9E /* Sources */,
+				8B080D6521506146009B8DBB /* Resources */,
+				8B080D6F21506167009B8DBB /* Sources */,
 				8BFD96BE1CF0709C008E8C9E /* Tests */,
 				8BFD96B11CF0709B008E8C9E /* Products */,
 				8BFD970C1CF08112008E8C9E /* Supporting Files */,
@@ -197,38 +218,17 @@
 				8BFD97C51CF0E883008E8C9E /* AERecord.framework */,
 				8BFD97D41CF0E8C2008E8C9E /* AERecord.framework */,
 				8BFD97E21CF0E976008E8C9E /* AERecord tvOS Tests.xctest */,
-				8BFD97F61CF0EA36008E8C9E /* AERecord OSX Tests.xctest */,
+				8BFD97F61CF0EA36008E8C9E /* AERecord macOS Tests.xctest */,
 			);
 			name = Products;
-			sourceTree = "<group>";
-		};
-		8BFD96B21CF0709C008E8C9E /* Sources */ = {
-			isa = PBXGroup;
-			children = (
-				8BFD96CA1CF0712D008E8C9E /* AERecord.swift */,
-				8B5258721D9FFD0400C4A604 /* Stack.swift */,
-				8B5258741D9FFDA300C4A604 /* Query.swift */,
-				8BFD96CC1CF0715E008E8C9E /* Supporting Files */,
-			);
-			path = Sources;
 			sourceTree = "<group>";
 		};
 		8BFD96BE1CF0709C008E8C9E /* Tests */ = {
 			isa = PBXGroup;
 			children = (
 				8B6D9948205B062D0079EB3A /* AERecordTests */,
-				8B6D994B205B07B20079EB3A /* Supporting Files */,
 			);
 			path = Tests;
-			sourceTree = "<group>";
-		};
-		8BFD96CC1CF0715E008E8C9E /* Supporting Files */ = {
-			isa = PBXGroup;
-			children = (
-				8BFD96B31CF0709C008E8C9E /* AERecord.h */,
-				8BFD96B51CF0709C008E8C9E /* Info.plist */,
-			);
-			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
 		8BFD970C1CF08112008E8C9E /* Supporting Files */ = {
@@ -249,7 +249,7 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				8BFD96B41CF0709C008E8C9E /* AERecord.h in Headers */,
+				8B080D8021506189009B8DBB /* AERecord.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -257,7 +257,7 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				8BFD97BF1CF0E85E008E8C9E /* AERecord.h in Headers */,
+				8B080D822150618A009B8DBB /* AERecord.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -265,7 +265,7 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				8BFD97CE1CF0E8A3008E8C9E /* AERecord.h in Headers */,
+				8B080D832150618B009B8DBB /* AERecord.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -273,7 +273,7 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				8BFD97DD1CF0E8E2008E8C9E /* AERecord.h in Headers */,
+				8B080D812150618A009B8DBB /* AERecord.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -334,9 +334,9 @@
 			productReference = 8BFD97B61CF0E79E008E8C9E /* AERecord.framework */;
 			productType = "com.apple.product-type.framework";
 		};
-		8BFD97C41CF0E883008E8C9E /* AERecord OSX */ = {
+		8BFD97C41CF0E883008E8C9E /* AERecord macOS */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 8BFD97CA1CF0E883008E8C9E /* Build configuration list for PBXNativeTarget "AERecord OSX" */;
+			buildConfigurationList = 8BFD97CA1CF0E883008E8C9E /* Build configuration list for PBXNativeTarget "AERecord macOS" */;
 			buildPhases = (
 				8BFD97C01CF0E883008E8C9E /* Sources */,
 				8BFD97C11CF0E883008E8C9E /* Frameworks */,
@@ -347,7 +347,7 @@
 			);
 			dependencies = (
 			);
-			name = "AERecord OSX";
+			name = "AERecord macOS";
 			productName = "AERecord OSX";
 			productReference = 8BFD97C51CF0E883008E8C9E /* AERecord.framework */;
 			productType = "com.apple.product-type.framework";
@@ -388,9 +388,9 @@
 			productReference = 8BFD97E21CF0E976008E8C9E /* AERecord tvOS Tests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
-		8BFD97F51CF0EA36008E8C9E /* AERecord OSX Tests */ = {
+		8BFD97F51CF0EA36008E8C9E /* AERecord macOS Tests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 8BFD97FE1CF0EA36008E8C9E /* Build configuration list for PBXNativeTarget "AERecord OSX Tests" */;
+			buildConfigurationList = 8BFD97FE1CF0EA36008E8C9E /* Build configuration list for PBXNativeTarget "AERecord macOS Tests" */;
 			buildPhases = (
 				8BFD97F21CF0EA36008E8C9E /* Sources */,
 				8BFD97F31CF0EA36008E8C9E /* Frameworks */,
@@ -401,9 +401,9 @@
 			dependencies = (
 				8BFD97FD1CF0EA36008E8C9E /* PBXTargetDependency */,
 			);
-			name = "AERecord OSX Tests";
+			name = "AERecord macOS Tests";
 			productName = "AERecord OSX Tests";
-			productReference = 8BFD97F61CF0EA36008E8C9E /* AERecord OSX Tests.xctest */;
+			productReference = 8BFD97F61CF0EA36008E8C9E /* AERecord macOS Tests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
 /* End PBXNativeTarget section */
@@ -458,8 +458,8 @@
 				8BFD97D31CF0E8C2008E8C9E /* AERecord watchOS */,
 				8BFD97B51CF0E79E008E8C9E /* AERecord tvOS */,
 				8BFD97E11CF0E976008E8C9E /* AERecord tvOS Tests */,
-				8BFD97C41CF0E883008E8C9E /* AERecord OSX */,
-				8BFD97F51CF0EA36008E8C9E /* AERecord OSX Tests */,
+				8BFD97C41CF0E883008E8C9E /* AERecord macOS */,
+				8BFD97F51CF0EA36008E8C9E /* AERecord macOS Tests */,
 			);
 		};
 /* End PBXProject section */
@@ -521,9 +521,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				8B5258731D9FFD0400C4A604 /* Stack.swift in Sources */,
-				8B5258751D9FFDA300C4A604 /* Query.swift in Sources */,
-				8BFD96CB1CF0712D008E8C9E /* AERecord.swift in Sources */,
+				8B080D7821506167009B8DBB /* Query.swift in Sources */,
+				8B080D7C21506167009B8DBB /* Stack.swift in Sources */,
+				8B080D7421506167009B8DBB /* AERecord.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -531,11 +531,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				8BFD96D51CF07195008E8C9E /* Breed.swift in Sources */,
-				8BFD96D31CF07195008E8C9E /* AERecordTest.xcdatamodeld in Sources */,
+				8B080D86215061F1009B8DBB /* Species.swift in Sources */,
+				8B080D8F215061F7009B8DBB /* AERecordTest.xcdatamodeld in Sources */,
+				8B080D85215061F1009B8DBB /* Breed.swift in Sources */,
 				8BFD96C01CF0709C008E8C9E /* AERecordTests.swift in Sources */,
-				8BFD96D61CF07195008E8C9E /* Species.swift in Sources */,
-				8BFD96D41CF07195008E8C9E /* Animal.swift in Sources */,
+				8B080D84215061F1009B8DBB /* Animal.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -543,9 +543,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				8B250A981DA1BA31007FA098 /* Stack.swift in Sources */,
-				8B250A9B1DA1BA34007FA098 /* Query.swift in Sources */,
-				8BFD97BE1CF0E852008E8C9E /* AERecord.swift in Sources */,
+				8B080D7A21506167009B8DBB /* Query.swift in Sources */,
+				8B080D7E21506167009B8DBB /* Stack.swift in Sources */,
+				8B080D7621506167009B8DBB /* AERecord.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -553,9 +553,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				8B250A991DA1BA31007FA098 /* Stack.swift in Sources */,
-				8B250A9C1DA1BA35007FA098 /* Query.swift in Sources */,
-				8BFD97CD1CF0E89F008E8C9E /* AERecord.swift in Sources */,
+				8B080D7B21506167009B8DBB /* Query.swift in Sources */,
+				8B080D7F21506167009B8DBB /* Stack.swift in Sources */,
+				8B080D7721506167009B8DBB /* AERecord.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -563,9 +563,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				8B250A971DA1BA30007FA098 /* Stack.swift in Sources */,
-				8B250A9A1DA1BA34007FA098 /* Query.swift in Sources */,
-				8BFD97DC1CF0E8D6008E8C9E /* AERecord.swift in Sources */,
+				8B080D7921506167009B8DBB /* Query.swift in Sources */,
+				8B080D7D21506167009B8DBB /* Stack.swift in Sources */,
+				8B080D7521506167009B8DBB /* AERecord.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -573,11 +573,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				8BFD97EE1CF0E9CF008E8C9E /* AERecordTest.xcdatamodeld in Sources */,
-				8BFD97EF1CF0E9CF008E8C9E /* Animal.swift in Sources */,
-				8BFD97F01CF0E9CF008E8C9E /* Breed.swift in Sources */,
-				8BFD97F11CF0E9CF008E8C9E /* Species.swift in Sources */,
+				8B080D89215061F2009B8DBB /* Species.swift in Sources */,
+				8B080D8E215061F6009B8DBB /* AERecordTest.xcdatamodeld in Sources */,
+				8B080D88215061F2009B8DBB /* Breed.swift in Sources */,
 				8BFD97ED1CF0E9B6008E8C9E /* AERecordTests.swift in Sources */,
+				8B080D87215061F2009B8DBB /* Animal.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -585,11 +585,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8B080D8C215061F2009B8DBB /* Species.swift in Sources */,
+				8B080D8D215061F6009B8DBB /* AERecordTest.xcdatamodeld in Sources */,
+				8B080D8B215061F2009B8DBB /* Breed.swift in Sources */,
 				8BFD98011CF0EA46008E8C9E /* AERecordTests.swift in Sources */,
-				8BFD98021CF0EA46008E8C9E /* AERecordTest.xcdatamodeld in Sources */,
-				8BFD98031CF0EA46008E8C9E /* Animal.swift in Sources */,
-				8BFD98041CF0EA46008E8C9E /* Breed.swift in Sources */,
-				8BFD98051CF0EA46008E8C9E /* Species.swift in Sources */,
+				8B080D8A215061F2009B8DBB /* Animal.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -608,7 +608,7 @@
 		};
 		8BFD97FD1CF0EA36008E8C9E /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 8BFD97C41CF0E883008E8C9E /* AERecord OSX */;
+			target = 8BFD97C41CF0E883008E8C9E /* AERecord macOS */;
 			targetProxy = 8BFD97FC1CF0EA36008E8C9E /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
@@ -737,7 +737,7 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				INFOPLIST_FILE = Sources/Info.plist;
+				INFOPLIST_FILE = Resources/AERecord.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = net.tadija.AERecord;
@@ -757,7 +757,7 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				INFOPLIST_FILE = Sources/Info.plist;
+				INFOPLIST_FILE = Resources/AERecord.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = net.tadija.AERecord;
@@ -770,7 +770,8 @@
 		8BFD96C81CF0709C008E8C9E /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				INFOPLIST_FILE = Tests/Info.plist;
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				INFOPLIST_FILE = Resources/AERecordTests.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "net.tadija.AERecord-iOS-Tests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -780,7 +781,8 @@
 		8BFD96C91CF0709C008E8C9E /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				INFOPLIST_FILE = Tests/Info.plist;
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				INFOPLIST_FILE = Resources/AERecordTests.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "net.tadija.AERecord-iOS-Tests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -796,7 +798,7 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				INFOPLIST_FILE = Sources/Info.plist;
+				INFOPLIST_FILE = Resources/AERecord.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "net.tadija.AERecord-tvOS";
@@ -816,7 +818,7 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				INFOPLIST_FILE = Sources/Info.plist;
+				INFOPLIST_FILE = Resources/AERecord.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "net.tadija.AERecord-tvOS";
@@ -839,11 +841,11 @@
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				FRAMEWORK_VERSION = A;
-				INFOPLIST_FILE = Sources/Info.plist;
+				INFOPLIST_FILE = Resources/AERecord.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 10.11;
-				PRODUCT_BUNDLE_IDENTIFIER = "net.tadija.AERecord-OSX";
+				PRODUCT_BUNDLE_IDENTIFIER = "net.tadija.AERecord-macOS";
 				PRODUCT_NAME = AERecord;
 				SDKROOT = macosx;
 				SKIP_INSTALL = YES;
@@ -860,11 +862,11 @@
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				FRAMEWORK_VERSION = A;
-				INFOPLIST_FILE = Sources/Info.plist;
+				INFOPLIST_FILE = Resources/AERecord.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 10.11;
-				PRODUCT_BUNDLE_IDENTIFIER = "net.tadija.AERecord-OSX";
+				PRODUCT_BUNDLE_IDENTIFIER = "net.tadija.AERecord-macOS";
 				PRODUCT_NAME = AERecord;
 				SDKROOT = macosx;
 				SKIP_INSTALL = YES;
@@ -881,7 +883,7 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				INFOPLIST_FILE = Sources/Info.plist;
+				INFOPLIST_FILE = Resources/AERecord.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "net.tadija.AERecord-watchOS";
@@ -902,7 +904,7 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				INFOPLIST_FILE = Sources/Info.plist;
+				INFOPLIST_FILE = Resources/AERecord.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "net.tadija.AERecord-watchOS";
@@ -918,7 +920,8 @@
 		8BFD97EB1CF0E976008E8C9E /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				INFOPLIST_FILE = Tests/Info.plist;
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				INFOPLIST_FILE = Resources/AERecordTests.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "net.tadija.AERecord-tvOS-Tests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -930,7 +933,8 @@
 		8BFD97EC1CF0E976008E8C9E /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				INFOPLIST_FILE = Tests/Info.plist;
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				INFOPLIST_FILE = Resources/AERecordTests.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "net.tadija.AERecord-tvOS-Tests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -943,12 +947,13 @@
 		8BFD97FF1CF0EA36008E8C9E /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_IDENTITY = "-";
 				COMBINE_HIDPI_IMAGES = YES;
-				INFOPLIST_FILE = Tests/Info.plist;
+				INFOPLIST_FILE = Resources/AERecordTests.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 10.11;
-				PRODUCT_BUNDLE_IDENTIFIER = "net.tadija.AERecord-OSX-Tests";
+				PRODUCT_BUNDLE_IDENTIFIER = "net.tadija.AERecord-macOS-Tests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = macosx;
 			};
@@ -957,12 +962,13 @@
 		8BFD98001CF0EA36008E8C9E /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_IDENTITY = "-";
 				COMBINE_HIDPI_IMAGES = YES;
-				INFOPLIST_FILE = Tests/Info.plist;
+				INFOPLIST_FILE = Resources/AERecordTests.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 10.11;
-				PRODUCT_BUNDLE_IDENTIFIER = "net.tadija.AERecord-OSX-Tests";
+				PRODUCT_BUNDLE_IDENTIFIER = "net.tadija.AERecord-macOS-Tests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = macosx;
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
@@ -1008,7 +1014,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		8BFD97CA1CF0E883008E8C9E /* Build configuration list for PBXNativeTarget "AERecord OSX" */ = {
+		8BFD97CA1CF0E883008E8C9E /* Build configuration list for PBXNativeTarget "AERecord macOS" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				8BFD97CB1CF0E883008E8C9E /* Debug */,
@@ -1035,7 +1041,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		8BFD97FE1CF0EA36008E8C9E /* Build configuration list for PBXNativeTarget "AERecord OSX Tests" */ = {
+		8BFD97FE1CF0EA36008E8C9E /* Build configuration list for PBXNativeTarget "AERecord macOS Tests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				8BFD97FF1CF0EA36008E8C9E /* Debug */,
@@ -1047,12 +1053,12 @@
 /* End XCConfigurationList section */
 
 /* Begin XCVersionGroup section */
-		8BFD96CE1CF07195008E8C9E /* AERecordTest.xcdatamodeld */ = {
+		8B080D6A21506146009B8DBB /* AERecordTest.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
-				8BFD96CF1CF07195008E8C9E /* AERecordTest.xcdatamodel */,
+				8B080D6B21506146009B8DBB /* AERecordTest.xcdatamodel */,
 			);
-			currentVersion = 8BFD96CF1CF07195008E8C9E /* AERecordTest.xcdatamodel */;
+			currentVersion = 8B080D6B21506146009B8DBB /* AERecordTest.xcdatamodel */;
 			path = AERecordTest.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;
