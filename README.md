@@ -1,12 +1,15 @@
-[![Swift 4.0](https://img.shields.io/badge/Swift-4.0-orange.svg?style=flat)](https://swift.org)
-[![Platforms iOS | watchOS | tvOS | OSX](https://img.shields.io/badge/Platforms-iOS%20%7C%20watchOS%20%7C%20tvOS%20%7C%20OS%20X-lightgray.svg?style=flat)](http://www.apple.com)
+[![Swift 4.2](https://img.shields.io/badge/Swift-4.2-orange.svg?style=flat)](https://swift.org)
+[![Platforms iOS | watchOS | tvOS | macOS](https://img.shields.io/badge/Platforms-iOS%20%7C%20watchOS%20%7C%20tvOS%20%7C%20macOS-lightgray.svg?style=flat)](http://www.apple.com)
 [![CocoaPods](https://img.shields.io/cocoapods/v/AERecord.svg?style=flat)](https://cocoapods.org/pods/AERecord)
 [![Carthage](https://img.shields.io/badge/Carthage-compatible-brightgreen.svg?style=flat)](https://github.com/Carthage/Carthage)
 [![Swift Package Manager](https://img.shields.io/badge/SPM-compatible-brightgreen.svg)](https://github.com/apple/swift-package-manager)
 [![License MIT](https://img.shields.io/badge/License-MIT-lightgrey.svg?style=flat)](https://github.com/tadija/AERecord/blob/master/LICENSE)
 
+> ⚠️ Since this repository is going to be archived soon, I suggest migrating to [NSPersistentContainer](https://developer.apple.com/documentation/coredata/nspersistentcontainer) instead (available since iOS 10).
+> For other convenience helpers, beside managing stack, I'm currently just using [this](https://gist.github.com/tadija/6003830264d67a87193ff0c3d20373e7).
+
 # AERecord
-**Super awesome Core Data wrapper written in Swift (iOS, watchOS, OSX, tvOS)**
+**Super awesome Swift minion for Core Data (iOS, macOS, tvOS)**
 
 > I made this for personal use, but feel free to use it or contribute.
 > For more examples check out [Sources](Sources) and [Tests](Tests).
