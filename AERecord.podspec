@@ -1,7 +1,7 @@
 Pod::Spec.new do |s|
 
 s.name = 'AERecord'
-s.version = '4.1.1'
+s.version = '4.1.2'
 s.license = { :type => 'MIT', :file => 'LICENSE' }
 s.summary = 'Super awesome Swift minion for Core Data (iOS, macOS, tvOS)'
 
