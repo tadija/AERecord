@@ -10,6 +10,9 @@ import PackageDescription
 
 let package = Package(
     name: "AERecord",
+    products: [
+        .library(name: "AERecord", targets: ["AERecord"])
+    ],
     targets: [
         .target(
             name: "AERecord"
