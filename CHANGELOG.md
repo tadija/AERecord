@@ -1,5 +1,9 @@
 # Changelog
 
+## Version 4.1.2
+
+- Fixed Package.swift for Swift 4.2
+
 ## Version 4.1.1
 
 - Bumped Swift version to 4.2 with Xcode 10 GM
